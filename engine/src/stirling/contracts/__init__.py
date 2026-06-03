@@ -43,6 +43,7 @@ from .documents import (
     Page,
     PageRange,
     PageText,
+    PurgeOwnerResponse,
 )
 from .execution import (
     AgentExecutionRequest,
@@ -127,6 +128,11 @@ __all__ = [
     "ContradictionSeverity",
     "ConversationMessage",
     "DeleteDocumentResponse",
+    "PurgeOwnerResponse",
+    "PdfToMarkdownCannotDoResponse",
+    "PdfToMarkdownOrchestrateResponse",
+    "PdfToMarkdownRequest",
+    "PdfToMarkdownResponse",
     "Discrepancy",
     "DiscrepancyKind",
     "EditCannotDoResponse",
