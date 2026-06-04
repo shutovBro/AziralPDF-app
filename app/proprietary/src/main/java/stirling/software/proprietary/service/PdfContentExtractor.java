@@ -30,9 +30,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import stirling.software.SPDF.pdf.parser.PageImageLocator;
-import stirling.software.SPDF.pdf.parser.PdfIngester;
-import stirling.software.SPDF.pdf.parser.PdfModels.ParsedPage;
-import stirling.software.SPDF.pdf.parser.PdfModels.RawLine;
 import stirling.software.SPDF.pdf.parser.PdfModels.TableFragment;
 import stirling.software.SPDF.pdf.parser.TabulaTableParser;
 import stirling.software.common.util.ExceptionUtils;
