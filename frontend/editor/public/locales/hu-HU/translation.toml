@@ -90,6 +90,7 @@ nothingToUndo = "Nincs visszavonható művelet"
 noticeTopUpOrPlan = "Nincs elég kredit, kérjük, töltsön fel vagy váltson csomagra"
 noValidFiles = "Nincs feldolgozható érvényes fájl"
 oops = "Hoppá!"
+openInNewWindow = "Open in new window"
 openInViewer = "Megnyitás a megjelenítőben"
 operationCancelled = "Művelet megszakítva"
 page = "Oldal"
@@ -493,6 +494,11 @@ title = "Oldal skálázása"
 
 [adjustPageScale.error]
 failed = "Hiba történt az oldalskála beállítása közben."
+
+[adjustPageScale.orientation]
+label = "Page orientation"
+landscape = "Landscape"
+portrait = "Portrait"
 
 [adjustPageScale.pageSize]
 keep = "Eredeti méret megtartása"
@@ -1512,6 +1518,33 @@ user = "Felhasználó"
 usernameInfo = "A felhasználónév csak betűket, számokat és a következő speciális karaktereket tartalmazhatja: @._+- vagy érvényes e-mail címnek kell lennie."
 webOnlyUser = "Csak webes felhasználó"
 
+[agents]
+auto_redaction_description = "Redact PII automatically"
+auto_redaction_name = "Auto Redaction"
+back_to_tools = "Back to tools"
+coming_soon = "Coming soon"
+compliance_description = "Audit documents for compliance"
+compliance_name = "Compliance Check"
+data_extraction_description = "Extract tables & structured data"
+data_extraction_name = "Data Extraction"
+doc_summary_description = "Summarise long documents"
+doc_summary_name = "Summariser"
+form_filler_description = "Fill PDF forms intelligently"
+form_filler_name = "Form Filler"
+fullscreen_title = "Stirling Agents"
+pdf_to_markdown_description = "Convert PDFs to clean Markdown"
+pdf_to_markdown_name = "PDF to Markdown"
+section_title = "Agents"
+show_less = "Show less"
+start_chat = "Start chatting"
+stirling_description = "Your general-purpose PDF assistant"
+stirling_full_name = "Stirling General Agent"
+stirling_long_description = "General purpose PDF assistant that can run tools, create PDFs and extract insights from your documents."
+stirling_name = "Stirling"
+stirling_running = "Running..."
+stirling_tooltip = "Stirling agent"
+view_all = "View all agents"
+
 [analytics]
 disable = "Analitika letiltása"
 enable = "Analitika engedélyezése"
@@ -1771,6 +1804,10 @@ insufficientPermissions = "Nincs jogosultsága a művelet végrehajtásához."
 pleaseLoginAgain = "Kérjük, jelentkezzen be újra."
 sessionExpired = "Munkamenet lejárt"
 
+[auth.displayName]
+guest = "Guest"
+user = "User"
+
 [auto-rename]
 description = "Automatikusan megkeresi a PDF tartalmából a címet, és azt használja fájlnévként."
 header = "PDF automatikus átnevezése"
@@ -1862,6 +1899,13 @@ label = "Menü megnyitása ehhez: {{title}}"
 
 [automate.files]
 placeholder = "Válassza ki az automatizálással feldolgozandó fájlokat"
+
+[automate.folderScanWarning]
+advice = "You can still download the file (e.g. to inspect or hand-edit it), but the unsupported steps will need to be removed before the backend can run it."
+cancel = "Cancel"
+confirm = "Export anyway"
+intro = "Folder scanning runs on the backend, so it can only execute tools that have a backend endpoint. The following step(s) in this automation do not, and will fail when the pipeline runs:"
+title = "Some steps cannot run in folder scanning"
 
 [automate.importModal]
 cancel = "Mégse"
@@ -2684,6 +2728,22 @@ title = "Jogosultságok módosítása"
 [changePermissions.tooltip.warning]
 text = "Ezeket a jogosultságokat tegye megváltoztathatatlanná a \"Jelszó hozzáadása\" eszközzel beállított tulajdonosi jelszóval."
 
+[chat]
+resize = "Resize chat panel"
+
+[chat.actions]
+copy = "Copy message"
+
+[chat.header]
+agentMenu = "Stirling agent options"
+clearChat = "Clear chat"
+settings = "Agent settings"
+
+[chat.input]
+attach = "Attach files"
+placeholder = "What do you want to do?"
+send = "Send message"
+
 [chat.progress]
 analyzing = "Kérésének elemzése..."
 calling_engine = "Az AI gondolkodik..."
@@ -2698,6 +2758,32 @@ whole_doc_compression_round = "Jegyzetek összevonása..."
 whole_doc_read_done = "A dokumentum beolvasása befejeződött..."
 whole_doc_read_started = "A dokumentum beolvasása..."
 whole_doc_slice_done = "A dokumentum beolvasása... ({{percent}}% kész)"
+
+[chat.quickActions]
+browseYourFiles = "Browse your files"
+compressMany = "Compress these documents"
+compressOne = "Compress this document"
+convertMany = "Convert these documents to PDF"
+convertOne = "Convert this document to PDF"
+fileSummary_one = "1 file in workbench ({{types}})"
+fileSummary_other = "{{count}} files in workbench ({{types}})"
+heading = "Get started"
+mergeMany = "Merge these {{count}} documents into 1"
+moreFiles = "+{{count}} more"
+openFromComputer = "Open from computer"
+removeFile = "Remove {{name}}"
+rotateMany = "Rotate these documents"
+rotateOne = "Rotate this document"
+splitOne = "Split this document"
+
+[chat.responses]
+cannot_continue = "Something went wrong and I can't continue."
+cannot_do = "I'm unable to do that."
+done = "Done."
+need_clarification = "Could you clarify your request?"
+not_found = "I couldn't find the requested information."
+processing = "Processing ({{outcome}})..."
+unsupported_capability = "Unsupported capability: {{capability}}"
 
 [chat.toolsUsed]
 summary = "{{count}} eszköz futtatva"
@@ -2799,6 +2885,7 @@ selectBaseFirst = "Először válassza ki az eredeti PDF-et"
 filesMissing = "Nem találjuk a kiválasztott fájlokat. Kérjük, válassza ki újra őket."
 generic = "Nem lehet összehasonlítani ezeket a fájlokat."
 selectRequired = "Válasszon ki egy eredeti és egy szerkesztett dokumentumot."
+title = "Comparison failed"
 
 [compare.large.file]
 message = "Az egyik vagy mindkét dokumentum túl nagy a feldolgozáshoz"
@@ -2864,6 +2951,7 @@ title = "Még dolgozunk…"
 
 [compare.status]
 complete = "Összehasonlítás kész"
+error = "Comparison failed"
 extracting = "Szöveg kinyerése..."
 processing = "Különbségek elemzése..."
 
@@ -3404,6 +3492,22 @@ title = "Beállítások megnyitva"
 message = "A Stirling PDF mostantól az alapértelmezett PDF-szerkesztő"
 title = "Alapértelmezett alkalmazás beállítva"
 
+[desktopUpdate]
+downloading = "Downloading update..."
+installing = "Installing update..."
+installingWarning = "The app will close automatically to complete the installation."
+installNow = "Install Now"
+readyToRestart = "Update Ready"
+restartMessage = "The update has been installed. Restart the app to finish."
+restartNow = "Restart Now"
+updateFailed = "Update Failed"
+updateFailedMessage = "Failed to download or install the update."
+
+[desktopUpdate.blocked]
+docsLink = "View installation documentation"
+message = "Stirling-PDF does not have permission to update itself on this machine."
+title = "Administrator permissions required"
+
 [editTableOfContents]
 submit = "Tartalomjegyzék alkalmazása"
 
@@ -3771,12 +3875,246 @@ expand = "Oldalsáv kinyitása"
 files = "Fájlok"
 googleDrive = "Google Drive"
 googleDriveDisabled = "A Google Drive nincs beállítva"
+leaveMyFiles = "Leave My Files"
+myFiles = "My Files"
 noFiles = "Még nincsenek fájlok"
 openFileManager = "Fájlkezelő megnyitása"
 openFromComputer = "Megnyitás a számítógépről"
 openSettings = "Beállítások megnyitása"
 search = "Keresés"
 searchPlaceholder = "Fájlok keresése..."
+
+[filesPage]
+addToWorkspace = "Add to workspace"
+addToWorkspaceCount = "Add {{count}} to workspace"
+allFiles = "All files"
+back = "Back"
+backToFolder = "Back to {{folder}}"
+backToMyFiles = "Back to My Files"
+breadcrumbs = "Folder path"
+cancel = "Cancel"
+clearSearch = "Clear search"
+clearSelection = "Clear selection"
+closeDetails = "Close details"
+create = "Create"
+cycleBlocked = "Can't move a folder into one of its own subfolders."
+delete = "Delete"
+deleteFolder = "Delete folder"
+deleteFolderBody = "Delete folder \"{{name}}\"?"
+deleteFolderConfirm = "Delete folder \"{{name}}\"? Files inside will be moved to All files. {{count}} file(s) affected."
+deleteFolderContents = "Also delete {{count}} file(s) inside the folder"
+deleteFolderContentsWarning = "Files will be permanently removed and cannot be recovered."
+deleteFolderError = "Could not delete the folder. Try again."
+deleteFolderKeepHint = "Files inside will be moved to All files."
+deleteFolderTitle = "Delete folder?"
+deselectAll = "Clear selection"
+details = "Details"
+detailsCount = "{{count}} files selected"
+dismissError = "Dismiss"
+download = "Download"
+downloadAll = "Download all"
+downloadVersion = "Download this version"
+dropOverlay = "Drop files to upload"
+dropOverlaySub = "Files start in Local. Use 'Move to' or 'Save to cloud' to organise them into a folder."
+file = "File"
+fileMenu = "File actions"
+folder = "Folder"
+folderItems = "{{count}} items"
+folderMenu = "Folder actions"
+inPath = "in {{path}}"
+inWorkspace = "Open"
+inWorkspaceAria = "Already in workspace"
+loading = "Loading…"
+localFoldersUnavailable = "Folders are cloud-only - save a file to the cloud to organise it."
+moreActions = "More folder actions"
+moveLocalToCloudBlocked = "Local-only files can't be moved into cloud folders. Save them to the cloud first."
+moveSkippedRemote = "{{count}} file(s) couldn't be moved on the server (no permission or already deleted)."
+moveTo = "Move to…"
+myFiles = "My Files"
+newFolder = "New folder"
+newFolderStorageDisabled = "Server folder storage isn't enabled. Ask your admin to turn it on."
+newFolderTabUnavailable = "Switch to All or Cloud to create folders."
+newRootFolder = "New folder at root"
+offlineNoFolderEdits = "Server folder sync unavailable - folder changes are disabled. Check sign-in and storage configuration."
+open = "Open"
+openInWorkbench = "Open in workbench"
+openVersionInWorkspace = "Open in workspace"
+originFilter = "Filter by source"
+quickView = "Quick view"
+refresh = "Refresh from server"
+remove = "Delete"
+removeConfirm = "Delete {{count}} file(s)? This cannot be undone."
+removeVersion = "Remove this version"
+rename = "Rename"
+renameFolder = "Rename folder"
+resizeFolderTree = "Resize folder tree (arrow keys, Shift for bigger steps; double-click to auto-fit)"
+save = "Save"
+saveToServer = "Save to server"
+saveToServerDisabledHint = "Saving to the server isn't enabled on this server. Ask your admin to enable it."
+search = "Search"
+searchPlaceholder = "Search this folder & subfolders"
+selectAll = "Select all"
+selectAllHint = "Click to select all. Tip: hold Ctrl (or Cmd) to add files one at a time, Shift to select a range."
+selectedCount = "{{count}} selected"
+selectFile = "Select file {{name}}"
+shareDisabledHint = "File sharing isn't enabled on this server. Ask your admin to enable it."
+shareManage = "Manage sharing"
+showDetails = "Show details"
+summary = "{{count}} items"
+syncFailed = "Folder sync failed: {{message}}"
+syncPartial = "Folder sync partial: {{failed}} of {{total}} folders could not be merged."
+tree = "Folders"
+upload = "Upload"
+uploadedToLocal = "Uploaded files start in Local. Use 'Save to cloud' to put them in a folder."
+uploadFromMobile = "Upload from Mobile"
+versionActions = "Version actions"
+versionCollapse = "Collapse middle versions"
+versionOrigin = "Original upload"
+versionsCount = "{{count}} versions"
+versionShowHidden = "Show {{count}} earlier versions"
+viewVersion = "View this version"
+
+[filesPage.appearance]
+colour = "Colour"
+icon = "Icon"
+title = "Appearance"
+useColour = "Use colour {{c}}"
+
+[filesPage.column]
+modified = "Modified"
+name = "Name"
+size = "Size"
+type = "Type"
+
+[filesPage.empty]
+hint = "Drop PDFs anywhere on this page to upload, or use the New folder button to organise your files."
+newFolderCta = "Create folder"
+title = "This folder is empty"
+uploadCta = "Upload files"
+
+[filesPage.empty.cloud]
+hint = "Upload a file to start, or create a folder to organise."
+offlineHint = "Reconnect to load your cloud library."
+offlineTitle = "No cached cloud files"
+title = "No cloud files yet"
+
+[filesPage.empty.local]
+hint = "Files saved without uploading stay here. Drop a file to add one."
+title = "No local-only files"
+
+[filesPage.empty.recent]
+hint = "Files you open or edit will appear here."
+title = "Nothing modified yet"
+
+[filesPage.empty.shared]
+hint = "When someone shares a file via link, it appears here."
+title = "Nothing shared with you"
+
+[filesPage.empty.sharedByMe]
+hint = "Create a share link or invite a teammate from any of your files to see it here."
+title = "You haven't shared any files yet"
+
+[filesPage.error]
+actionFailed = "Could not {{action}}."
+actionFailedDetail = "Could not {{action}}: {{message}}"
+deleteFolderFailed = "Could not delete folder."
+deleteFolderFailedDetail = "Could not delete folder: {{message}}"
+folderAppearanceFailed = "Could not update folder appearance."
+folderAppearanceFailedDetail = "Could not update folder appearance: {{message}}"
+moveFilesFailed = "Could not move files."
+moveFilesFailedDetail = "Could not move files: {{message}}"
+moveFolderFailed = "Could not move folder."
+moveFolderFailedDetail = "Could not move folder: {{message}}"
+removeFilesFailed = "Could not remove files."
+removeFilesFailedDetail = "Could not remove files: {{message}}"
+uploadFilesFailed = "Could not upload files."
+uploadFilesFailedDetail = "Could not upload files: {{message}}"
+
+[filesPage.field]
+added = "Added"
+count = "Files"
+folder = "Folder"
+modified = "Modified"
+name = "Name"
+size = "Size"
+toolHistory = "Tool history"
+toolHistoryAtVersion = "Cumulative tool chain"
+totalSize = "Total size"
+type = "Type"
+versionHistory = "Version journey"
+
+[filesPage.folderName]
+cancel = "Cancel"
+error = "Could not save folder. Try again."
+label = "Folder name"
+placeholder = "Folder name"
+
+[filesPage.moveDialog]
+cancel = "Cancel"
+confirm = "Move here"
+error = "Could not move. Try again."
+hint = "Pick a destination folder. Tip: you can also drag and drop files onto folders in the tree on the left."
+newFolderCancel = "Discard"
+newFolderCreate = "Create"
+newFolderError = "Could not create folder. Try again."
+newFolderLabel = "New folder name"
+newFolderPlaceholder = "Folder name"
+newFolderToggle = "Create new folder…"
+title = "Move to folder"
+
+[filesPage.origin]
+all = "All sources"
+cloud = "Cloud"
+cloudHint = "Stored on the Stirling server"
+local = "Local"
+localHint = "Only stored in this browser"
+shared = "Shared"
+sharedHint = "Shared with you via link"
+
+[filesPage.sort]
+modifiedAsc = "Oldest first"
+modifiedDesc = "Recent first"
+nameAsc = "Name A→Z"
+nameDesc = "Name Z→A"
+sizeAsc = "Smallest first"
+sizeDesc = "Largest first"
+
+[filesPage.syncError]
+client = "Folder sync failed."
+network = "Could not reach the server."
+server = "Server error during folder sync."
+
+[filesPage.tabName]
+local = "Local"
+recent = "Recent"
+shared = "Shared with me"
+sharedByMe = "Shared by me"
+
+[filesPage.tabs]
+all = "All"
+ariaLabel = "File views"
+cloud = "Cloud"
+local = "Local"
+recent = "Recent"
+shared = "Shared with me"
+sharedByMe = "Shared by me"
+
+[filesPage.treeMenu]
+actions = "Folder actions for {{name}}"
+collapse = "Collapse folder"
+delete = "Delete folder"
+expand = "Expand folder"
+newSubfolder = "New subfolder"
+rename = "Rename"
+
+[filesPage.typeFilter]
+allTypes = "All types"
+label = "Filter by type"
+
+[filesPage.viewMode]
+grid = "Grid view"
+label = "View mode"
+list = "List view"
 
 [fileToPDF]
 credit = "Ez a szolgáltatás a LibreOffice és Unoconv használatával működik."
@@ -6856,8 +7194,18 @@ currentBackendVersion = "Current Backend Version"
 currentFrontendVersion = "Current Frontend Version"
 description = "Frissítések keresése és verzióinformációk megtekintése"
 latestVersion = "Legújabb verzió"
+managedByAdmin = "Managed by administrator"
+modeAuto = "Install updates automatically"
+modeDisabled = "Don't check for updates"
+modePrompt = "Ask me before installing updates"
 serverNeedsUpdate = "A szervert az adminisztrátornak frissítenie kell"
 title = "Szoftverfrissítések"
+updateBehavior = "Update behavior"
+updateBehaviorDescription = "Choose whether to prompt before installing updates, install them automatically, or skip update checks entirely."
+updateBehaviorError = "Could not change update behavior"
+updateBehaviorErrorLocked = "This setting is locked by your administrator."
+updateBehaviorLockedDescription = "Your administrator has configured how Stirling-PDF handles updates on this machine. Contact them to change this."
+updateBehaviorSaved = "Update behavior saved."
 versionMismatch = "Warning: A mismatch has been detected between the client version and the AppConfig version. Using different versions can lead to compatibility issues, errors, and security risks. Please ensure that server and client are using the same version."
 viewDetails = "Részletek megtekintése"
 
@@ -7695,6 +8043,7 @@ bulkTitle = "Kijelölt fájlok feltöltése"
 description = "Ez feltölti az aktuális fájlt a szerver tárhelyére, hogy Ön hozzáférhessen."
 errorTitle = "A feltöltés sikertelen"
 failure = "A feltöltés sikertelen. Kérjük, ellenőrizze a bejelentkezési és tárhelybeállításokat."
+featureDisabled = "Saving to the server isn't enabled on this server."
 fileCount = "{{count}} fájl kijelölve"
 fileLabel = "Fájl"
 hint = "A nyilvános hivatkozásokat és a hozzáférési módokat a szerver beállításai szabályozzák."
@@ -7826,6 +8175,12 @@ right = "Jobbra"
 [theme]
 toggle = "Téma váltása"
 
+[time.relative]
+daysAgo = "{{count}}d ago"
+hoursAgo = "{{count}}h ago"
+justNow = "just now"
+minutesAgo = "{{count}}m ago"
+
 [timestampPdf]
 completed = "A PDF időbélyegzése sikeres"
 desc = "RFC 3161 dokumentum-időbélyeg hozzáadása a PDF-hez megbízható Time Stamp Authority (TSA) szerverrel."
@@ -7868,13 +8223,18 @@ viewerMode = "Váltson a fájlszerkesztőre több fájl kiválasztásához."
 [toolPanel]
 allTools = "Összes eszköz"
 alpha = "Alfa"
+backToAllTools = "Back to all tools"
+backToDefault = "Back"
 backToTools = "Vissza az eszközökhöz"
 collapse = "Panel összecsukása"
 comingSoon = "Hamarosan:"
 expand = "Panel kinyitása"
+goBack = "Go back"
 placeholder = "Válasszon egy eszközt a kezdéshez"
 premiumFeature = "Prémium funkció:"
 search = "Eszközök keresése"
+toolsHeader = "Tools"
+viewAllTools = "View all tools"
 
 [toolPanel.fullscreen]
 comingSoon = "Hamarosan elérhető:"
@@ -7951,29 +8311,41 @@ placeholder = "Válasszon ki egy PDF fájlt a fő nézetben a kezdéshez"
 title = "Feloldott űrlapok eredménye"
 
 [update]
+allReleases = "All Releases"
 availableUpdates = "Elérhető frissítések"
+breaking = "Breaking"
 breakingChanges = "Inkompatibilis változások"
 breakingChangesDefault = "Ez a verzió inkompatibilis változásokat tartalmaz."
 breakingChangesDetected = "Inkompatibilis változások észlelve"
 breakingChangesMessage = "Egyes verziók inkompatibilis változásokat tartalmaznak. Frissítés előtt tekintse át az alábbi átállási útmutatókat."
 close = "Bezárás"
 current = "Jelenlegi verzió"
+defaultRecommendation = "This update contains important fixes and improvements."
 downloadLatest = "Legújabb letöltése"
+later = "Later"
 latest = "Legújabb verzió"
 latestStable = "Legújabb stabil"
 loadingDetailedInfo = "Részletes információk betöltése..."
 migrationGuide = "Átállási útmutató"
 migrationGuides = "Átállási útmutatók"
+migrationGuidesDesc = "Review important changes before updating."
+modalSubtitle = "A new version of Stirling PDF is ready to install."
 modalTitle = "Frissítés elérhető"
+notes = "Notes"
 priorityLabel = "Prioritás"
 recommendedAction = "Javasolt lépés"
 releaseNotes = "Kiadási megjegyzések"
+showLess = "Show fewer versions"
+showMore = "Show all {{count}} versions"
+stable = "STABLE"
 unableToLoadDetails = "Nem sikerült betölteni a részletes információkat."
 updateAvailable = "Frissítés elérhető"
 urgentUpdateAvailable = "Sürgős frissítés"
 version = "Verzió"
+versionHistory = "Version History"
 viewAllReleases = "Összes kiadás megtekintése"
 viewGuide = "Útmutató megnyitása"
+whatsNewIn = "What's new in"
 
 [update.priority]
 low = "Alacsony"

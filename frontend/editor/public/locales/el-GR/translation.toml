@@ -90,6 +90,7 @@ nothingToUndo = "Δεν υπάρχει τίποτα για αναίρεση"
 noticeTopUpOrPlan = "Μη επαρκείς μονάδες, παρακαλούμε ανανεώστε το υπόλοιπο ή αναβαθμίστε σε πλάνο"
 noValidFiles = "Δεν υπάρχουν έγκυρα αρχεία προς επεξεργασία"
 oops = "Ωχ!"
+openInNewWindow = "Open in new window"
 openInViewer = "Άνοιγμα στον προβολέα"
 operationCancelled = "Η ενέργεια ακυρώθηκε"
 page = "Σελίδα"
@@ -493,6 +494,11 @@ title = "Προσαρμογή κλίμακας σελίδας"
 
 [adjustPageScale.error]
 failed = "Παρουσιάστηκε σφάλμα κατά την προσαρμογή της κλίμακας σελίδας."
+
+[adjustPageScale.orientation]
+label = "Page orientation"
+landscape = "Landscape"
+portrait = "Portrait"
 
 [adjustPageScale.pageSize]
 keep = "Διατήρηση αρχικού μεγέθους"
@@ -1512,6 +1518,33 @@ user = "Χρήστης"
 usernameInfo = "Το όνομα χρήστη μπορεί να περιέχει μόνο γράμματα, αριθμούς και τους ειδικούς χαρακτήρες @._+- ή πρέπει να είναι έγκυρη διεύθυνση email."
 webOnlyUser = "Χρήστης μόνο web"
 
+[agents]
+auto_redaction_description = "Redact PII automatically"
+auto_redaction_name = "Auto Redaction"
+back_to_tools = "Back to tools"
+coming_soon = "Coming soon"
+compliance_description = "Audit documents for compliance"
+compliance_name = "Compliance Check"
+data_extraction_description = "Extract tables & structured data"
+data_extraction_name = "Data Extraction"
+doc_summary_description = "Summarise long documents"
+doc_summary_name = "Summariser"
+form_filler_description = "Fill PDF forms intelligently"
+form_filler_name = "Form Filler"
+fullscreen_title = "Stirling Agents"
+pdf_to_markdown_description = "Convert PDFs to clean Markdown"
+pdf_to_markdown_name = "PDF to Markdown"
+section_title = "Agents"
+show_less = "Show less"
+start_chat = "Start chatting"
+stirling_description = "Your general-purpose PDF assistant"
+stirling_full_name = "Stirling General Agent"
+stirling_long_description = "General purpose PDF assistant that can run tools, create PDFs and extract insights from your documents."
+stirling_name = "Stirling"
+stirling_running = "Running..."
+stirling_tooltip = "Stirling agent"
+view_all = "View all agents"
+
 [analytics]
 disable = "Απενεργοποίηση analytics"
 enable = "Ενεργοποίηση analytics"
@@ -1771,6 +1804,10 @@ insufficientPermissions = "Δεν έχετε άδεια για αυτή την �
 pleaseLoginAgain = "Συνδεθείτε ξανά."
 sessionExpired = "Η συνεδρία έληξε"
 
+[auth.displayName]
+guest = "Guest"
+user = "User"
+
 [auto-rename]
 description = "Εντοπίζει αυτόματα τον τίτλο από το περιεχόμενο του PDF και τον χρησιμοποιεί ως όνομα αρχείου."
 header = "Αυτόματη μετονομασία PDF"
@@ -1862,6 +1899,13 @@ label = "Άνοιγμα μενού για {{title}}"
 
 [automate.files]
 placeholder = "Επιλέξτε αρχεία για επεξεργασία με αυτήν την αυτοματοποίηση"
+
+[automate.folderScanWarning]
+advice = "You can still download the file (e.g. to inspect or hand-edit it), but the unsupported steps will need to be removed before the backend can run it."
+cancel = "Cancel"
+confirm = "Export anyway"
+intro = "Folder scanning runs on the backend, so it can only execute tools that have a backend endpoint. The following step(s) in this automation do not, and will fail when the pipeline runs:"
+title = "Some steps cannot run in folder scanning"
 
 [automate.importModal]
 cancel = "Ακύρωση"
@@ -2684,6 +2728,22 @@ title = "Αλλαγή δικαιωμάτων"
 [changePermissions.tooltip.warning]
 text = "Για να καταστούν αυτά τα δικαιώματα μη τροποποιήσιμα, χρησιμοποιήστε το εργαλείο Προσθήκη Κωδικού για να ορίσετε κωδικό πρόσβασης κατόχου."
 
+[chat]
+resize = "Resize chat panel"
+
+[chat.actions]
+copy = "Copy message"
+
+[chat.header]
+agentMenu = "Stirling agent options"
+clearChat = "Clear chat"
+settings = "Agent settings"
+
+[chat.input]
+attach = "Attach files"
+placeholder = "What do you want to do?"
+send = "Send message"
+
 [chat.progress]
 analyzing = "Γίνεται ανάλυση του αιτήματός σας..."
 calling_engine = "Το AI σκέφτεται..."
@@ -2698,6 +2758,32 @@ whole_doc_compression_round = "Ενοποίηση σημειώσεων..."
 whole_doc_read_done = "Ολοκληρώθηκε η ανάγνωση του εγγράφου..."
 whole_doc_read_started = "Γίνεται ανάγνωση του εγγράφου..."
 whole_doc_slice_done = "Γίνεται ανάγνωση του εγγράφου... ({{percent}}% ολοκληρωμένο)"
+
+[chat.quickActions]
+browseYourFiles = "Browse your files"
+compressMany = "Compress these documents"
+compressOne = "Compress this document"
+convertMany = "Convert these documents to PDF"
+convertOne = "Convert this document to PDF"
+fileSummary_one = "1 file in workbench ({{types}})"
+fileSummary_other = "{{count}} files in workbench ({{types}})"
+heading = "Get started"
+mergeMany = "Merge these {{count}} documents into 1"
+moreFiles = "+{{count}} more"
+openFromComputer = "Open from computer"
+removeFile = "Remove {{name}}"
+rotateMany = "Rotate these documents"
+rotateOne = "Rotate this document"
+splitOne = "Split this document"
+
+[chat.responses]
+cannot_continue = "Something went wrong and I can't continue."
+cannot_do = "I'm unable to do that."
+done = "Done."
+need_clarification = "Could you clarify your request?"
+not_found = "I couldn't find the requested information."
+processing = "Processing ({{outcome}})..."
+unsupported_capability = "Unsupported capability: {{capability}}"
 
 [chat.toolsUsed]
 summary = "Εκτελέστηκαν {{count}} εργαλεία"
@@ -2799,6 +2885,7 @@ selectBaseFirst = "Επιλέξτε πρώτα το αρχικό PDF"
 filesMissing = "Δεν ήταν δυνατός ο εντοπισμός των επιλεγμένων αρχείων. Παρακαλώ επιλέξτε τα ξανά."
 generic = "Δεν είναι δυνατή η σύγκριση αυτών των αρχείων."
 selectRequired = "Επιλέξτε ένα αρχικό και ένα τροποποιημένο έγγραφο."
+title = "Comparison failed"
 
 [compare.large.file]
 message = "Ένα ή και τα δύο παρεχόμενα έγγραφα είναι πολύ μεγάλα για επεξεργασία"
@@ -2864,6 +2951,7 @@ title = "Ακόμα δουλεύουμε…"
 
 [compare.status]
 complete = "Η σύγκριση είναι έτοιμη"
+error = "Comparison failed"
 extracting = "Εξαγωγή κειμένου..."
 processing = "Ανάλυση διαφορών..."
 
@@ -3404,6 +3492,22 @@ title = "Άνοιξαν οι Ρυθμίσεις"
 message = "Το Stirling PDF είναι πλέον ο προεπιλεγμένος επεξεργαστής PDF"
 title = "Ορίστηκε προεπιλεγμένη εφαρμογή"
 
+[desktopUpdate]
+downloading = "Downloading update..."
+installing = "Installing update..."
+installingWarning = "The app will close automatically to complete the installation."
+installNow = "Install Now"
+readyToRestart = "Update Ready"
+restartMessage = "The update has been installed. Restart the app to finish."
+restartNow = "Restart Now"
+updateFailed = "Update Failed"
+updateFailedMessage = "Failed to download or install the update."
+
+[desktopUpdate.blocked]
+docsLink = "View installation documentation"
+message = "Stirling-PDF does not have permission to update itself on this machine."
+title = "Administrator permissions required"
+
 [editTableOfContents]
 submit = "Εφαρμογή πίνακα περιεχομένων"
 
@@ -3771,12 +3875,246 @@ expand = "Ανάπτυξη πλευρικής στήλης"
 files = "Αρχεία"
 googleDrive = "Google Drive"
 googleDriveDisabled = "Το Google Drive δεν έχει ρυθμιστεί"
+leaveMyFiles = "Leave My Files"
+myFiles = "My Files"
 noFiles = "Ακόμη δεν υπάρχουν αρχεία"
 openFileManager = "Άνοιγμα διαχείρισης αρχείων"
 openFromComputer = "Άνοιγμα από υπολογιστή"
 openSettings = "Άνοιγμα ρυθμίσεων"
 search = "Αναζήτηση"
 searchPlaceholder = "Αναζήτηση αρχείων..."
+
+[filesPage]
+addToWorkspace = "Add to workspace"
+addToWorkspaceCount = "Add {{count}} to workspace"
+allFiles = "All files"
+back = "Back"
+backToFolder = "Back to {{folder}}"
+backToMyFiles = "Back to My Files"
+breadcrumbs = "Folder path"
+cancel = "Cancel"
+clearSearch = "Clear search"
+clearSelection = "Clear selection"
+closeDetails = "Close details"
+create = "Create"
+cycleBlocked = "Can't move a folder into one of its own subfolders."
+delete = "Delete"
+deleteFolder = "Delete folder"
+deleteFolderBody = "Delete folder \"{{name}}\"?"
+deleteFolderConfirm = "Delete folder \"{{name}}\"? Files inside will be moved to All files. {{count}} file(s) affected."
+deleteFolderContents = "Also delete {{count}} file(s) inside the folder"
+deleteFolderContentsWarning = "Files will be permanently removed and cannot be recovered."
+deleteFolderError = "Could not delete the folder. Try again."
+deleteFolderKeepHint = "Files inside will be moved to All files."
+deleteFolderTitle = "Delete folder?"
+deselectAll = "Clear selection"
+details = "Details"
+detailsCount = "{{count}} files selected"
+dismissError = "Dismiss"
+download = "Download"
+downloadAll = "Download all"
+downloadVersion = "Download this version"
+dropOverlay = "Drop files to upload"
+dropOverlaySub = "Files start in Local. Use 'Move to' or 'Save to cloud' to organise them into a folder."
+file = "File"
+fileMenu = "File actions"
+folder = "Folder"
+folderItems = "{{count}} items"
+folderMenu = "Folder actions"
+inPath = "in {{path}}"
+inWorkspace = "Open"
+inWorkspaceAria = "Already in workspace"
+loading = "Loading…"
+localFoldersUnavailable = "Folders are cloud-only - save a file to the cloud to organise it."
+moreActions = "More folder actions"
+moveLocalToCloudBlocked = "Local-only files can't be moved into cloud folders. Save them to the cloud first."
+moveSkippedRemote = "{{count}} file(s) couldn't be moved on the server (no permission or already deleted)."
+moveTo = "Move to…"
+myFiles = "My Files"
+newFolder = "New folder"
+newFolderStorageDisabled = "Server folder storage isn't enabled. Ask your admin to turn it on."
+newFolderTabUnavailable = "Switch to All or Cloud to create folders."
+newRootFolder = "New folder at root"
+offlineNoFolderEdits = "Server folder sync unavailable - folder changes are disabled. Check sign-in and storage configuration."
+open = "Open"
+openInWorkbench = "Open in workbench"
+openVersionInWorkspace = "Open in workspace"
+originFilter = "Filter by source"
+quickView = "Quick view"
+refresh = "Refresh from server"
+remove = "Delete"
+removeConfirm = "Delete {{count}} file(s)? This cannot be undone."
+removeVersion = "Remove this version"
+rename = "Rename"
+renameFolder = "Rename folder"
+resizeFolderTree = "Resize folder tree (arrow keys, Shift for bigger steps; double-click to auto-fit)"
+save = "Save"
+saveToServer = "Save to server"
+saveToServerDisabledHint = "Saving to the server isn't enabled on this server. Ask your admin to enable it."
+search = "Search"
+searchPlaceholder = "Search this folder & subfolders"
+selectAll = "Select all"
+selectAllHint = "Click to select all. Tip: hold Ctrl (or Cmd) to add files one at a time, Shift to select a range."
+selectedCount = "{{count}} selected"
+selectFile = "Select file {{name}}"
+shareDisabledHint = "File sharing isn't enabled on this server. Ask your admin to enable it."
+shareManage = "Manage sharing"
+showDetails = "Show details"
+summary = "{{count}} items"
+syncFailed = "Folder sync failed: {{message}}"
+syncPartial = "Folder sync partial: {{failed}} of {{total}} folders could not be merged."
+tree = "Folders"
+upload = "Upload"
+uploadedToLocal = "Uploaded files start in Local. Use 'Save to cloud' to put them in a folder."
+uploadFromMobile = "Upload from Mobile"
+versionActions = "Version actions"
+versionCollapse = "Collapse middle versions"
+versionOrigin = "Original upload"
+versionsCount = "{{count}} versions"
+versionShowHidden = "Show {{count}} earlier versions"
+viewVersion = "View this version"
+
+[filesPage.appearance]
+colour = "Colour"
+icon = "Icon"
+title = "Appearance"
+useColour = "Use colour {{c}}"
+
+[filesPage.column]
+modified = "Modified"
+name = "Name"
+size = "Size"
+type = "Type"
+
+[filesPage.empty]
+hint = "Drop PDFs anywhere on this page to upload, or use the New folder button to organise your files."
+newFolderCta = "Create folder"
+title = "This folder is empty"
+uploadCta = "Upload files"
+
+[filesPage.empty.cloud]
+hint = "Upload a file to start, or create a folder to organise."
+offlineHint = "Reconnect to load your cloud library."
+offlineTitle = "No cached cloud files"
+title = "No cloud files yet"
+
+[filesPage.empty.local]
+hint = "Files saved without uploading stay here. Drop a file to add one."
+title = "No local-only files"
+
+[filesPage.empty.recent]
+hint = "Files you open or edit will appear here."
+title = "Nothing modified yet"
+
+[filesPage.empty.shared]
+hint = "When someone shares a file via link, it appears here."
+title = "Nothing shared with you"
+
+[filesPage.empty.sharedByMe]
+hint = "Create a share link or invite a teammate from any of your files to see it here."
+title = "You haven't shared any files yet"
+
+[filesPage.error]
+actionFailed = "Could not {{action}}."
+actionFailedDetail = "Could not {{action}}: {{message}}"
+deleteFolderFailed = "Could not delete folder."
+deleteFolderFailedDetail = "Could not delete folder: {{message}}"
+folderAppearanceFailed = "Could not update folder appearance."
+folderAppearanceFailedDetail = "Could not update folder appearance: {{message}}"
+moveFilesFailed = "Could not move files."
+moveFilesFailedDetail = "Could not move files: {{message}}"
+moveFolderFailed = "Could not move folder."
+moveFolderFailedDetail = "Could not move folder: {{message}}"
+removeFilesFailed = "Could not remove files."
+removeFilesFailedDetail = "Could not remove files: {{message}}"
+uploadFilesFailed = "Could not upload files."
+uploadFilesFailedDetail = "Could not upload files: {{message}}"
+
+[filesPage.field]
+added = "Added"
+count = "Files"
+folder = "Folder"
+modified = "Modified"
+name = "Name"
+size = "Size"
+toolHistory = "Tool history"
+toolHistoryAtVersion = "Cumulative tool chain"
+totalSize = "Total size"
+type = "Type"
+versionHistory = "Version journey"
+
+[filesPage.folderName]
+cancel = "Cancel"
+error = "Could not save folder. Try again."
+label = "Folder name"
+placeholder = "Folder name"
+
+[filesPage.moveDialog]
+cancel = "Cancel"
+confirm = "Move here"
+error = "Could not move. Try again."
+hint = "Pick a destination folder. Tip: you can also drag and drop files onto folders in the tree on the left."
+newFolderCancel = "Discard"
+newFolderCreate = "Create"
+newFolderError = "Could not create folder. Try again."
+newFolderLabel = "New folder name"
+newFolderPlaceholder = "Folder name"
+newFolderToggle = "Create new folder…"
+title = "Move to folder"
+
+[filesPage.origin]
+all = "All sources"
+cloud = "Cloud"
+cloudHint = "Stored on the Stirling server"
+local = "Local"
+localHint = "Only stored in this browser"
+shared = "Shared"
+sharedHint = "Shared with you via link"
+
+[filesPage.sort]
+modifiedAsc = "Oldest first"
+modifiedDesc = "Recent first"
+nameAsc = "Name A→Z"
+nameDesc = "Name Z→A"
+sizeAsc = "Smallest first"
+sizeDesc = "Largest first"
+
+[filesPage.syncError]
+client = "Folder sync failed."
+network = "Could not reach the server."
+server = "Server error during folder sync."
+
+[filesPage.tabName]
+local = "Local"
+recent = "Recent"
+shared = "Shared with me"
+sharedByMe = "Shared by me"
+
+[filesPage.tabs]
+all = "All"
+ariaLabel = "File views"
+cloud = "Cloud"
+local = "Local"
+recent = "Recent"
+shared = "Shared with me"
+sharedByMe = "Shared by me"
+
+[filesPage.treeMenu]
+actions = "Folder actions for {{name}}"
+collapse = "Collapse folder"
+delete = "Delete folder"
+expand = "Expand folder"
+newSubfolder = "New subfolder"
+rename = "Rename"
+
+[filesPage.typeFilter]
+allTypes = "All types"
+label = "Filter by type"
+
+[filesPage.viewMode]
+grid = "Grid view"
+label = "View mode"
+list = "List view"
 
 [fileToPDF]
 credit = "Αυτή η υπηρεσία χρησιμοποιεί LibreOffice και Unoconv για μετατροπή αρχείων."
@@ -6856,8 +7194,18 @@ currentBackendVersion = "Current Backend Version"
 currentFrontendVersion = "Current Frontend Version"
 description = "Έλεγχος ενημερώσεων και προβολή πληροφοριών έκδοσης"
 latestVersion = "Νεότερη έκδοση"
+managedByAdmin = "Managed by administrator"
+modeAuto = "Install updates automatically"
+modeDisabled = "Don't check for updates"
+modePrompt = "Ask me before installing updates"
 serverNeedsUpdate = "Ο διακομιστής πρέπει να ενημερωθεί από διαχειριστή"
 title = "Ενημερώσεις λογισμικού"
+updateBehavior = "Update behavior"
+updateBehaviorDescription = "Choose whether to prompt before installing updates, install them automatically, or skip update checks entirely."
+updateBehaviorError = "Could not change update behavior"
+updateBehaviorErrorLocked = "This setting is locked by your administrator."
+updateBehaviorLockedDescription = "Your administrator has configured how Stirling-PDF handles updates on this machine. Contact them to change this."
+updateBehaviorSaved = "Update behavior saved."
 versionMismatch = "Warning: A mismatch has been detected between the client version and the AppConfig version. Using different versions can lead to compatibility issues, errors, and security risks. Please ensure that server and client are using the same version."
 viewDetails = "Προβολή λεπτομερειών"
 
@@ -7695,6 +8043,7 @@ bulkTitle = "Μεταφόρτωση επιλεγμένων αρχείων"
 description = "Μεταφορτώνει το τρέχον αρχείο στον αποθηκευτικό χώρο του διακομιστή για δική σας πρόσβαση."
 errorTitle = "Αποτυχία μεταφόρτωσης"
 failure = "Η μεταφόρτωση απέτυχε. Ελέγξτε τα στοιχεία σύνδεσης και τις ρυθμίσεις αποθήκευσης."
+featureDisabled = "Saving to the server isn't enabled on this server."
 fileCount = "Επιλέχθηκαν {{count}} αρχεία"
 fileLabel = "Αρχείο"
 hint = "Οι δημόσιοι σύνδεσμοι και οι λειτουργίες πρόσβασης ελέγχονται από τις ρυθμίσεις του διακομιστή σας."
@@ -7826,6 +8175,12 @@ right = "Δεξιά"
 [theme]
 toggle = "Εναλλαγή θέματος"
 
+[time.relative]
+daysAgo = "{{count}}d ago"
+hoursAgo = "{{count}}h ago"
+justNow = "just now"
+minutesAgo = "{{count}}m ago"
+
 [timestampPdf]
 completed = "Η χρονική σήμανση του PDF ολοκληρώθηκε με επιτυχία"
 desc = "Προσθέστε χρονική σήμανση εγγράφου RFC 3161 στο PDF σας χρησιμοποιώντας έναν αξιόπιστο διακομιστή Time Stamp Authority (TSA)."
@@ -7868,13 +8223,18 @@ viewerMode = "Μεταβείτε στον επεξεργαστή αρχείων 
 [toolPanel]
 allTools = "Όλα τα εργαλεία"
 alpha = "Άλφα"
+backToAllTools = "Back to all tools"
+backToDefault = "Back"
 backToTools = "Πίσω στα εργαλεία"
 collapse = "Σύμπτυξη πάνελ"
 comingSoon = "Σύντομα διαθέσιμο:"
 expand = "Ανάπτυξη πάνελ"
+goBack = "Go back"
 placeholder = "Επιλέξτε ένα εργαλείο για να ξεκινήσετε"
 premiumFeature = "Premium λειτουργία:"
 search = "Αναζήτηση εργαλείων"
+toolsHeader = "Tools"
+viewAllTools = "View all tools"
 
 [toolPanel.fullscreen]
 comingSoon = "Σύντομα διαθέσιμο:"
@@ -7951,29 +8311,41 @@ placeholder = "Επιλέξτε ένα αρχείο PDF στην κύρια πρ
 title = "Αποτελέσματα ξεκλειδωμένων φορμών"
 
 [update]
+allReleases = "All Releases"
 availableUpdates = "Διαθέσιμες ενημερώσεις"
+breaking = "Breaking"
 breakingChanges = "Ασύμβατες αλλαγές"
 breakingChangesDefault = "Αυτή η έκδοση περιέχει ασύμβατες αλλαγές."
 breakingChangesDetected = "Εντοπίστηκαν ασύμβατες αλλαγές"
 breakingChangesMessage = "Ορισμένες εκδόσεις περιέχουν ασύμβατες αλλαγές. Ελέγξτε τους οδηγούς μετεγκατάστασης παρακάτω πριν ενημερώσετε."
 close = "Κλείσιμο"
 current = "Τρέχουσα έκδοση"
+defaultRecommendation = "This update contains important fixes and improvements."
 downloadLatest = "Λήψη νεότερης"
+later = "Later"
 latest = "Νεότερη έκδοση"
 latestStable = "Νεότερη σταθερή"
 loadingDetailedInfo = "Φόρτωση αναλυτικών πληροφοριών..."
 migrationGuide = "Οδηγός μετεγκατάστασης"
 migrationGuides = "Οδηγοί μετεγκατάστασης"
+migrationGuidesDesc = "Review important changes before updating."
+modalSubtitle = "A new version of Stirling PDF is ready to install."
 modalTitle = "Διαθέσιμη ενημέρωση"
+notes = "Notes"
 priorityLabel = "Προτεραιότητα"
 recommendedAction = "Προτεινόμενη ενέργεια"
 releaseNotes = "Σημειώσεις έκδοσης"
+showLess = "Show fewer versions"
+showMore = "Show all {{count}} versions"
+stable = "STABLE"
 unableToLoadDetails = "Αδυναμία φόρτωσης αναλυτικών πληροφοριών."
 updateAvailable = "Διαθέσιμη ενημέρωση"
 urgentUpdateAvailable = "Επείγουσα ενημέρωση"
 version = "Έκδοση"
+versionHistory = "Version History"
 viewAllReleases = "Προβολή όλων των εκδόσεων"
 viewGuide = "Προβολή οδηγού"
+whatsNewIn = "What's new in"
 
 [update.priority]
 low = "Χαμηλή"

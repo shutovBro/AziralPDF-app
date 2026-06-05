@@ -90,6 +90,7 @@ nothingToUndo = "元に戻す項目はありません"
 noticeTopUpOrPlan = "クレジットが不足しています。チャージするかプランをアップグレードしてください"
 noValidFiles = "処理対象の有効なファイルがありません"
 oops = "おっと！"
+openInNewWindow = "Open in new window"
 openInViewer = "ビューアで開く"
 operationCancelled = "操作をキャンセルしました"
 page = "ページ"
@@ -493,6 +494,11 @@ title = "ページスケールを調整"
 
 [adjustPageScale.error]
 failed = "ページスケールの調整中にエラーが発生しました。"
+
+[adjustPageScale.orientation]
+label = "Page orientation"
+landscape = "Landscape"
+portrait = "Portrait"
 
 [adjustPageScale.pageSize]
 keep = "元のサイズを保持"
@@ -1512,6 +1518,33 @@ user = "ユーザー"
 usernameInfo = "ユーザー名には、文字、数字、および次の特殊文字 @._+- のみを含めることができます。または、有効な電子メール アドレスである必要があります。"
 webOnlyUser = "ウェブ専用ユーザー"
 
+[agents]
+auto_redaction_description = "Redact PII automatically"
+auto_redaction_name = "Auto Redaction"
+back_to_tools = "Back to tools"
+coming_soon = "Coming soon"
+compliance_description = "Audit documents for compliance"
+compliance_name = "Compliance Check"
+data_extraction_description = "Extract tables & structured data"
+data_extraction_name = "Data Extraction"
+doc_summary_description = "Summarise long documents"
+doc_summary_name = "Summariser"
+form_filler_description = "Fill PDF forms intelligently"
+form_filler_name = "Form Filler"
+fullscreen_title = "Stirling Agents"
+pdf_to_markdown_description = "Convert PDFs to clean Markdown"
+pdf_to_markdown_name = "PDF to Markdown"
+section_title = "Agents"
+show_less = "Show less"
+start_chat = "Start chatting"
+stirling_description = "Your general-purpose PDF assistant"
+stirling_full_name = "Stirling General Agent"
+stirling_long_description = "General purpose PDF assistant that can run tools, create PDFs and extract insights from your documents."
+stirling_name = "Stirling"
+stirling_running = "Running..."
+stirling_tooltip = "Stirling agent"
+view_all = "View all agents"
+
 [analytics]
 disable = "分析を無効にする"
 enable = "分析を有効にする"
@@ -1771,6 +1804,10 @@ insufficientPermissions = "この操作を実行する権限がありません�
 pleaseLoginAgain = "再度ログインしてください。"
 sessionExpired = "セッションの有効期限が切れました"
 
+[auth.displayName]
+guest = "Guest"
+user = "User"
+
 [auto-rename]
 description = "PDF コンテンツからタイトルを自動的に検出し、ファイル名として使用します。"
 header = "PDF名の自動変更"
@@ -1862,6 +1899,13 @@ label = "{{title}} のメニューを開く"
 
 [automate.files]
 placeholder = "この自動処理で処理するファイルを選択"
+
+[automate.folderScanWarning]
+advice = "You can still download the file (e.g. to inspect or hand-edit it), but the unsupported steps will need to be removed before the backend can run it."
+cancel = "Cancel"
+confirm = "Export anyway"
+intro = "Folder scanning runs on the backend, so it can only execute tools that have a backend endpoint. The following step(s) in this automation do not, and will fail when the pipeline runs:"
+title = "Some steps cannot run in folder scanning"
 
 [automate.importModal]
 cancel = "キャンセル"
@@ -2684,6 +2728,22 @@ title = "権限の変更"
 [changePermissions.tooltip.warning]
 text = "これらの権限を変更不可にするには、パスワード追加ツールでオーナーパスワードを設定してください。"
 
+[chat]
+resize = "Resize chat panel"
+
+[chat.actions]
+copy = "Copy message"
+
+[chat.header]
+agentMenu = "Stirling agent options"
+clearChat = "Clear chat"
+settings = "Agent settings"
+
+[chat.input]
+attach = "Attach files"
+placeholder = "What do you want to do?"
+send = "Send message"
+
 [chat.progress]
 analyzing = "リクエストを分析しています..."
 calling_engine = "AIが考え中..."
@@ -2698,6 +2758,32 @@ whole_doc_compression_round = "メモを統合しています..."
 whole_doc_read_done = "ドキュメントの読み取りが完了しました..."
 whole_doc_read_started = "ドキュメントを読み取っています..."
 whole_doc_slice_done = "ドキュメントを読み取っています...（{{percent}}% 完了）"
+
+[chat.quickActions]
+browseYourFiles = "Browse your files"
+compressMany = "Compress these documents"
+compressOne = "Compress this document"
+convertMany = "Convert these documents to PDF"
+convertOne = "Convert this document to PDF"
+fileSummary_one = "1 file in workbench ({{types}})"
+fileSummary_other = "{{count}} files in workbench ({{types}})"
+heading = "Get started"
+mergeMany = "Merge these {{count}} documents into 1"
+moreFiles = "+{{count}} more"
+openFromComputer = "Open from computer"
+removeFile = "Remove {{name}}"
+rotateMany = "Rotate these documents"
+rotateOne = "Rotate this document"
+splitOne = "Split this document"
+
+[chat.responses]
+cannot_continue = "Something went wrong and I can't continue."
+cannot_do = "I'm unable to do that."
+done = "Done."
+need_clarification = "Could you clarify your request?"
+not_found = "I couldn't find the requested information."
+processing = "Processing ({{outcome}})..."
+unsupported_capability = "Unsupported capability: {{capability}}"
 
 [chat.toolsUsed]
 summary = "ツールを{{count}}件実行しました"
@@ -2799,6 +2885,7 @@ selectBaseFirst = "先に元の PDF を選択してください"
 filesMissing = "選択したファイルを見つけられません。再選択してください。"
 generic = "これらのファイルを比較できません。"
 selectRequired = "元の文書と編集済み文書を選択してください。"
+title = "Comparison failed"
 
 [compare.large.file]
 message = "提供された文書の1つまたは両方が大きすぎて処理できません"
@@ -2864,6 +2951,7 @@ title = "まだ処理中…"
 
 [compare.status]
 complete = "比較の準備ができました"
+error = "Comparison failed"
 extracting = "テキストを抽出中..."
 processing = "差分を分析中..."
 
@@ -3404,6 +3492,22 @@ title = "設定を開きました"
 message = "Stirling PDF が既定のPDFエディターになりました"
 title = "既定のアプリを設定"
 
+[desktopUpdate]
+downloading = "Downloading update..."
+installing = "Installing update..."
+installingWarning = "The app will close automatically to complete the installation."
+installNow = "Install Now"
+readyToRestart = "Update Ready"
+restartMessage = "The update has been installed. Restart the app to finish."
+restartNow = "Restart Now"
+updateFailed = "Update Failed"
+updateFailedMessage = "Failed to download or install the update."
+
+[desktopUpdate.blocked]
+docsLink = "View installation documentation"
+message = "Stirling-PDF does not have permission to update itself on this machine."
+title = "Administrator permissions required"
+
 [editTableOfContents]
 submit = "目次を適用"
 
@@ -3771,12 +3875,246 @@ expand = "サイドバーを展開"
 files = "ファイル"
 googleDrive = "Google Drive"
 googleDriveDisabled = "Google Drive が未設定です"
+leaveMyFiles = "Leave My Files"
+myFiles = "My Files"
 noFiles = "まだファイルがありません"
 openFileManager = "ファイルマネージャーを開く"
 openFromComputer = "コンピューターから開く"
 openSettings = "設定を開く"
 search = "検索"
 searchPlaceholder = "ファイルを検索..."
+
+[filesPage]
+addToWorkspace = "Add to workspace"
+addToWorkspaceCount = "Add {{count}} to workspace"
+allFiles = "All files"
+back = "Back"
+backToFolder = "Back to {{folder}}"
+backToMyFiles = "Back to My Files"
+breadcrumbs = "Folder path"
+cancel = "Cancel"
+clearSearch = "Clear search"
+clearSelection = "Clear selection"
+closeDetails = "Close details"
+create = "Create"
+cycleBlocked = "Can't move a folder into one of its own subfolders."
+delete = "Delete"
+deleteFolder = "Delete folder"
+deleteFolderBody = "Delete folder \"{{name}}\"?"
+deleteFolderConfirm = "Delete folder \"{{name}}\"? Files inside will be moved to All files. {{count}} file(s) affected."
+deleteFolderContents = "Also delete {{count}} file(s) inside the folder"
+deleteFolderContentsWarning = "Files will be permanently removed and cannot be recovered."
+deleteFolderError = "Could not delete the folder. Try again."
+deleteFolderKeepHint = "Files inside will be moved to All files."
+deleteFolderTitle = "Delete folder?"
+deselectAll = "Clear selection"
+details = "Details"
+detailsCount = "{{count}} files selected"
+dismissError = "Dismiss"
+download = "Download"
+downloadAll = "Download all"
+downloadVersion = "Download this version"
+dropOverlay = "Drop files to upload"
+dropOverlaySub = "Files start in Local. Use 'Move to' or 'Save to cloud' to organise them into a folder."
+file = "File"
+fileMenu = "File actions"
+folder = "Folder"
+folderItems = "{{count}} items"
+folderMenu = "Folder actions"
+inPath = "in {{path}}"
+inWorkspace = "Open"
+inWorkspaceAria = "Already in workspace"
+loading = "Loading…"
+localFoldersUnavailable = "Folders are cloud-only - save a file to the cloud to organise it."
+moreActions = "More folder actions"
+moveLocalToCloudBlocked = "Local-only files can't be moved into cloud folders. Save them to the cloud first."
+moveSkippedRemote = "{{count}} file(s) couldn't be moved on the server (no permission or already deleted)."
+moveTo = "Move to…"
+myFiles = "My Files"
+newFolder = "New folder"
+newFolderStorageDisabled = "Server folder storage isn't enabled. Ask your admin to turn it on."
+newFolderTabUnavailable = "Switch to All or Cloud to create folders."
+newRootFolder = "New folder at root"
+offlineNoFolderEdits = "Server folder sync unavailable - folder changes are disabled. Check sign-in and storage configuration."
+open = "Open"
+openInWorkbench = "Open in workbench"
+openVersionInWorkspace = "Open in workspace"
+originFilter = "Filter by source"
+quickView = "Quick view"
+refresh = "Refresh from server"
+remove = "Delete"
+removeConfirm = "Delete {{count}} file(s)? This cannot be undone."
+removeVersion = "Remove this version"
+rename = "Rename"
+renameFolder = "Rename folder"
+resizeFolderTree = "Resize folder tree (arrow keys, Shift for bigger steps; double-click to auto-fit)"
+save = "Save"
+saveToServer = "Save to server"
+saveToServerDisabledHint = "Saving to the server isn't enabled on this server. Ask your admin to enable it."
+search = "Search"
+searchPlaceholder = "Search this folder & subfolders"
+selectAll = "Select all"
+selectAllHint = "Click to select all. Tip: hold Ctrl (or Cmd) to add files one at a time, Shift to select a range."
+selectedCount = "{{count}} selected"
+selectFile = "Select file {{name}}"
+shareDisabledHint = "File sharing isn't enabled on this server. Ask your admin to enable it."
+shareManage = "Manage sharing"
+showDetails = "Show details"
+summary = "{{count}} items"
+syncFailed = "Folder sync failed: {{message}}"
+syncPartial = "Folder sync partial: {{failed}} of {{total}} folders could not be merged."
+tree = "Folders"
+upload = "Upload"
+uploadedToLocal = "Uploaded files start in Local. Use 'Save to cloud' to put them in a folder."
+uploadFromMobile = "Upload from Mobile"
+versionActions = "Version actions"
+versionCollapse = "Collapse middle versions"
+versionOrigin = "Original upload"
+versionsCount = "{{count}} versions"
+versionShowHidden = "Show {{count}} earlier versions"
+viewVersion = "View this version"
+
+[filesPage.appearance]
+colour = "Colour"
+icon = "Icon"
+title = "Appearance"
+useColour = "Use colour {{c}}"
+
+[filesPage.column]
+modified = "Modified"
+name = "Name"
+size = "Size"
+type = "Type"
+
+[filesPage.empty]
+hint = "Drop PDFs anywhere on this page to upload, or use the New folder button to organise your files."
+newFolderCta = "Create folder"
+title = "This folder is empty"
+uploadCta = "Upload files"
+
+[filesPage.empty.cloud]
+hint = "Upload a file to start, or create a folder to organise."
+offlineHint = "Reconnect to load your cloud library."
+offlineTitle = "No cached cloud files"
+title = "No cloud files yet"
+
+[filesPage.empty.local]
+hint = "Files saved without uploading stay here. Drop a file to add one."
+title = "No local-only files"
+
+[filesPage.empty.recent]
+hint = "Files you open or edit will appear here."
+title = "Nothing modified yet"
+
+[filesPage.empty.shared]
+hint = "When someone shares a file via link, it appears here."
+title = "Nothing shared with you"
+
+[filesPage.empty.sharedByMe]
+hint = "Create a share link or invite a teammate from any of your files to see it here."
+title = "You haven't shared any files yet"
+
+[filesPage.error]
+actionFailed = "Could not {{action}}."
+actionFailedDetail = "Could not {{action}}: {{message}}"
+deleteFolderFailed = "Could not delete folder."
+deleteFolderFailedDetail = "Could not delete folder: {{message}}"
+folderAppearanceFailed = "Could not update folder appearance."
+folderAppearanceFailedDetail = "Could not update folder appearance: {{message}}"
+moveFilesFailed = "Could not move files."
+moveFilesFailedDetail = "Could not move files: {{message}}"
+moveFolderFailed = "Could not move folder."
+moveFolderFailedDetail = "Could not move folder: {{message}}"
+removeFilesFailed = "Could not remove files."
+removeFilesFailedDetail = "Could not remove files: {{message}}"
+uploadFilesFailed = "Could not upload files."
+uploadFilesFailedDetail = "Could not upload files: {{message}}"
+
+[filesPage.field]
+added = "Added"
+count = "Files"
+folder = "Folder"
+modified = "Modified"
+name = "Name"
+size = "Size"
+toolHistory = "Tool history"
+toolHistoryAtVersion = "Cumulative tool chain"
+totalSize = "Total size"
+type = "Type"
+versionHistory = "Version journey"
+
+[filesPage.folderName]
+cancel = "Cancel"
+error = "Could not save folder. Try again."
+label = "Folder name"
+placeholder = "Folder name"
+
+[filesPage.moveDialog]
+cancel = "Cancel"
+confirm = "Move here"
+error = "Could not move. Try again."
+hint = "Pick a destination folder. Tip: you can also drag and drop files onto folders in the tree on the left."
+newFolderCancel = "Discard"
+newFolderCreate = "Create"
+newFolderError = "Could not create folder. Try again."
+newFolderLabel = "New folder name"
+newFolderPlaceholder = "Folder name"
+newFolderToggle = "Create new folder…"
+title = "Move to folder"
+
+[filesPage.origin]
+all = "All sources"
+cloud = "Cloud"
+cloudHint = "Stored on the Stirling server"
+local = "Local"
+localHint = "Only stored in this browser"
+shared = "Shared"
+sharedHint = "Shared with you via link"
+
+[filesPage.sort]
+modifiedAsc = "Oldest first"
+modifiedDesc = "Recent first"
+nameAsc = "Name A→Z"
+nameDesc = "Name Z→A"
+sizeAsc = "Smallest first"
+sizeDesc = "Largest first"
+
+[filesPage.syncError]
+client = "Folder sync failed."
+network = "Could not reach the server."
+server = "Server error during folder sync."
+
+[filesPage.tabName]
+local = "Local"
+recent = "Recent"
+shared = "Shared with me"
+sharedByMe = "Shared by me"
+
+[filesPage.tabs]
+all = "All"
+ariaLabel = "File views"
+cloud = "Cloud"
+local = "Local"
+recent = "Recent"
+shared = "Shared with me"
+sharedByMe = "Shared by me"
+
+[filesPage.treeMenu]
+actions = "Folder actions for {{name}}"
+collapse = "Collapse folder"
+delete = "Delete folder"
+expand = "Expand folder"
+newSubfolder = "New subfolder"
+rename = "Rename"
+
+[filesPage.typeFilter]
+allTypes = "All types"
+label = "Filter by type"
+
+[filesPage.viewMode]
+grid = "Grid view"
+label = "View mode"
+list = "List view"
 
 [fileToPDF]
 credit = "本サービスはファイル変換にLibreOfficeとUnoconvを使用しています。"
@@ -6856,8 +7194,18 @@ currentBackendVersion = "Current Backend Version"
 currentFrontendVersion = "Current Frontend Version"
 description = "更新の確認とバージョン情報の表示"
 latestVersion = "最新バージョン"
+managedByAdmin = "Managed by administrator"
+modeAuto = "Install updates automatically"
+modeDisabled = "Don't check for updates"
+modePrompt = "Ask me before installing updates"
 serverNeedsUpdate = "サーバーは管理者による更新が必要です"
 title = "ソフトウェア更新"
+updateBehavior = "Update behavior"
+updateBehaviorDescription = "Choose whether to prompt before installing updates, install them automatically, or skip update checks entirely."
+updateBehaviorError = "Could not change update behavior"
+updateBehaviorErrorLocked = "This setting is locked by your administrator."
+updateBehaviorLockedDescription = "Your administrator has configured how Stirling-PDF handles updates on this machine. Contact them to change this."
+updateBehaviorSaved = "Update behavior saved."
 versionMismatch = "Warning: A mismatch has been detected between the client version and the AppConfig version. Using different versions can lead to compatibility issues, errors, and security risks. Please ensure that server and client are using the same version."
 viewDetails = "詳細を表示"
 
@@ -7695,6 +8043,7 @@ bulkTitle = "選択したファイルをアップロード"
 description = "現在のファイルをサーバーストレージにアップロードし、自分でアクセスできるようにします。"
 errorTitle = "アップロードに失敗しました"
 failure = "アップロードに失敗しました。ログイン情報とストレージ設定を確認してください。"
+featureDisabled = "Saving to the server isn't enabled on this server."
 fileCount = "{{count}} 件のファイルを選択中"
 fileLabel = "ファイル"
 hint = "公開リンクとアクセスモードはサーバー設定で制御されます。"
@@ -7826,6 +8175,12 @@ right = "右揃え"
 [theme]
 toggle = "テーマを切り替え"
 
+[time.relative]
+daysAgo = "{{count}}d ago"
+hoursAgo = "{{count}}h ago"
+justNow = "just now"
+minutesAgo = "{{count}}m ago"
+
 [timestampPdf]
 completed = "PDF のタイムスタンプに成功しました"
 desc = "信頼できる Time Stamp Authority (TSA) サーバーを使用して、PDF に RFC 3161 のドキュメントタイムスタンプを追加します。"
@@ -7868,13 +8223,18 @@ viewerMode = "複数ファイルを選択するにはファイルエディタに
 [toolPanel]
 allTools = "すべてのツール"
 alpha = "アルファ"
+backToAllTools = "Back to all tools"
+backToDefault = "Back"
 backToTools = "ツールに戻る"
 collapse = "パネルを折りたたむ"
 comingSoon = "近日公開:"
 expand = "パネルを展開"
+goBack = "Go back"
 placeholder = "ツールを選択して開始"
 premiumFeature = "プレミアム機能:"
 search = "ツールを検索"
+toolsHeader = "Tools"
+viewAllTools = "View all tools"
 
 [toolPanel.fullscreen]
 comingSoon = "近日公開:"
@@ -7951,29 +8311,41 @@ placeholder = "メインビューで PDF ファイルを選択して開始して
 title = "フォームのロック解除結果"
 
 [update]
+allReleases = "All Releases"
 availableUpdates = "利用可能な更新"
+breaking = "Breaking"
 breakingChanges = "互換性のない変更"
 breakingChangesDefault = "このバージョンには互換性のない変更が含まれます。"
 breakingChangesDetected = "互換性のない変更を検出"
 breakingChangesMessage = "一部のバージョンには互換性のない変更が含まれます。更新前に以下の移行ガイドを確認してください。"
 close = "閉じる"
 current = "現在のバージョン"
+defaultRecommendation = "This update contains important fixes and improvements."
 downloadLatest = "最新をダウンロード"
+later = "Later"
 latest = "最新バージョン"
 latestStable = "最新の安定版"
 loadingDetailedInfo = "詳細情報を読み込み中..."
 migrationGuide = "移行ガイド"
 migrationGuides = "移行ガイド"
+migrationGuidesDesc = "Review important changes before updating."
+modalSubtitle = "A new version of Stirling PDF is ready to install."
 modalTitle = "更新があります"
+notes = "Notes"
 priorityLabel = "優先度"
 recommendedAction = "推奨アクション"
 releaseNotes = "リリースノート"
+showLess = "Show fewer versions"
+showMore = "Show all {{count}} versions"
+stable = "STABLE"
 unableToLoadDetails = "詳細情報を読み込めません。"
 updateAvailable = "更新があります"
 urgentUpdateAvailable = "緊急の更新"
 version = "バージョン"
+versionHistory = "Version History"
 viewAllReleases = "すべてのリリースを見る"
 viewGuide = "ガイドを見る"
+whatsNewIn = "What's new in"
 
 [update.priority]
 low = "低"
