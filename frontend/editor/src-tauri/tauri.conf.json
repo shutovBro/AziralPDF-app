@@ -24,7 +24,7 @@
   "bundle": {
     "active": true,
     "createUpdaterArtifacts": true,
-    "publisher": "Stirling PDF Inc.",
+    "publisher": "AziralPDF Inc.",
     "targets": ["deb", "rpm", "appimage", "dmg", "app", "msi"],
     "icon": [
       "icons/icon.png",

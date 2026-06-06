@@ -373,7 +373,7 @@ public class SigningFinalizationService {
                     cs.beginText();
                     cs.setFont(fontBold, 13);
                     cs.newLineAtOffset(logoX, PAGE_H - 28);
-                    cs.showText("Stirling PDF");
+                    cs.showText("AziralPDF");
                     cs.endText();
                 }
 

@@ -1402,7 +1402,7 @@ description = "启用后，仅列出的用户 ID 可使用该机器人。"
 label = "仅允许特定用户 ID"
 
 [admin.settings.telegram.enabled]
-description = "允许用户通过您配置的 Telegram 机器人与 Stirling PDF 交互。"
+description = "允许用户通过您配置的 Telegram 机器人与 AziralPDF 交互。"
 label = "启用 Telegram 机器人"
 
 [admin.settings.telegram.feedback]
@@ -1479,7 +1479,7 @@ settingsOverview = "这是 <strong>设置面板</strong>。管理员设置按类
 systemCustomization = "我们有多种方式自定义 UI：<strong>系统设置</strong> 可更改应用名称和语言，<strong>功能</strong> 可进行服务器证书管理，<strong>端点</strong> 可为您的用户启用或禁用特定工具。"
 teamsAndUsers = "在这里管理 <strong>团队</strong> 和单个用户。您可以通过邮件、可分享链接邀请新用户，或自行创建自定义账户。"
 welcome = "欢迎使用 <strong>管理员导览</strong>！让我们一起探索提供给系统管理员的强大企业功能和设置。"
-wrapUp = "管理员导览结束！您已看到让 Stirling PDF 成为组织强大且可定制解决方案的企业功能。可随时从 <strong>帮助</strong> 菜单访问此导览。"
+wrapUp = "管理员导览结束！您已看到让 AziralPDF 成为组织强大且可定制解决方案的企业功能。可随时从 <strong>帮助</strong> 菜单访问此导览。"
 
 [adminUserSettings]
 actions = "བྱ་སྤྱོད།"
@@ -1516,11 +1516,11 @@ webOnlyUser = "དྲ་ཚིགས་ཁོ་ནའི་སྤྱོད་�
 disable = "དཔྱད་ཞིབ་སྤྱོད་མཚམས་འཇོག"
 enable = "དཔྱད་ཞིབ་སྤྱོད་འགོ་འཛུགས།"
 learnMore = "了解更多"
-paragraph1 = "Stirling PDF ལ་ཐོན་རྫས་ལེགས་སུ་གཏོང་བར་རོགས་རམ་བྱེད་པའི་གདམ་ག་ཡོད་པའི་དཔྱད་ཞིབ་ཡོད། ང་ཚོས་སྒེར་གྱི་ཆ་འཕྲིན་དང་ཡིག་ཆའི་ནང་དོན་གང་ཡང་རྗེས་འདེད་མི་བྱེད།"
+paragraph1 = "AziralPDF ལ་ཐོན་རྫས་ལེགས་སུ་གཏོང་བར་རོགས་རམ་བྱེད་པའི་གདམ་ག་ཡོད་པའི་དཔྱད་ཞིབ་ཡོད། ང་ཚོས་སྒེར་གྱི་ཆ་འཕྲིན་དང་ཡིག་ཆའི་ནང་དོན་གང་ཡང་རྗེས་འདེད་མི་བྱེད།"
 paragraph2 = "Stirling-PDF འཕེལ་རྒྱས་དང་ང་ཚོའི་སྤྱོད་མཁན་ལེགས་པོར་རྟོགས་པར་རོགས་རམ་བྱེད་པའི་ཆེད་དུ་དཔྱད་ཞིབ་སྤྱོད་འགོ་འཛུགས་རོགས།"
 privacyAssurance = "我们不会跟踪任何个人信息或文件内容。"
 settings = "དཔྱད་ཞིབ་ཀྱི་སྒྲིག་འགོད་ config/settings.yml ཡིག་ཆའི་ནང་བསྒྱུར་བཅོས་བྱེད་ཆོག"
-title = "ཁྱེད་ཀྱིས་ Stirling PDF ལེགས་སུ་གཏོང་འདོད་དམ།"
+title = "ཁྱེད་ཀྱིས་ AziralPDF ལེགས་སུ་གཏོང་འདོད་དམ།"
 
 [annotation]
 annotationStyle = "批注样式"
@@ -1932,7 +1932,7 @@ title = "PDF རང་འགུལ་ཁ་གྱེས།"
 [autoSplitPDF.selectText]
 1 = "གཤམ་ནས་བར་མཚམས་ཤོག་བུ་འགའ་པར་འདེབས་བྱེད། (ནག་དཀར་ཡིན་ནའང་འགྲིག)"
 2 = "ཡིག་ཆ་ཚང་མའི་བར་དུ་བར་མཚམས་ཤོག་བུ་བཅུག་ནས་ཐེངས་གཅིག་ལ་བཤེར་འབེབས་བྱེད།"
-3 = "བཤེར་འབེབས་བྱས་པའི་ PDF ཡིག་ཆ་ཆེན་པོ་གཅིག་ཡར་འཇོག་བྱས་ནས་ Stirling PDF ལ་ལྷག་མ་བྱེད་དུ་འཇུག"
+3 = "བཤེར་འབེབས་བྱས་པའི་ PDF ཡིག་ཆ་ཆེན་པོ་གཅིག་ཡར་འཇོག་བྱས་ནས་ AziralPDF ལ་ལྷག་མ་བྱེད་དུ་འཇུག"
 4 = "བར་མཚམས་ཤོག་ངོས་རྣམས་རང་འགུལ་གྱིས་ངོས་འཛིན་དང་སུབ་པ་བྱས་ནས་མཐའ་མའི་ཡིག་ཆ་གཙང་མ་ཞིག་ངེས་པར་དུ་ཐོབ་ཐུབ།"
 
 [backendHealth]
@@ -3015,14 +3015,14 @@ chartAriaLabel = "额度使用：包含 {{includedUsed}} / {{includedTotal}}，�
 copyKeyAriaLabel = "复制 API 密钥"
 creditsRemaining = "剩余点数"
 description = "用于访问 Stirling 的一套 PDF 工具的 API 密钥。复制到您的项目，或刷新以生成新的密钥。"
-docsDescription = "了解如何集成 Stirling PDF："
+docsDescription = "了解如何集成 AziralPDF："
 docsLink = "API 文档"
 docsTitle = "API 文档"
 generateError = "我们未能生成您的 API 密钥。"
 goToAccount = "前往账户"
 guestInfo = "访客用户不会获得 API 密钥。创建账户即可在您的应用中使用 API 密钥。"
 includedCredits = "包含额度"
-intro = "使用您的 API 密钥以编程方式访问 Stirling PDF 的处理能力。"
+intro = "使用您的 API 密钥以编程方式访问 AziralPDF 的处理能力。"
 label = "API 密钥"
 lastApiUse = "上次 API 使用"
 nextReset = "下次重置"
@@ -3196,7 +3196,7 @@ showPreferencesBtn = "管理偏好"
 title = "我们如何使用 Cookies"
 
 [cookieBanner.popUp.description]
-1 = "我们使用 cookies 和其他技术，让 Stirling PDF 为你更好地工作——帮助我们改进工具，并持续构建你会喜欢的功能。"
+1 = "我们使用 cookies 和其他技术，让 AziralPDF 为你更好地工作——帮助我们改进工具，并持续构建你会喜欢的功能。"
 2 = "If you’d rather not, clicking 'No Thanks' will only enable the essential cookies needed to keep things running smoothly."
 
 [cookieBanner.preferencesModal]
@@ -3209,12 +3209,12 @@ subtitle = "Cookie 使用"
 title = "同意偏好中心"
 
 [cookieBanner.preferencesModal.analytics]
-description = "这些 cookies 帮助我们了解我们的工具是如何被使用的，从而让我们专注于构建社区最看重的功能。请放心——Stirling PDF 不能且绝不会跟踪你处理的文档内容。"
+description = "这些 cookies 帮助我们了解我们的工具是如何被使用的，从而让我们专注于构建社区最看重的功能。请放心——AziralPDF 不能且绝不会跟踪你处理的文档内容。"
 title = "分析"
 
 [cookieBanner.preferencesModal.description]
-1 = "Stirling PDF 使用 cookies 和类似技术来提升你的体验，并了解我们的工具如何被使用。这有助于我们改进性能、开发你关心的功能，并为用户提供持续支持。"
-2 = "Stirling PDF 不能——也绝不会——跟踪或访问你使用的文档内容。"
+1 = "AziralPDF 使用 cookies 和类似技术来提升你的体验，并了解我们的工具如何被使用。这有助于我们改进性能、开发你关心的功能，并为用户提供持续支持。"
+2 = "AziralPDF 不能——也绝不会——跟踪或访问你使用的文档内容。"
 3 = "你的隐私与信任是我们工作的核心。"
 
 [cookieBanner.preferencesModal.necessary]
@@ -3383,7 +3383,7 @@ unexpectedError = "处理文件时出错。请重试。"
 [defaultApp]
 description = "稍后可在系统设置中更改。"
 dismiss = "忽略"
-message = "是否将 Stirling PDF 设为默认 PDF 编辑器？"
+message = "是否将 AziralPDF 设为默认 PDF 编辑器？"
 notNow = "暂不"
 setDefault = "设为默认"
 title = "设为默认 PDF 应用"
@@ -3393,15 +3393,15 @@ message = "设置默认 PDF 处理程序失败"
 title = "错误"
 
 [defaultApp.prompt]
-message = "将 Stirling PDF 设为打开 PDF 的默认应用。"
+message = "将 AziralPDF 设为打开 PDF 的默认应用。"
 title = "设为默认 PDF 编辑器"
 
 [defaultApp.settingsOpened]
-message = "请在系统设置中选择 Stirling PDF"
+message = "请在系统设置中选择 AziralPDF"
 title = "已打开设置"
 
 [defaultApp.success]
-message = "Stirling PDF 已设为您的默认 PDF 编辑器"
+message = "AziralPDF 已设为您的默认 PDF 编辑器"
 title = "已设为默认应用"
 
 [editTableOfContents]
@@ -3543,9 +3543,9 @@ visitsTooltip = "访问：{0}（占总数的 {1}%）"
 
 [enterpriseEdition]
 button = "ཆེད་ལས་པའི་རིམ་པར་རྒྱག"
-ssoAdvert = "སྤྱོད་མཁན་དོ་དམ་ནུས་པ་མང་བ་དགོས་སམ། Stirling PDF Pro ལ་ལྟ་རོགས།"
+ssoAdvert = "སྤྱོད་མཁན་དོ་དམ་ནུས་པ་མང་བ་དགོས་སམ། AziralPDF Pro ལ་ལྟ་རོགས།"
 warning = "ནུས་པ་འདི་ཆེད་ལས་པའི་སྤྱོད་མཁན་ཁོ་ནར་སྤྱོད་ཆོག"
-yamlAdvert = "Stirling PDF Pro ཡིས་ YAML སྒྲིག་འགོད་ཡིག་ཆ་དང་ SSO ནུས་པ་གཞན་དག་ལ་རྒྱབ་སྐྱོར་བྱེད།"
+yamlAdvert = "AziralPDF Pro ཡིས་ YAML སྒྲིག་འགོད་ཡིག་ཆ་དང་ SSO ནུས་པ་གཞན་དག་ལ་རྒྱབ་སྐྱོར་བྱེད།"
 
 [error]
 _value = "ནོར་འཁྲུལ།"
@@ -4021,7 +4021,7 @@ invisible = "不可见（仅元数据）"
 location = "位置："
 logo = "徽标："
 logoHidden = "无徽标"
-logoShown = "已显示 Stirling PDF 徽标"
+logoShown = "已显示 AziralPDF 徽标"
 participantCount = "{{count}} 名参与者将按顺序签署"
 participants = "参与者"
 reason = "理由："
@@ -4073,7 +4073,7 @@ title = "顺序签署"
 dismiss = "关闭横幅"
 message = "创建免费账户以保存你的工作、访问更多功能，并支持该项目。"
 signUp = "免费注册"
-title = "你正在以访客身份使用 Stirling PDF！"
+title = "你正在以访客身份使用 AziralPDF！"
 
 [home]
 alphabetical = "按字母"
@@ -4247,7 +4247,7 @@ tags = "合并,组合,联合"
 title = "སྡེབ་སྦྱོར།"
 
 [home.mobile]
-brandAlt = "Stirling PDF 标志"
+brandAlt = "AziralPDF 标志"
 openFiles = "打开文件"
 swipeHint = "左右滑动以切换视图"
 tools = "工具"
@@ -4287,7 +4287,7 @@ tags = "组织,重新排列,重新排序"
 title = "གོ་སྒྲིག"
 
 [home.pdfTextEditor]
-desc = "审阅并编辑 Stirling PDF 的 JSON 导出，支持分组文本编辑与 PDF 再生成"
+desc = "审阅并编辑 AziralPDF 的 JSON 导出，支持分组文本编辑与 PDF 再生成"
 tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
 title = "PDF 文本编辑器"
 
@@ -4493,14 +4493,14 @@ passwordTooShort = "密码至少为 6 个字符"
 signIn = "登录"
 validating = "正在验证邀请..."
 validationError = "验证邀请链接失败"
-welcome = "欢迎使用 Stirling PDF"
+welcome = "欢迎使用 AziralPDF"
 welcomeSubtitle = "完成账户设置即可开始使用"
 welcomeTitle = "您已收到邀请！"
 
 [landing]
 addFiles = "添加文件"
 heroSubtitle = "拖入或添加现有 PDF 以开始。"
-heroTitle = "Stirling PDF"
+heroTitle = "AziralPDF"
 mobileUpload = "从手机上传"
 openFromComputer = "从电脑打开"
 uploadFromComputer = "从电脑上传"
@@ -4602,7 +4602,7 @@ signinTitle = "ནང་འཛུལ་གནང་རོགས།"
 signInWith = "使用以下方式登录"
 signOut = "退出"
 ssoSignIn = "གཅིག་གྱུར་ནང་འཛུལ་བརྒྱུད་ནས་ནང་འཛུལ།"
-subtitle = "重新登录 Stirling PDF"
+subtitle = "重新登录 AziralPDF"
 title = "�ང་འཛུལ།"
 toManySessions = "ཁྱེད་ལ་འཛུལ་ཞུགས་བྱས་པའི་གནས་སྐབས་མང་དྲགས་འདུག"
 unexpectedError = "意外错误：{{message}}"
@@ -4621,7 +4621,7 @@ subtitle = "十余种工具助您涂黑、签名、阅读与处理 PDF，满足�
 title = "编辑 PDF 以展示或保护您想要的信息"
 
 [login.slides.overview]
-alt = "Stirling PDF 概览"
+alt = "AziralPDF 概览"
 subtitle = "以隐私为先的 PDF 云套件，支持转换、签名、涂黑和管理文档，并提供 50+ 款强大工具。"
 title = "满足您所有 PDF 需求的一站式工具。"
 
@@ -4787,7 +4787,7 @@ message = "认证未成功。您可以关闭此窗口并重试。"
 title = "认证失败"
 
 [oauth.success]
-message = "您可以关闭此窗口并返回 Stirling PDF。"
+message = "您可以关闭此窗口并返回 AziralPDF。"
 title = "认证成功"
 
 [ocr]
@@ -4911,7 +4911,7 @@ runButton = "配置好工具后，此按钮允许您对所有选中的 PDF 运�
 selectControls = "<strong>右侧栏</strong> 包含用于快速选中/取消选中所有活动 PDF 的按钮，以及用于更改应用主题或语言的按钮。"
 selectCropTool = "让我们选择 <strong>裁剪</strong> 工具来演示如何使用其中一个工具。"
 startTour = "开始导览"
-startTourDescription = "带您了解 Stirling PDF 的关键功能"
+startTourDescription = "带您了解 AziralPDF 的关键功能"
 toolInterface = "这是 <strong>裁剪</strong> 工具界面。如您所见，因为我们还没有添加任何要处理的 PDF 文件，所以这里内容不多。"
 viewer = "<strong>查看器</strong> 让您阅读并注释您的 PDF。"
 viewSwitcher = "使用这些控件选择您希望查看 PDF 的方式。"
@@ -4934,7 +4934,7 @@ titleWithOs = "适用于 {{osLabel}} 的下载"
 [onboarding.freeTrial]
 afterTrialWithoutPayment = "试用结束后，您将继续使用我们的免费版。添加付款方式以保留 Pro 访问权限。"
 afterTrialWithPayment = "试用结束后将自动开始您的 Pro 订阅。"
-body = "试用期间，您可完整使用 Stirling PDF Pro 功能，包括不限次转换、更大文件大小与优先处理。"
+body = "试用期间，您可完整使用 AziralPDF Pro 功能，包括不限次转换、更大文件大小与优先处理。"
 daysRemaining = "剩余 {{days}} 天"
 daysRemainingSingular = "剩余 {{days}} 天"
 title = "您的 30 天 Pro 试用"
@@ -4960,7 +4960,7 @@ skip = "暂时跳过"
 upgrade = "立即升级 →"
 
 [onboarding.tourOverview]
-body = "Stirling PDF V2 提供数十种工具和焕新的布局。快速导览可帮助您了解变化以及如何找到所需功能。"
+body = "AziralPDF V2 提供数十种工具和焕新的布局。快速导览可帮助您了解变化以及如何找到所需功能。"
 title = "导览概述"
 
 [onboarding.welcomeModal]
@@ -4969,10 +4969,10 @@ dontShowAgain = "不再提示"
 helpHint = "您随时可以通过左下角的 <strong>帮助</strong> 按钮再次访问此导览"
 maybeLater = "稍后再说"
 startTour = "开始导览"
-title = "欢迎使用 Stirling PDF！"
+title = "欢迎使用 AziralPDF！"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF 现已适用于各类规模的团队。本次更新包含全新布局、更强大的管理员能力，以及呼声最高的功能 - <strong>编辑文本</strong>。"
+body = "AziralPDF 现已适用于各类规模的团队。本次更新包含全新布局、更强大的管理员能力，以及呼声最高的功能 - <strong>编辑文本</strong>。"
 title = "欢迎使用 Stirling"
 
 [onboarding.whatsNew]
@@ -5794,7 +5794,7 @@ included = "已包含"
 name = "免费"
 
 [plan.licenseWarning]
-body = "您有 {{total}} 名用户，但免费层每台服务器仅支持 {{limit}} 名。升级以保持 Stirling PDF 平稳运行。"
+body = "您有 {{total}} 名用户，但免费层每台服务器仅支持 {{limit}} 名。升级以保持 AziralPDF 平稳运行。"
 cta = "查看方案"
 overLimit = "超过 {{limit}}"
 title = "自托管免费额度已达上限"
@@ -6806,7 +6806,7 @@ autoUnzipFileLimitDescription = "从 ZIP 中提取的最大文件数"
 autoUnzipFileLimitTooltip = "仅当 ZIP 含有不超过此数量的文件时才解压。增大该值可提取更大的 ZIP。"
 autoUnzipTooltip = "自动解压 API 操作返回的 ZIP 文件。禁用后将保持 ZIP 文件原样。这不影响自动化工作流。"
 defaultPdfEditor = "默认 PDF 编辑器"
-defaultPdfEditorActive = "Stirling PDF 是您的默认 PDF 编辑器"
+defaultPdfEditorActive = "AziralPDF 是您的默认 PDF 编辑器"
 defaultPdfEditorChecking = "正在检查..."
 defaultPdfEditorInactive = "已由其他应用设为默认"
 defaultPdfEditorSet = "已是默认"
@@ -7023,13 +7023,13 @@ teams = "团队"
 title = "工作区"
 
 [setup]
-description = "选择您希望使用 Stirling PDF 的方式开始"
-welcome = "欢迎使用 Stirling PDF"
+description = "选择您希望使用 AziralPDF 的方式开始"
+welcome = "欢迎使用 AziralPDF"
 
 [setup.login]
 connectingTo = "正在连接："
 hideInstructions = "隐藏说明"
-instructions = "在您的 Stirling PDF 服务器上启用登录功能："
+instructions = "在您的 AziralPDF 服务器上启用登录功能："
 instructionsEnvVar = "设置环境变量："
 instructionsOrYml = "或在 settings.yml 中："
 instructionsRestart = "然后重启服务器以使更改生效。"
@@ -7067,7 +7067,7 @@ description = "使用 Stirling 账户登录"
 title = "Stirling Cloud"
 
 [setup.mode.selfhosted]
-description = "连接到您自己的 Stirling PDF 服务器"
+description = "连接到您自己的 AziralPDF 服务器"
 title = "自托管服务器"
 
 [setup.saas]
@@ -7111,11 +7111,11 @@ step3 = "重启服务器"
 title = "未启用登录"
 
 [setup.server.type]
-saas = "Stirling PDF SaaS"
+saas = "AziralPDF SaaS"
 selfhosted = "自托管服务器"
 
 [setup.server.url]
-description = "输入自托管 Stirling PDF 服务器的完整 URL"
+description = "输入自托管 AziralPDF 服务器的完整 URL"
 label = "服务器 URL"
 
 [setup.step1]
@@ -7340,7 +7340,7 @@ passwordsDoNotMatch = "两次输入的密码不一致"
 passwordTooShort = "密码长度至少为 6 个字符"
 pleaseFillAllFields = "请填写所有字段"
 signUp = "注册"
-subtitle = "加入 Stirling PDF 开始使用"
+subtitle = "加入 AziralPDF 开始使用"
 title = "创建账号"
 unexpectedError = "意外错误：{{message}}"
 useEmailInstead = "改用邮箱"
@@ -7627,7 +7627,7 @@ download = "下载"
 downloaded = "已下载"
 downloadFailed = "无法下载此文件。"
 downloadsCount = "下载次数：{{count}}"
-emailWarningBody = "这看起来像一个电子邮箱地址。若此人尚未成为 Stirling PDF 用户，将无法访问该文件。"
+emailWarningBody = "这看起来像一个电子邮箱地址。若此人尚未成为 AziralPDF 用户，将无法访问该文件。"
 emailWarningConfirm = "仍要共享"
 emailWarningTitle = "电子邮箱地址"
 errorTitle = "共享失败"
@@ -7657,7 +7657,7 @@ manageTitle = "管理共享"
 noActivity = "暂无活动。"
 noLinks = "暂无有效的共享链接。"
 noSharedUsers = "暂无用户拥有访问权限。"
-openInApp = "在 Stirling PDF 中打开"
+openInApp = "在 AziralPDF 中打开"
 ownerLabel = "所有者"
 ownerOnly = "只有所有者可以管理共享。"
 ownerUnknown = "未知"
@@ -7728,18 +7728,18 @@ please = "Stirling-PDF ཡི་མ་འོངས་པའི་ཐད་ལ་
 title = "Stirling-PDF བསམ་ཞིབ།"
 
 [survey.meeting]
-1 = "如果您在工作中使用 Stirling PDF，我们非常希望与您交流。我们提供技术支持会议，换取您 15 分钟的用户调研时间。"
+1 = "如果您在工作中使用 AziralPDF，我们非常希望与您交流。我们提供技术支持会议，换取您 15 分钟的用户调研时间。"
 2 = "这将是一个机会："
 3 = "获取有关部署、集成或故障排除的帮助"
 4 = "直接反馈性能、边界情况和功能缺口"
-5 = "帮助我们让 Stirling PDF 更贴合真实企业场景"
+5 = "帮助我们让 AziralPDF 更贴合真实企业场景"
 6 = "如果您有兴趣，可以直接预约与我们团队会谈。（仅支持英语）"
-7 = "期待了解您的用例，让 Stirling PDF 更上一层楼！"
+7 = "期待了解您的用例，让 AziralPDF 更上一层楼！"
 button = "预约会议"
 notInterested = "不是企业用户或对会议不感兴趣？"
 
 [swagger]
-desc = "查看并测试 Stirling PDF 的 API 端点"
+desc = "查看并测试 AziralPDF 的 API 端点"
 header = "API 文档"
 tags = "api,文档,swagger,端点,开发"
 title = "API 文档"
@@ -7892,7 +7892,7 @@ unfavorite = "从收藏中移除"
 [toolPanel.modePrompt]
 chooseFullscreen = "使用全屏模式"
 chooseSidebar = "使用侧边栏模式"
-description = "预览两种布局，决定如何探索 Stirling PDF 的工具。"
+description = "预览两种布局，决定如何探索 AziralPDF 的工具。"
 dismiss = "以后再说"
 fullscreenDescription = "在覆盖工作区的目录中浏览全部工具，直到选择其一。"
 fullscreenTitle = "全屏模式（旧版）"
@@ -7986,7 +7986,7 @@ attentionBody = "管理员需要登录以查看更多信息。请立即联系他
 attentionBodyAdmin = "查看许可要求以保持此服务器合规。"
 attentionTitle = "此服务器需要管理员关注"
 dismiss = "关闭横幅"
-message = "充分利用 Stirling PDF，享受无限用户与高级功能"
+message = "充分利用 AziralPDF，享受无限用户与高级功能"
 seeInfo = "查看信息"
 title = "升级到服务器方案"
 upgradeButton = "立即升级"
@@ -8108,7 +8108,7 @@ continued = "续"
 downloads = "下载"
 entryLabel = "签名摘要"
 filesEvaluated = "{{count}} 个文件已评估"
-footer = "通过 Stirling PDF 验证"
+footer = "通过 AziralPDF 验证"
 generatedAt = "生成时间"
 noPdf = "成功验证后将提供 PDF 报告。"
 page = "页面"

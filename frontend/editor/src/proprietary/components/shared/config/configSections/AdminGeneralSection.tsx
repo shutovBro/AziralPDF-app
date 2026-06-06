@@ -476,7 +476,7 @@ export default function AdminGeneralSection() {
                     ui: { ...settings.ui, appNameNavbar: e.target.value },
                   })
                 }
-                placeholder="Stirling PDF"
+                placeholder="AziralPDF"
                 disabled={!loginEnabled}
               />
             </div>

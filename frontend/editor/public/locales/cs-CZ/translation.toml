@@ -1402,7 +1402,7 @@ description = "Pokud je zapnuto, bota mohou používat pouze uvedená ID uživat
 label = "Povolit konkrétní ID uživatelů"
 
 [admin.settings.telegram.enabled]
-description = "Umožněte uživatelům pracovat se Stirling PDF prostřednictvím vámi nastaveného Telegram bota."
+description = "Umožněte uživatelům pracovat se AziralPDF prostřednictvím vámi nastaveného Telegram bota."
 label = "Povolit Telegram bota"
 
 [admin.settings.telegram.feedback]
@@ -1479,7 +1479,7 @@ settingsOverview = "Toto je <strong>Panel nastavení</strong>. Administrátorsk�
 systemCustomization = "Nabízíme rozsáhlé možnosti přizpůsobení UI: <strong>Systémová nastavení</strong> umožňují změnit název aplikace a jazyky, <strong>Funkce</strong> umožňují správu serverových certifikátů a <strong>Koncové body</strong> umožňují povolit či zakázat konkrétní nástroje pro vaše uživatele."
 teamsAndUsers = "Zde spravujte <strong>Týmy</strong> a jednotlivé uživatele. Můžete zvát nové uživatele e‑mailem, sdílenými odkazy nebo jim sami vytvářet vlastní účty."
 welcome = "Vítejte v <strong>Prohlídce pro administrátory</strong>! Prozkoumejme výkonné podnikové funkce a nastavení dostupné správcům systému."
-wrapUp = "To je vše z admin prohlídky! Viděli jste podnikové funkce, které dělají ze Stirling PDF výkonné, přizpůsobitelné řešení pro organizace. Prohlídku najdete kdykoli v nabídce <strong>Nápověda</strong>."
+wrapUp = "To je vše z admin prohlídky! Viděli jste podnikové funkce, které dělají ze AziralPDF výkonné, přizpůsobitelné řešení pro organizace. Prohlídku najdete kdykoli v nabídce <strong>Nápověda</strong>."
 
 [adminUserSettings]
 actions = "Akce"
@@ -1516,11 +1516,11 @@ webOnlyUser = "Pouze webový uživatel"
 disable = "Zakázat analytiku"
 enable = "Povolit analytiku"
 learnMore = "Více informací"
-paragraph1 = "Stirling PDF nabízí volitelnou analytiku, která nám pomáhá zlepšovat produkt. Nesledujeme žádné osobní údaje ani obsah souborů."
+paragraph1 = "AziralPDF nabízí volitelnou analytiku, která nám pomáhá zlepšovat produkt. Nesledujeme žádné osobní údaje ani obsah souborů."
 paragraph2 = "Zvažte prosím povolení analytiky, abyste pomohli růstu Stirling-PDF a umožnili nám lépe porozumět našim uživatelům."
 privacyAssurance = "Nesledujeme žádné osobní údaje ani obsah vašich souborů."
 settings = "Nastavení analytiky můžete změnit v souboru config/settings.yml"
-title = "Chcete pomoci vylepšit Stirling PDF?"
+title = "Chcete pomoci vylepšit AziralPDF?"
 
 [annotation]
 annotationStyle = "Styl anotace"
@@ -1932,7 +1932,7 @@ title = "Automatické rozdělení PDF"
 [autoSplitPDF.selectText]
 1 = "Vytiskněte některé oddělovací listy z níže uvedených (černobílé je v pořádku)."
 2 = "Naskenujte všechny své dokumenty najednou vložením oddělovacího listu mezi ně."
-3 = "Nahrajte jediný velký naskenovaný PDF soubor a nechte Stirling PDF udělat zbytek."
+3 = "Nahrajte jediný velký naskenovaný PDF soubor a nechte AziralPDF udělat zbytek."
 4 = "Oddělovací stránky jsou automaticky detekovány a odstraněny, což zaručuje čistý finální dokument."
 
 [backendHealth]
@@ -3015,14 +3015,14 @@ chartAriaLabel = "Využití kreditů: zahrnuto {{includedUsed}} z {{includedTota
 copyKeyAriaLabel = "Kopírovat API klíč"
 creditsRemaining = "Zbývající kredity"
 description = "Váš API klíč pro přístup k sadě PDF nástrojů Stirlingu. Zkopírujte si ho do projektu nebo obnovte pro vygenerování nového."
-docsDescription = "Zjistěte více o integraci se Stirling PDF:"
+docsDescription = "Zjistěte více o integraci se AziralPDF:"
 docsLink = "API dokumentace"
 docsTitle = "API dokumentace"
 generateError = "Nepodařilo se vygenerovat váš API klíč."
 goToAccount = "Přejít do účtu"
 guestInfo = "Hosté nedostávají API klíče. Vytvořte si účet a získejte API klíč, který můžete používat ve svých aplikacích."
 includedCredits = "Zahrnuté kredity"
-intro = "Pomocí svého API klíče můžete programově využívat zpracování Stirling PDF."
+intro = "Pomocí svého API klíče můžete programově využívat zpracování AziralPDF."
 label = "API klíč"
 lastApiUse = "Poslední použití API"
 nextReset = "Další reset"
@@ -3196,7 +3196,7 @@ showPreferencesBtn = "Spravovat předvolby"
 title = "Jak používáme soubory cookie"
 
 [cookieBanner.popUp.description]
-1 = "Používáme soubory cookie a další technologie, aby Stirling PDF fungoval lépe pro vás—pomáhají nám zlepšovat naše nástroje a dál přinášet funkce, které si zamilujete."
+1 = "Používáme soubory cookie a další technologie, aby AziralPDF fungoval lépe pro vás—pomáhají nám zlepšovat naše nástroje a dál přinášet funkce, které si zamilujete."
 2 = "If you’d rather not, clicking 'No Thanks' will only enable the essential cookies needed to keep things running smoothly."
 
 [cookieBanner.preferencesModal]
@@ -3209,12 +3209,12 @@ subtitle = "Použití cookies"
 title = "Centrum správy souhlasu"
 
 [cookieBanner.preferencesModal.analytics]
-description = "Tyto soubory cookie nám pomáhají pochopit, jak jsou naše nástroje používány, abychom se mohli soustředit na budování funkcí, kterých si naše komunita nejvíce cení. Buďte bez obav—Stirling PDF nemůže a nikdy nebude sledovat obsah dokumentů, se kterými pracujete."
+description = "Tyto soubory cookie nám pomáhají pochopit, jak jsou naše nástroje používány, abychom se mohli soustředit na budování funkcí, kterých si naše komunita nejvíce cení. Buďte bez obav—AziralPDF nemůže a nikdy nebude sledovat obsah dokumentů, se kterými pracujete."
 title = "Analytika"
 
 [cookieBanner.preferencesModal.description]
-1 = "Stirling PDF používá soubory cookie a podobné technologie ke zlepšení vašeho prostředí a pochopení, jak jsou naše nástroje používány. To nám pomáhá zlepšovat výkon, vyvíjet funkce, na kterých vám záleží, a poskytovat našim uživatelům průběžnou podporu."
-2 = "Stirling PDF nemůže—a nikdy nebude—sledovat ani přistupovat k obsahu dokumentů, které používáte."
+1 = "AziralPDF používá soubory cookie a podobné technologie ke zlepšení vašeho prostředí a pochopení, jak jsou naše nástroje používány. To nám pomáhá zlepšovat výkon, vyvíjet funkce, na kterých vám záleží, a poskytovat našim uživatelům průběžnou podporu."
+2 = "AziralPDF nemůže—a nikdy nebude—sledovat ani přistupovat k obsahu dokumentů, které používáte."
 3 = "Vaše soukromí a důvěra jsou středobodem toho, co děláme."
 
 [cookieBanner.preferencesModal.necessary]
@@ -3383,7 +3383,7 @@ unexpectedError = "Při zpracování souboru došlo k chybě. Zkuste to prosím 
 [defaultApp]
 description = "Později to můžete změnit v nastavení systému."
 dismiss = "Zavřít"
-message = "Chcete nastavit Stirling PDF jako výchozí editor PDF?"
+message = "Chcete nastavit AziralPDF jako výchozí editor PDF?"
 notNow = "Teď ne"
 setDefault = "Nastavit jako výchozí"
 title = "Nastavit jako výchozí aplikaci pro PDF"
@@ -3393,15 +3393,15 @@ message = "Nepodařilo se nastavit výchozí aplikaci pro PDF"
 title = "Chyba"
 
 [defaultApp.prompt]
-message = "Nastavte Stirling PDF jako výchozí aplikaci pro otevírání souborů PDF."
+message = "Nastavte AziralPDF jako výchozí aplikaci pro otevírání souborů PDF."
 title = "Nastavit jako výchozí editor PDF"
 
 [defaultApp.settingsOpened]
-message = "Vyberte prosím v nastavení systému Stirling PDF"
+message = "Vyberte prosím v nastavení systému AziralPDF"
 title = "Otevřeno nastavení"
 
 [defaultApp.success]
-message = "Stirling PDF je nyní váš výchozí editor PDF"
+message = "AziralPDF je nyní váš výchozí editor PDF"
 title = "Výchozí aplikace nastavena"
 
 [editTableOfContents]
@@ -3543,9 +3543,9 @@ visitsTooltip = "Návštěvy: {0} ({1}% z celku)"
 
 [enterpriseEdition]
 button = "Upgradovat na Pro"
-ssoAdvert = "Hledáte více funkcí pro správu uživatelů? Podívejte se na Stirling PDF Pro"
+ssoAdvert = "Hledáte více funkcí pro správu uživatelů? Podívejte se na AziralPDF Pro"
 warning = "Tato funkce je dostupná pouze pro uživatele Pro."
-yamlAdvert = "Stirling PDF Pro podporuje konfigurační soubory YAML a další funkce SSO."
+yamlAdvert = "AziralPDF Pro podporuje konfigurační soubory YAML a další funkce SSO."
 
 [error]
 _value = "Chyba"
@@ -4021,7 +4021,7 @@ invisible = "Neviditelné (pouze metadata)"
 location = "Místo:"
 logo = "Logo:"
 logoHidden = "Bez loga"
-logoShown = "Zobrazeno logo Stirling PDF"
+logoShown = "Zobrazeno logo AziralPDF"
 participantCount = "{{count}} účastník(ů) bude podepisovat v daném pořadí"
 participants = "Účastníci"
 reason = "Důvod:"
@@ -4073,7 +4073,7 @@ title = "Sekvenční podepisování"
 dismiss = "Skrýt banner"
 message = "Vytvořte si bezplatný účet, ukládejte svou práci, získejte více funkcí a podpořte projekt."
 signUp = "Zaregistrovat se zdarma"
-title = "Používáte Stirling PDF jako host!"
+title = "Používáte AziralPDF jako host!"
 
 [home]
 alphabetical = "Abecedně"
@@ -4247,7 +4247,7 @@ tags = "sloučit,spojit,sjednotit"
 title = "Sloučit"
 
 [home.mobile]
-brandAlt = "Logo Stirling PDF"
+brandAlt = "Logo AziralPDF"
 openFiles = "Otevřít soubory"
 swipeHint = "Přejeďte doleva nebo doprava pro přepnutí zobrazení"
 tools = "Nástroje"
@@ -4287,7 +4287,7 @@ tags = "uspořádat,přeuspořádat,přeřadit"
 title = "Uspořádat"
 
 [home.pdfTextEditor]
-desc = "Prohlížejte a upravujte exporty JSON ze Stirling PDF se skupinovými úpravami textu a regenerací PDF"
+desc = "Prohlížejte a upravujte exporty JSON ze AziralPDF se skupinovými úpravami textu a regenerací PDF"
 tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
 title = "Editor textu PDF"
 
@@ -4493,14 +4493,14 @@ passwordTooShort = "Heslo musí mít alespoň 6 znaků"
 signIn = "Přihlásit se"
 validating = "Ověřování pozvánky..."
 validationError = "Nepodařilo se ověřit pozvánkový odkaz"
-welcome = "Vítejte ve Stirling PDF"
+welcome = "Vítejte ve AziralPDF"
 welcomeSubtitle = "Dokončete nastavení účtu a začněte"
 welcomeTitle = "Byli jste pozváni!"
 
 [landing]
 addFiles = "Přidat soubory"
 heroSubtitle = "Pro začátek přetáhněte nebo přidejte existující PDF."
-heroTitle = "Stirling PDF"
+heroTitle = "AziralPDF"
 mobileUpload = "Nahrát z mobilu"
 openFromComputer = "Otevřít z počítače"
 uploadFromComputer = "Nahrát z počítače"
@@ -4602,7 +4602,7 @@ signinTitle = "Prosím přihlaste se"
 signInWith = "Přihlásit se pomocí"
 signOut = "Odhlásit se"
 ssoSignIn = "Přihlásit se přes Single Sign-on"
-subtitle = "Znovu se přihlaste do Stirling PDF"
+subtitle = "Znovu se přihlaste do AziralPDF"
 title = "Přihlášení"
 toManySessions = "Máte příliš mnoho aktivních relací"
 unexpectedError = "Neočekávaná chyba: {{message}}"
@@ -4621,7 +4621,7 @@ subtitle = "Více než desítka nástrojů pro začerňování, podepisování, 
 title = "Upravujte PDF pro zobrazení/ochranu požadovaných informací"
 
 [login.slides.overview]
-alt = "Přehled Stirling PDF"
+alt = "Přehled AziralPDF"
 subtitle = "Cloudová sada s důrazem na soukromí pro práci s PDF, která umožňuje konvertovat, podepisovat, začerňovat a spravovat dokumenty, a nabízí přes 50 dalších užitečných nástrojů."
 title = "Vše pro práci s PDF na jednom místě."
 
@@ -4787,7 +4787,7 @@ message = "Ověření nebylo úspěšné. Toto okno můžete zavřít a zkusit t
 title = "Ověření selhalo"
 
 [oauth.success]
-message = "Toto okno můžete zavřít a vrátit se do Stirling PDF."
+message = "Toto okno můžete zavřít a vrátit se do AziralPDF."
 title = "Ověření úspěšné"
 
 [ocr]
@@ -4911,7 +4911,7 @@ runButton = "Jakmile je nástroj nakonfigurován, tímto tlačítkem jej spustí
 selectControls = "<strong>Pravý panel</strong> obsahuje tlačítka pro rychlé výběr/odznačení všech aktivních PDF a tlačítka pro změnu motivu nebo jazyka aplikace."
 selectCropTool = "Vyberme nástroj <strong>Oříznout</strong>, abychom ukázali, jak nástroje používat."
 startTour = "Spustit prohlídku"
-startTourDescription = "Vydejte se na průvodce hlavními funkcemi Stirling PDF"
+startTourDescription = "Vydejte se na průvodce hlavními funkcemi AziralPDF"
 toolInterface = "Toto je rozhraní nástroje <strong>Oříznout</strong>. Jak vidíte, zatím tu toho moc není, protože jsme ještě nepřidali žádné PDF k úpravám."
 viewer = "<strong>Prohlížeč</strong> vám umožní číst a anotovat PDF."
 viewSwitcher = "Pomocí těchto ovládacích prvků vyberete způsob zobrazení PDF."
@@ -4934,7 +4934,7 @@ titleWithOs = "Stáhnout pro {{osLabel}}"
 [onboarding.freeTrial]
 afterTrialWithoutPayment = "Po skončení zkušebního období budete pokračovat v bezplatném tarifu. Přidejte platební metodu, abyste si zachovali přístup k Pro."
 afterTrialWithPayment = "Vaše předplatné Pro se automaticky spustí po skončení zkušebního období."
-body = "Během zkušebního období máte plný přístup k funkcím Stirling PDF Pro. Užijte si neomezené konverze, větší velikosti souborů a prioritní zpracování."
+body = "Během zkušebního období máte plný přístup k funkcím AziralPDF Pro. Užijte si neomezené konverze, větší velikosti souborů a prioritní zpracování."
 daysRemaining = "Zbývá {{days}} dní"
 daysRemainingSingular = "Zbývá {{days}} den"
 title = "Vaše 30denní zkušební verze Pro"
@@ -4960,7 +4960,7 @@ skip = "Zatím přeskočit"
 upgrade = "Upgradovat nyní →"
 
 [onboarding.tourOverview]
-body = "Stirling PDF V2 ships with dozens of tools and a refreshed layout. Take a quick tour to see what changed and where to find the features you need."
+body = "AziralPDF V2 ships with dozens of tools and a refreshed layout. Take a quick tour to see what changed and where to find the features you need."
 title = "Tour Overview"
 
 [onboarding.welcomeModal]
@@ -4969,10 +4969,10 @@ dontShowAgain = "Znovu nezobrazovat"
 helpHint = "K této prohlídce se můžete kdykoli vrátit přes tlačítko <strong>Nápověda</strong> vlevo dole."
 maybeLater = "Možná později"
 startTour = "Spustit prohlídku"
-title = "Vítejte ve Stirling PDF!"
+title = "Vítejte ve AziralPDF!"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF je nyní připraven pro týmy všech velikostí. Tato aktualizace přináší nové rozvržení, výkonné nové funkce pro správce a naši nejžádanější funkci – <strong>Úpravy textu</strong>."
+body = "AziralPDF je nyní připraven pro týmy všech velikostí. Tato aktualizace přináší nové rozvržení, výkonné nové funkce pro správce a naši nejžádanější funkci – <strong>Úpravy textu</strong>."
 title = "Vítejte ve Stirling"
 
 [onboarding.whatsNew]
@@ -5794,7 +5794,7 @@ included = "Zahrnuto"
 name = "Zdarma"
 
 [plan.licenseWarning]
-body = "Máte {{total}} uživatelů, ale bezplatná úroveň podporuje pouze {{limit}} na server. Upgradujte, aby Stirling PDF běžel hladce."
+body = "Máte {{total}} uživatelů, ale bezplatná úroveň podporuje pouze {{limit}} na server. Upgradujte, aby AziralPDF běžel hladce."
 cta = "Zobrazit plány"
 overLimit = "více než {{limit}}"
 title = "Dosažen limit bezplatné self-hosted verze"
@@ -6806,7 +6806,7 @@ autoUnzipFileLimitDescription = "Maximální počet souborů k extrahování ze 
 autoUnzipFileLimitTooltip = "Rozbalit pouze, pokud ZIP obsahuje tolik nebo méně souborů. Nastavte vyšší hodnotu pro rozbalení větších ZIP archivů."
 autoUnzipTooltip = "Automaticky extrahuje ZIP soubory vrácené z operací API. Vypněte pro zachování ZIP souborů. Toto neovlivňuje automatizační workflow."
 defaultPdfEditor = "Výchozí editor PDF"
-defaultPdfEditorActive = "Stirling PDF je váš výchozí editor PDF"
+defaultPdfEditorActive = "AziralPDF je váš výchozí editor PDF"
 defaultPdfEditorChecking = "Kontrola..."
 defaultPdfEditorInactive = "Jiná aplikace je nastavena jako výchozí"
 defaultPdfEditorSet = "Již výchozí"
@@ -7023,13 +7023,13 @@ teams = "Týmy"
 title = "Pracovní prostor"
 
 [setup]
-description = "Začněte výběrem způsobu používání Stirling PDF"
-welcome = "Vítejte ve Stirling PDF"
+description = "Začněte výběrem způsobu používání AziralPDF"
+welcome = "Vítejte ve AziralPDF"
 
 [setup.login]
 connectingTo = "Připojuji se k:"
 hideInstructions = "Skrýt pokyny"
-instructions = "Chcete-li povolit přihlášení na vašem serveru Stirling PDF:"
+instructions = "Chcete-li povolit přihlášení na vašem serveru AziralPDF:"
 instructionsEnvVar = "Nastavte proměnnou prostředí:"
 instructionsOrYml = "Nebo v settings.yml:"
 instructionsRestart = "Poté restartujte server, aby se změny projevily."
@@ -7067,7 +7067,7 @@ description = "Přihlaste se svým účtem Stirling"
 title = "Stirling Cloud"
 
 [setup.mode.selfhosted]
-description = "Připojte se ke svému serveru Stirling PDF"
+description = "Připojte se ke svému serveru AziralPDF"
 title = "Samohostovaný server"
 
 [setup.saas]
@@ -7111,11 +7111,11 @@ step3 = "Restartujte server"
 title = "Přihlášení není povoleno"
 
 [setup.server.type]
-saas = "Stirling PDF SaaS"
+saas = "AziralPDF SaaS"
 selfhosted = "Samohostovaný server"
 
 [setup.server.url]
-description = "Zadejte úplnou URL vašeho samohostovaného serveru Stirling PDF"
+description = "Zadejte úplnou URL vašeho samohostovaného serveru AziralPDF"
 label = "URL serveru"
 
 [setup.step1]
@@ -7340,7 +7340,7 @@ passwordsDoNotMatch = "Hesla se neshodují"
 passwordTooShort = "Heslo musí mít alespoň 6 znaků"
 pleaseFillAllFields = "Vyplňte prosím všechna pole"
 signUp = "Zaregistrovat se"
-subtitle = "Připojte se ke Stirling PDF a začněte"
+subtitle = "Připojte se ke AziralPDF a začněte"
 title = "Vytvořit účet"
 unexpectedError = "Neočekávaná chyba: {{message}}"
 useEmailInstead = "Použít místo toho e-mail"
@@ -7627,7 +7627,7 @@ download = "Stáhnout"
 downloaded = "Staženo"
 downloadFailed = "Tento soubor nelze stáhnout."
 downloadsCount = "Stažení: {{count}}"
-emailWarningBody = "Vypadá to jako e-mailová adresa. Pokud tato osoba ještě není uživatelem Stirling PDF, k souboru se nedostane."
+emailWarningBody = "Vypadá to jako e-mailová adresa. Pokud tato osoba ještě není uživatelem AziralPDF, k souboru se nedostane."
 emailWarningConfirm = "Sdílet i tak"
 emailWarningTitle = "E-mailová adresa"
 errorTitle = "Sdílení se nezdařilo"
@@ -7657,7 +7657,7 @@ manageTitle = "Správa sdílení"
 noActivity = "Zatím žádná aktivita."
 noLinks = "Zatím nejsou žádné aktivní odkazy ke sdílení."
 noSharedUsers = "Zatím nemá přístup žádný uživatel."
-openInApp = "Otevřít ve Stirling PDF"
+openInApp = "Otevřít ve AziralPDF"
 ownerLabel = "Vlastník"
 ownerOnly = "Sdílení může spravovat pouze vlastník."
 ownerUnknown = "Neznámý"
@@ -7728,18 +7728,18 @@ please = "Zvažte prosím účast v našem průzkumu!"
 title = "Průzkum Stirling-PDF"
 
 [survey.meeting]
-1 = "Pokud používáte Stirling PDF v práci, rádi si s vámi promluvíme. Nabízíme technickou podporu výměnou za 15minutové uživatelské interview."
+1 = "Pokud používáte AziralPDF v práci, rádi si s vámi promluvíme. Nabízíme technickou podporu výměnou za 15minutové uživatelské interview."
 2 = "To je příležitost:"
 3 = "Získat pomoc s nasazením, integracemi nebo řešením problémů"
 4 = "Poskytnout přímou zpětnou vazbu o výkonu, okrajových případech a chybějících funkcích"
-5 = "Pomoci nám vyladit Stirling PDF pro reálné firemní použití"
+5 = "Pomoci nám vyladit AziralPDF pro reálné firemní použití"
 6 = "Máte-li zájem, můžete si přímo rezervovat termín s naším týmem. (Pouze anglicky)"
-7 = "Těšíme se, až se ponoříme do vašich případů použití a uděláme Stirling PDF ještě lepší!"
+7 = "Těšíme se, až se ponoříme do vašich případů použití a uděláme AziralPDF ještě lepší!"
 button = "Rezervovat schůzku"
 notInterested = "Nejste firma a/nebo nemáte zájem o schůzku?"
 
 [swagger]
-desc = "Zobrazte a otestujte endpointy API Stirling PDF"
+desc = "Zobrazte a otestujte endpointy API AziralPDF"
 header = "API Dokumentace"
 tags = "api,dokumentace,swagger,endpointy,vývoj"
 title = "API Dokumentace"
@@ -7892,7 +7892,7 @@ unfavorite = "Odebrat z oblíbených"
 [toolPanel.modePrompt]
 chooseFullscreen = "Použít režim na celou obrazovku"
 chooseSidebar = "Použít režim postranního panelu"
-description = "Prohlédněte si obě rozložení a rozhodněte, jak chcete prozkoumávat nástroje Stirling PDF."
+description = "Prohlédněte si obě rozložení a rozhodněte, jak chcete prozkoumávat nástroje AziralPDF."
 dismiss = "Možná později"
 fullscreenDescription = "Procházejte všechny nástroje v katalogu, který překryje pracovní prostor, dokud si nevyberete."
 fullscreenTitle = "Režim na celou obrazovku – (zastaralé)"
@@ -7986,7 +7986,7 @@ attentionBody = "Váš správce se musí přihlásit, aby zobrazil další infor
 attentionBodyAdmin = "Zkontrolujte licenční požadavky, aby byl tento server v souladu."
 attentionTitle = "Tento server vyžaduje zásah správce"
 dismiss = "Skrýt banner"
-message = "Využijte Stirling PDF naplno s neomezeným počtem uživatelů a pokročilými funkcemi"
+message = "Využijte AziralPDF naplno s neomezeným počtem uživatelů a pokročilými funkcemi"
 seeInfo = "Zobrazit informace"
 title = "Přejděte na Serverový plán"
 upgradeButton = "Upgradovat nyní"
@@ -8108,7 +8108,7 @@ continued = "Pokračování"
 downloads = "Ke stažení"
 entryLabel = "Souhrn podpisu"
 filesEvaluated = "{{count}} souborů vyhodnoceno"
-footer = "Ověřeno pomocí Stirling PDF"
+footer = "Ověřeno pomocí AziralPDF"
 generatedAt = "Vygenerováno"
 noPdf = "PDF zpráva bude k dispozici po úspěšném ověření."
 page = "Stránka"

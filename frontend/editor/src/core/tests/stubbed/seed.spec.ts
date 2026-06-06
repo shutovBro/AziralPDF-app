@@ -61,7 +61,7 @@ test.describe("Stirling-PDF seed", () => {
         .first(),
     ).toBeVisible({ timeout: 15000 });
 
-    // Verify the title contains Stirling PDF
+    // Verify the title contains AziralPDF
     await expect(page).toHaveTitle(/Stirling/i);
   });
 });

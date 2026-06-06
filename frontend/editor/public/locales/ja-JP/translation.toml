@@ -1402,7 +1402,7 @@ description = "有効にすると、一覧のユーザー ID のみがボット�
 label = "特定のユーザー ID を許可"
 
 [admin.settings.telegram.enabled]
-description = "設定済みの Telegram ボットを通じてユーザーが Stirling PDF とやり取りできるようにします。"
+description = "設定済みの Telegram ボットを通じてユーザーが AziralPDF とやり取りできるようにします。"
 label = "Telegram ボットを有効化"
 
 [admin.settings.telegram.feedback]
@@ -1479,7 +1479,7 @@ settingsOverview = "ここが <strong>設定パネル</strong> です。管理�
 systemCustomization = "UI をカスタマイズする方法が豊富にあります。<strong>システム設定</strong> でアプリ名や言語を変更、<strong>機能</strong> でサーバー証明書を管理、<strong>エンドポイント</strong> でユーザー向けの特定ツールを有効/無効にできます。"
 teamsAndUsers = "ここで <strong>チーム</strong> と個々のユーザーを管理できます。メールや共有リンクでユーザーを招待したり、カスタムアカウントを自分で作成することも可能です。"
 welcome = "<strong>管理者ツアー</strong> へようこそ！システム管理者向けの強力なエンタープライズ機能と設定を見ていきましょう。"
-wrapUp = "以上で管理者ツアーは終了です！Stirling PDF を組織向けの強力でカスタマイズ可能なソリューションにするエンタープライズ機能をご覧いただきました。<strong>ヘルプ</strong> メニューからいつでもこのツアーにアクセスできます。"
+wrapUp = "以上で管理者ツアーは終了です！AziralPDF を組織向けの強力でカスタマイズ可能なソリューションにするエンタープライズ機能をご覧いただきました。<strong>ヘルプ</strong> メニューからいつでもこのツアーにアクセスできます。"
 
 [adminUserSettings]
 actions = "アクション"
@@ -1516,11 +1516,11 @@ webOnlyUser = "ウェブ専用ユーザー"
 disable = "分析を無効にする"
 enable = "分析を有効にする"
 learnMore = "詳しく見る"
-paragraph1 = "Stirling PDFでは、製品の改善に役立つ分析機能をオプトインしています。個人情報やファイルの内容を追跡することはありません。"
+paragraph1 = "AziralPDFでは、製品の改善に役立つ分析機能をオプトインしています。個人情報やファイルの内容を追跡することはありません。"
 paragraph2 = "Stirling-PDFの成長を支援しユーザーをより深く理解できるように分析を有効にすることを検討してください。"
 privacyAssurance = "個人情報やファイル内容は一切追跡しません。"
 settings = "config/settings.ymlファイルでアナリティクスの設定を変更できます。"
-title = "Stirling PDFをもっと良くしたいですか？"
+title = "AziralPDFをもっと良くしたいですか？"
 
 [annotation]
 annotationStyle = "注釈スタイル"
@@ -1932,7 +1932,7 @@ title = "PDFの自動分割"
 [autoSplitPDF.selectText]
 1 = "下から仕切り用紙を印刷します(白黒で問題ありません)。"
 2 = "原稿の間に仕切り用紙を挿入し、すべての原稿をまとめてスキャンします。"
-3 = "スキャンしたPDFファイルをアップロードしStirling PDFに任せます。"
+3 = "スキャンしたPDFファイルをアップロードしAziralPDFに任せます。"
 4 = "仕切りページは自動的に検出、削除されるので、最終的な文書はきれいに仕上がります。"
 
 [backendHealth]
@@ -3015,14 +3015,14 @@ chartAriaLabel = "クレジット使用状況：含まれる分 {{includedUsed}}
 copyKeyAriaLabel = "API キーをコピー"
 creditsRemaining = "残りクレジット"
 description = "Stirling の PDF ツール群にアクセスするための API キーです。プロジェクトにコピーするか、更新して新しいキーを生成できます。"
-docsDescription = "Stirling PDF との統合について詳しくはこちら:"
+docsDescription = "AziralPDF との統合について詳しくはこちら:"
 docsLink = "API ドキュメント"
 docsTitle = "API ドキュメント"
 generateError = "API キーを生成できませんでした。"
 goToAccount = "アカウントへ移動"
 guestInfo = "ゲストユーザーには API キーは付与されません。アカウントを作成して、アプリケーションで利用できる API キーを取得してください。"
 includedCredits = "含まれるクレジット"
-intro = "API キーを使用して Stirling PDF の処理機能にプログラムからアクセスできます。"
+intro = "API キーを使用して AziralPDF の処理機能にプログラムからアクセスできます。"
 label = "API キー"
 lastApiUse = "最終 API 使用"
 nextReset = "次回リセット"
@@ -3196,7 +3196,7 @@ showPreferencesBtn = "設定の管理"
 title = "クッキーの使用方法"
 
 [cookieBanner.popUp.description]
-1 = "私たちはStirling PDFをより快適にご利用いただけるようCookieやその他のテクノロジーを使用しています。これによりツールの改善やお気に入りの機能の構築を継続できます。"
+1 = "私たちはAziralPDFをより快適にご利用いただけるようCookieやその他のテクノロジーを使用しています。これによりツールの改善やお気に入りの機能の構築を継続できます。"
 2 = "希望しない場合は「いいえ」をクリックすると、スムーズに動作するために必要なCookieのみが有効になります。"
 
 [cookieBanner.preferencesModal]
@@ -3209,12 +3209,12 @@ subtitle = "Cookieの使用"
 title = "同意管理センター"
 
 [cookieBanner.preferencesModal.analytics]
-description = "これらのCookieはツールがどのように使用されているかを把握するのに役立ちます。これによりコミュニティが最も重視する機能の開発に集中することができます。ご安心ください。Stirling PDFはお客様が操作するドキュメントの内容を追跡することは決してありません。"
+description = "これらのCookieはツールがどのように使用されているかを把握するのに役立ちます。これによりコミュニティが最も重視する機能の開発に集中することができます。ご安心ください。AziralPDFはお客様が操作するドキュメントの内容を追跡することは決してありません。"
 title = "分析"
 
 [cookieBanner.preferencesModal.description]
-1 = "Stirling PDFはお客様の体験の向上、ツールの利用状況を把握するためにCookieなどのテクノロジーを使用しています。これによりパフォーマンスの向上、お客様が求める機能の開発、そしてユーザーへの継続的なサポートの提供が可能になります。"
-2 = "Stirling PDFはユーザーが使用するドキュメントの内容を追跡したりアクセスしたりすることはできません。"
+1 = "AziralPDFはお客様の体験の向上、ツールの利用状況を把握するためにCookieなどのテクノロジーを使用しています。これによりパフォーマンスの向上、お客様が求める機能の開発、そしてユーザーへの継続的なサポートの提供が可能になります。"
+2 = "AziralPDFはユーザーが使用するドキュメントの内容を追跡したりアクセスしたりすることはできません。"
 3 = "お客様のプライバシーと信頼は当社の活動の中核です。"
 
 [cookieBanner.preferencesModal.necessary]
@@ -3383,7 +3383,7 @@ unexpectedError = "ファイルの処理中にエラーが発生しました。�
 [defaultApp]
 description = "後でシステム設定で変更できます。"
 dismiss = "閉じる"
-message = "Stirling PDF を既定のPDFエディターに設定しますか？"
+message = "AziralPDF を既定のPDFエディターに設定しますか？"
 notNow = "今はしない"
 setDefault = "既定に設定"
 title = "既定のPDFアプリに設定"
@@ -3393,15 +3393,15 @@ message = "既定のPDFハンドラーの設定に失敗しました"
 title = "エラー"
 
 [defaultApp.prompt]
-message = "PDFファイルを開く既定のアプリとして Stirling PDF を設定します。"
+message = "PDFファイルを開く既定のアプリとして AziralPDF を設定します。"
 title = "既定のPDFエディターに設定"
 
 [defaultApp.settingsOpened]
-message = "システム設定で Stirling PDF を選択してください"
+message = "システム設定で AziralPDF を選択してください"
 title = "設定を開きました"
 
 [defaultApp.success]
-message = "Stirling PDF が既定のPDFエディターになりました"
+message = "AziralPDF が既定のPDFエディターになりました"
 title = "既定のアプリを設定"
 
 [editTableOfContents]
@@ -3543,9 +3543,9 @@ visitsTooltip = "訪問数: {0} (合計の{1}%)"
 
 [enterpriseEdition]
 button = "Proにアップグレード"
-ssoAdvert = "より多くのユーザー管理機能をお探しですか？ Stirling PDF Proをご覧ください"
+ssoAdvert = "より多くのユーザー管理機能をお探しですか？ AziralPDF Proをご覧ください"
 warning = "この機能はProユーザーのみが利用できます。"
-yamlAdvert = "Stirling PDF Proは、YAML構成ファイルやその他のSSO機能をサポートしています。"
+yamlAdvert = "AziralPDF Proは、YAML構成ファイルやその他のSSO機能をサポートしています。"
 
 [error]
 _value = "エラー"
@@ -4021,7 +4021,7 @@ invisible = "非表示（メタデータのみ）"
 location = "場所:"
 logo = "ロゴ:"
 logoHidden = "ロゴなし"
-logoShown = "Stirling PDF ロゴを表示"
+logoShown = "AziralPDF ロゴを表示"
 participantCount = "{{count}} 人が順番に署名します"
 participants = "参加者"
 reason = "理由:"
@@ -4073,7 +4073,7 @@ title = "順次署名"
 dismiss = "バナーを閉じる"
 message = "無料アカウントを作成して作業を保存し、より多くの機能にアクセスしてプロジェクトをサポートしましょう。"
 signUp = "無料で登録"
-title = "ゲストとして Stirling PDF を利用中です！"
+title = "ゲストとして AziralPDF を利用中です！"
 
 [home]
 alphabetical = "アルファベット順"
@@ -4247,7 +4247,7 @@ tags = "結合,統合,連結"
 title = "結合"
 
 [home.mobile]
-brandAlt = "Stirling PDF ロゴ"
+brandAlt = "AziralPDF ロゴ"
 openFiles = "ファイルを開く"
 swipeHint = "左右にスワイプして表示を切り替え"
 tools = "ツール"
@@ -4287,7 +4287,7 @@ tags = "両面,偶数,奇数,並べ替え,移動"
 title = "整理"
 
 [home.pdfTextEditor]
-desc = "グループ化されたテキスト編集とPDF再生成で、Stirling PDF の JSON エクスポートをレビュー・編集します。"
+desc = "グループ化されたテキスト編集とPDF再生成で、AziralPDF の JSON エクスポートをレビュー・編集します。"
 tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
 title = "PDFテキストエディター"
 
@@ -4493,14 +4493,14 @@ passwordTooShort = "パスワードは6文字以上である必要がありま�
 signIn = "サインイン"
 validating = "招待を検証しています..."
 validationError = "招待リンクの検証に失敗しました"
-welcome = "Stirling PDF へようこそ"
+welcome = "AziralPDF へようこそ"
 welcomeSubtitle = "アカウント設定を完了して開始しましょう"
 welcomeTitle = "招待されています！"
 
 [landing]
 addFiles = "ファイルを追加"
 heroSubtitle = "既存の PDF をドロップまたは追加して開始してください。"
-heroTitle = "Stirling PDF"
+heroTitle = "AziralPDF"
 mobileUpload = "モバイルからアップロード"
 openFromComputer = "コンピューターから開く"
 uploadFromComputer = "コンピュータからアップロード"
@@ -4602,7 +4602,7 @@ signinTitle = "サインインしてください"
 signInWith = "次でサインイン"
 signOut = "サインアウト"
 ssoSignIn = "シングルサインオンでログイン"
-subtitle = "Stirling PDF に再度サインイン"
+subtitle = "AziralPDF に再度サインイン"
 title = "サインイン"
 toManySessions = "アクティブなセッションが多すぎます"
 unexpectedError = "予期しないエラー：{{message}}"
@@ -4621,7 +4621,7 @@ subtitle = "墨消し、署名、閲覧、操作のための十数種のツー�
 title = "必要な情報を表示・保護するために PDF を編集"
 
 [login.slides.overview]
-alt = "Stirling PDF の概要"
+alt = "AziralPDF の概要"
 subtitle = "プライバシー最優先の PDF 向けクラウドスイート。変換、署名、墨消し、文書管理に加え、50 以上の強力なツールを提供。"
 title = "PDF のためのワンストップソリューション"
 
@@ -4787,7 +4787,7 @@ message = "認証に失敗しました。このウィンドウを閉じて、も
 title = "認証に失敗しました"
 
 [oauth.success]
-message = "このウィンドウを閉じて Stirling PDF に戻れます。"
+message = "このウィンドウを閉じて AziralPDF に戻れます。"
 title = "認証に成功しました"
 
 [ocr]
@@ -4911,7 +4911,7 @@ runButton = "ツールの設定が完了したら、このボタンで選択し�
 selectControls = "<strong>右レール</strong> には、アクティブな PDF をすべて選択/選択解除するボタンや、テーマ・言語を切り替えるボタンがあります。"
 selectCropTool = "ツールの使い方を説明するため、まずは <strong>切り抜き</strong> ツールを選択しましょう。"
 startTour = "ツアーを開始"
-startTourDescription = "Stirling PDF の主な機能をガイド付きで紹介します"
+startTourDescription = "AziralPDF の主な機能をガイド付きで紹介します"
 toolInterface = "こちらが <strong>切り抜き</strong> ツールの画面です。まだ作業用の PDF ファイルを追加していないため、表示項目は多くありません。"
 viewer = "<strong>ビューアー</strong> では PDF の閲覧と注釈付けができます。"
 viewSwitcher = "これらのコントロールで PDF の表示方法を切り替えられます。"
@@ -4934,7 +4934,7 @@ titleWithOs = "{{osLabel}} 用をダウンロード"
 [onboarding.freeTrial]
 afterTrialWithoutPayment = "トライアル終了後は無料プランが継続されます。Pro へのアクセスを維持するには支払い方法を追加してください。"
 afterTrialWithPayment = "トライアル終了時に Pro のサブスクリプションが自動的に開始します。"
-body = "トライアル期間中は Stirling PDF Pro の機能をすべてご利用いただけます。無制限の変換、より大きなファイルサイズ、優先処理をお楽しみください。"
+body = "トライアル期間中は AziralPDF Pro の機能をすべてご利用いただけます。無制限の変換、より大きなファイルサイズ、優先処理をお楽しみください。"
 daysRemaining = "残り {{days}} 日"
 daysRemainingSingular = "残り {{days}} 日"
 title = "30 日間の Pro トライアル"
@@ -4960,7 +4960,7 @@ skip = "今はスキップ"
 upgrade = "今すぐアップグレード →"
 
 [onboarding.tourOverview]
-body = "Stirling PDF V2 は多数のツールと刷新されたレイアウトを搭載しています。変更点と必要な機能の見つけ方を短いツアーで確認しましょう。"
+body = "AziralPDF V2 は多数のツールと刷新されたレイアウトを搭載しています。変更点と必要な機能の見つけ方を短いツアーで確認しましょう。"
 title = "ツアーの概要"
 
 [onboarding.welcomeModal]
@@ -4969,10 +4969,10 @@ dontShowAgain = "今後表示しない"
 helpHint = "このツアーは左下の <strong>ヘルプ</strong> ボタンからいつでも再表示できます。"
 maybeLater = "後で"
 startTour = "ツアーを開始"
-title = "Stirling PDF へようこそ！"
+title = "AziralPDF へようこそ！"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF はあらゆる規模のチームで使えるようになりました。このアップデートには新しいレイアウト、強力な管理機能、そして最も要望の多かった機能 - <strong>テキスト編集</strong> が含まれます。"
+body = "AziralPDF はあらゆる規模のチームで使えるようになりました。このアップデートには新しいレイアウト、強力な管理機能、そして最も要望の多かった機能 - <strong>テキスト編集</strong> が含まれます。"
 title = "Stirling へようこそ"
 
 [onboarding.whatsNew]
@@ -5794,7 +5794,7 @@ included = "含まれる"
 name = "無料"
 
 [plan.licenseWarning]
-body = "ユーザーは {{total}} 人ですが、無料枠はサーバーあたり {{limit}} 人までです。Stirling PDF を円滑に運用するにはアップグレードしてください。"
+body = "ユーザーは {{total}} 人ですが、無料枠はサーバーあたり {{limit}} 人までです。AziralPDF を円滑に運用するにはアップグレードしてください。"
 cta = "プランを見る"
 overLimit = "{{limit}} を超過"
 title = "セルフホストの無料上限に達しました"
@@ -6806,7 +6806,7 @@ autoUnzipFileLimitDescription = "ZIP から抽出する最大ファイル数"
 autoUnzipFileLimitTooltip = "ZIP に含まれるファイル数がこの数以下の場合のみ解凍します。大きな ZIP を展開するには上限を上げてください。"
 autoUnzipTooltip = "API 操作で返された ZIP ファイルを自動的に展開します。ZIP をそのまま保持するには無効にします。自動化ワークフローには影響しません。"
 defaultPdfEditor = "既定のPDFエディター"
-defaultPdfEditorActive = "Stirling PDF は既定のPDFエディターです"
+defaultPdfEditorActive = "AziralPDF は既定のPDFエディターです"
 defaultPdfEditorChecking = "確認中..."
 defaultPdfEditorInactive = "別のアプリが既定に設定されています"
 defaultPdfEditorSet = "既に既定です"
@@ -7023,13 +7023,13 @@ teams = "チーム"
 title = "ワークスペース"
 
 [setup]
-description = "Stirling PDF の使い方を選んで開始しましょう"
-welcome = "Stirling PDF へようこそ"
+description = "AziralPDF の使い方を選んで開始しましょう"
+welcome = "AziralPDF へようこそ"
 
 [setup.login]
 connectingTo = "接続先:"
 hideInstructions = "手順を非表示"
-instructions = "Stirling PDF サーバーでログインを有効にするには:"
+instructions = "AziralPDF サーバーでログインを有効にするには:"
 instructionsEnvVar = "環境変数を設定:"
 instructionsOrYml = "または settings.yml で:"
 instructionsRestart = "その後、サーバーを再起動して変更を反映させてください。"
@@ -7067,7 +7067,7 @@ description = "Stirling アカウントでサインイン"
 title = "Stirling Cloud"
 
 [setup.mode.selfhosted]
-description = "自分の Stirling PDF サーバーに接続"
+description = "自分の AziralPDF サーバーに接続"
 title = "セルフホスト サーバー"
 
 [setup.saas]
@@ -7111,11 +7111,11 @@ step3 = "サーバーを再起動する"
 title = "ログインが有効になっていません"
 
 [setup.server.type]
-saas = "Stirling PDF SaaS"
+saas = "AziralPDF SaaS"
 selfhosted = "セルフホスト サーバー"
 
 [setup.server.url]
-description = "セルフホストの Stirling PDF サーバーの完全な URL を入力してください"
+description = "セルフホストの AziralPDF サーバーの完全な URL を入力してください"
 label = "サーバー URL"
 
 [setup.step1]
@@ -7340,7 +7340,7 @@ passwordsDoNotMatch = "パスワードが一致しません"
 passwordTooShort = "パスワードは少なくとも 6 文字である必要があります"
 pleaseFillAllFields = "すべての項目を入力してください"
 signUp = "サインアップ"
-subtitle = "Stirling PDF に参加して始めましょう"
+subtitle = "AziralPDF に参加して始めましょう"
 title = "アカウントを作成"
 unexpectedError = "予期しないエラー: {{message}}"
 useEmailInstead = "メールを使用"
@@ -7627,7 +7627,7 @@ download = "ダウンロード"
 downloaded = "ダウンロード"
 downloadFailed = "このファイルをダウンロードできません。"
 downloadsCount = "ダウンロード数: {{count}}"
-emailWarningBody = "これはメールアドレスのようです。この相手が既に Stirling PDF のユーザーでない場合、ファイルにアクセスできません。"
+emailWarningBody = "これはメールアドレスのようです。この相手が既に AziralPDF のユーザーでない場合、ファイルにアクセスできません。"
 emailWarningConfirm = "それでも共有する"
 emailWarningTitle = "メールアドレス"
 errorTitle = "共有に失敗しました"
@@ -7657,7 +7657,7 @@ manageTitle = "共有の管理"
 noActivity = "まだアクティビティはありません。"
 noLinks = "アクティブな共有リンクはまだありません。"
 noSharedUsers = "まだアクセス権を持つユーザーはいません。"
-openInApp = "Stirling PDF で開く"
+openInApp = "AziralPDF で開く"
 ownerLabel = "所有者"
 ownerOnly = "共有の管理は所有者のみが行えます。"
 ownerUnknown = "不明"
@@ -7728,18 +7728,18 @@ please = "アンケートにご協力ください！"
 title = "Stirling-PDFのアンケート"
 
 [survey.meeting]
-1 = "職場でStirling PDFをご利用の場合はぜひご連絡ください。15分間のユーザー ディスカバリーセッションと引き換えにテクニカルサポートセッションをご提供しています。"
+1 = "職場でAziralPDFをご利用の場合はぜひご連絡ください。15分間のユーザー ディスカバリーセッションと引き換えにテクニカルサポートセッションをご提供しています。"
 2 = "これはチャンスです:"
 3 = "展開、統合、またはトラブルシューティングに関するヘルプを取得します"
 4 = "パフォーマンス、エッジケース、機能のギャップに関する直接的なフィードバックを提供する"
-5 = "Stirling PDFを企業で実際に使用できるように改良にご協力ください"
+5 = "AziralPDFを企業で実際に使用できるように改良にご協力ください"
 6 = "興味がありましたら、弊社のチームに直接ご予約ください。（英語のみ）"
-7 = "皆さんのユースケースを掘り下げてStirling PDFをさらに改善することを楽しみにしています。"
+7 = "皆さんのユースケースを掘り下げてAziralPDFをさらに改善することを楽しみにしています。"
 button = "ブックミーティング"
 notInterested = "ビジネスではない、または会議に興味がありませんか？"
 
 [swagger]
-desc = "Stirling PDF API エンドポイントを表示・テスト"
+desc = "AziralPDF API エンドポイントを表示・テスト"
 header = "API ドキュメント"
 tags = "API,ドキュメント,swagger,エンドポイント,開発"
 title = "API ドキュメント"
@@ -7892,7 +7892,7 @@ unfavorite = "お気に入りから削除"
 [toolPanel.modePrompt]
 chooseFullscreen = "フルスクリーンモードを使用"
 chooseSidebar = "サイドバーモードを使用"
-description = "両方のレイアウトをプレビューして、Stirling PDF のツールをどのように探索するかを決めてください。"
+description = "両方のレイアウトをプレビューして、AziralPDF のツールをどのように探索するかを決めてください。"
 dismiss = "後で"
 fullscreenDescription = "作業スペースを覆うカタログで全ツールを閲覧し、選択します。"
 fullscreenTitle = "フルスクリーンモード（従来）"
@@ -7986,7 +7986,7 @@ attentionBody = "詳細を見るには管理者がサインインする必要が
 attentionBodyAdmin = "このサーバーを準拠させるため、ライセンス要件を確認してください。"
 attentionTitle = "このサーバーには管理者の対応が必要です"
 dismiss = "バナーを閉じる"
-message = "無制限ユーザーと高度な機能で Stirling PDF を最大限活用"
+message = "無制限ユーザーと高度な機能で AziralPDF を最大限活用"
 seeInfo = "詳細を見る"
 title = "Server プランにアップグレード"
 upgradeButton = "今すぐアップグレード"
@@ -8108,7 +8108,7 @@ continued = "続き"
 downloads = "ダウンロード"
 entryLabel = "署名サマリー"
 filesEvaluated = "{{count}} 件のファイルを評価"
-footer = "Stirling PDF で検証済み"
+footer = "AziralPDF で検証済み"
 generatedAt = "生成日時"
 noPdf = "検証が成功すると PDF レポートが利用可能になります。"
 page = "ページ"

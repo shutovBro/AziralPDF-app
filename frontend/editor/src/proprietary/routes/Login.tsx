@@ -437,12 +437,12 @@ export default function Login() {
 
   // Set document meta
   useDocumentMeta({
-    title: `${t("login.title", "Sign in")} - Stirling PDF`,
+    title: `${t("login.title", "Sign in")} - AziralPDF`,
     description: t(
       "app.description",
       "The Free Adobe Acrobat alternative (10M+ Downloads)",
     ),
-    ogTitle: `${t("login.title", "Sign in")} - Stirling PDF`,
+    ogTitle: `${t("login.title", "Sign in")} - AziralPDF`,
     ogDescription: t(
       "app.description",
       "The Free Adobe Acrobat alternative (10M+ Downloads)",
