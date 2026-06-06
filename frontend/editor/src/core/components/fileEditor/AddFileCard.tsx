@@ -82,10 +82,10 @@ const AddFileCard = ({
       >
         {/* Main content area */}
         <div className={styles.addFileContent}>
-          {/* Stirling PDF Branding */}
+          {/* AziralPDF Branding */}
           <Group gap="xs" align="center">
             <Wordmark
-              alt="Stirling PDF"
+              alt="AziralPDF"
               muted
               style={{ height: "2.2rem", width: "auto" }}
             />

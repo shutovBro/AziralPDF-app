@@ -110,7 +110,7 @@ jobs:
         with:
           pkgname: stirling-pdf-desktop
           pkgbuild: .github/aur/stirling-pdf-desktop/PKGBUILD
-          commit_username: Stirling PDF Inc
+          commit_username: AziralPDF Inc
           commit_email: contact@stirlingpdf.com
           ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
           commit_message: "Update to v${{ needs.get-release-info.outputs.version }}"
@@ -122,7 +122,7 @@ jobs:
       #   with:
       #     pkgname: stirling-pdf-server-bin
       #     pkgbuild: .github/aur/stirling-pdf-server-bin/PKGBUILD
-      #     commit_username: Stirling PDF Inc
+      #     commit_username: AziralPDF Inc
       #     commit_email: contact@stirlingpdf.com
       #     ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
       #     commit_message: "Update to v${{ needs.get-release-info.outputs.version }}"

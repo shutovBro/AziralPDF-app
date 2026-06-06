@@ -80,7 +80,7 @@ Stirling-PDF uses Lombok to reduce boilerplate code. Some IDEs, like Eclipse, do
 Visit the [Lombok website](https://projectlombok.org/setup/) for installation instructions specific to your IDE.
 
 5. Add environment variable
-For local testing, you should generally be testing the full 'Security' version of Stirling PDF. To do this, you must add the environment flag DISABLE_ADDITIONAL_FEATURES=false to your system and/or IDE build/run step.
+For local testing, you should generally be testing the full 'Security' version of AziralPDF. To do this, you must add the environment flag DISABLE_ADDITIONAL_FEATURES=false to your system and/or IDE build/run step.
 5. **Frontend Setup (Required for Stirling 2.0)**
    Navigate to the frontend directory and install dependencies using npm.
 

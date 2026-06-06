@@ -1,6 +1,6 @@
 # Developer Guide Directory
 
-This directory contains all development-related documentation for Stirling PDF.
+This directory contains all development-related documentation for AziralPDF.
 
 ## 📚 Documentation Index
 

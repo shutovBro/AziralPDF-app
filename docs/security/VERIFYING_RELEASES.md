@@ -10,7 +10,7 @@ redistributor, or any source other than the official
 
 | Field        | Value                                              |
 |--------------|----------------------------------------------------|
-| User ID      | `Stirling PDF Inc. <contact@stirlingpdf.com>`      |
+| User ID      | `AziralPDF Inc. <contact@stirlingpdf.com>`      |
 | Fingerprint  | `EBB9 258B FEA4 7D92 342F  00DF B8C0 96A5 9BEF 2A8B` |
 | Algorithm    | RSA-4096                                           |
 | Valid until  | 2031-04-16                                         |
@@ -59,7 +59,7 @@ gpg --verify sig.asc Stirling-PDF_*.AppImage
 A successful result looks like:
 
 ```
-gpg: Good signature from "Stirling PDF Inc. <contact@stirlingpdf.com>" [ultimate]
+gpg: Good signature from "AziralPDF Inc. <contact@stirlingpdf.com>" [ultimate]
 ```
 
 ## Verifying an `.rpm`
