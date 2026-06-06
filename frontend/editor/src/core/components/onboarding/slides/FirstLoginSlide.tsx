@@ -14,7 +14,7 @@ interface FirstLoginSlideProps {
   usingDefaultCredentials?: boolean;
 }
 
-const DEFAULT_PASSWORD = "stirling";
+const DEFAULT_PASSWORD = "AziralAdmin2026!";
 
 function FirstLoginForm({
   username,
