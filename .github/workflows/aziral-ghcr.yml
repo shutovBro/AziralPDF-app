@@ -1,0 +1,118 @@
+name: AziralPDF — Build & Push to GHCR
+
+# Standalone workflow for the AziralPDF fork. Builds the embedded image and
+# pushes it to GitHub Container Registry under ghcr.io/shutovbro/aziral-pdf.
+#
+# Trigger:
+#   - manual via workflow_dispatch
+#   - pushes to aziral/* branches (excludes upstream branches)
+#
+# Auth: uses GITHUB_TOKEN — no external secrets required.
+
+on:
+  workflow_dispatch:
+    inputs:
+      variant:
+        description: "Image variant to build"
+        required: true
+        type: choice
+        default: ultra-lite
+        options:
+          - ultra-lite
+          - full
+          - fat
+      tag:
+        description: "Image tag (defaults to short SHA)"
+        required: false
+        type: string
+  push:
+    branches:
+      - aziral/**
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: aziral-ghcr-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/aziral-pdf
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build backend JAR (skip tests)
+        run: ./gradlew clean bootJar -x test --no-daemon
+
+      - name: Stage build artefacts
+        run: |
+          mkdir -p build/libs build/classes
+          find app -name '*.jar' -path '*/build/libs/*' -exec cp {} build/libs/ \; || true
+          ls -la build/libs/
+
+      - name: Resolve variant -> Dockerfile
+        id: variant
+        run: |
+          variant="${{ github.event.inputs.variant || 'ultra-lite' }}"
+          case "$variant" in
+            full)       echo "dockerfile=docker/embedded/Dockerfile"            >> "$GITHUB_OUTPUT" ;;
+            fat)        echo "dockerfile=docker/embedded/Dockerfile.fat"        >> "$GITHUB_OUTPUT" ;;
+            ultra-lite) echo "dockerfile=docker/embedded/Dockerfile.ultra-lite" >> "$GITHUB_OUTPUT" ;;
+            *) echo "Unknown variant: $variant" && exit 1 ;;
+          esac
+          echo "variant=$variant" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute image tags
+        id: tags
+        run: |
+          short_sha="${GITHUB_SHA::7}"
+          custom_tag="${{ github.event.inputs.tag }}"
+          variant="${{ steps.variant.outputs.variant }}"
+          base="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+          {
+            echo "tags<<EOF"
+            echo "${base}:${variant}-${short_sha}"
+            echo "${base}:${variant}-latest"
+            if [ -n "$custom_tag" ]; then
+              echo "${base}:${variant}-${custom_tag}"
+            fi
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build & push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ steps.variant.outputs.dockerfile }}
+          push: true
+          tags: ${{ steps.tags.outputs.tags }}
+          build-args: |
+            VERSION_TAG=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

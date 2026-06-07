@@ -114,17 +114,17 @@ ENV VERSION_TAG=$VERSION_TAG \
     SAL_TMP=/tmp/stirling-pdf/libre
 
 # Metadata labels
-LABEL org.opencontainers.image.title="Stirling-PDF" \
-      org.opencontainers.image.description="Full version with Calibre, LibreOffice, Tesseract, OCRmyPDF" \
-      org.opencontainers.image.source="https://github.com/Stirling-Tools/Stirling-PDF" \
+LABEL org.opencontainers.image.title="AziralPDF" \
+      org.opencontainers.image.description="AziralPDF (fork of Stirling-PDF) — full version with Calibre, LibreOffice, Tesseract, OCRmyPDF" \
+      org.opencontainers.image.source="https://github.com/shutovBro/AziralPDF-app" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.vendor="Stirling-Tools" \
-      org.opencontainers.image.url="https://www.stirlingpdf.com" \
-      org.opencontainers.image.documentation="https://docs.stirlingpdf.com" \
-      maintainer="Stirling-Tools" \
-      org.opencontainers.image.authors="Stirling-Tools" \
+      org.opencontainers.image.vendor="Aziral" \
+      org.opencontainers.image.url="https://pdf.aziral.com" \
+      org.opencontainers.image.documentation="https://github.com/shutovBro/AziralPDF-app#readme" \
+      maintainer="Aziral <olzasazirali@gmail.com>" \
+      org.opencontainers.image.authors="Aziral, Stirling-Tools (upstream)" \
       org.opencontainers.image.version="${VERSION_TAG}" \
-      org.opencontainers.image.keywords="PDF, manipulation, API, Spring Boot, React"
+      org.opencontainers.image.keywords="PDF, manipulation, API, Spring Boot, React, AziralPDF"
 
 EXPOSE 8080/tcp
 STOPSIGNAL SIGTERM
