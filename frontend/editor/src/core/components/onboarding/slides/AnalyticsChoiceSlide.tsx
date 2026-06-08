@@ -30,7 +30,7 @@ export default function AnalyticsChoiceSlide({
         <br />
         <Trans
           i18nKey="analytics.paragraph2"
-          defaults="Please consider enabling analytics to help Stirling-PDF grow and to allow us to understand our users better."
+          defaults="Please consider enabling analytics to help AziralPDF grow and to allow us to understand our users better."
           components={{ strong: <strong /> }}
         />
         <br />

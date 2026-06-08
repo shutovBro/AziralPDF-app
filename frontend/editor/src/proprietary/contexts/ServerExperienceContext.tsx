@@ -18,7 +18,7 @@ import {
 } from "@app/testing/serverExperienceSimulations";
 
 const SELF_REPORTED_ADMIN_KEY = "stirling-self-reported-admin";
-const FREE_TIER_LIMIT = 5;
+const FREE_TIER_LIMIT = Number.MAX_SAFE_INTEGER;
 
 type UserCountSource = "admin" | "estimate" | "unknown";
 

@@ -9,8 +9,7 @@ function WelcomeSlideTitle() {
 
   return (
     <span className={styles.welcomeTitleContainer}>
-      {t("onboarding.welcomeSlide.title", "Welcome to Stirling")}
-      <span className={styles.v2Badge}>V2</span>
+      {t("onboarding.welcomeSlide.title", "Welcome to AziralPDF")}
     </span>
   );
 }

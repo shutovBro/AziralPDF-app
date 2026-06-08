@@ -878,11 +878,11 @@ description = "تهيئة الميزات والوظائف الاختيارية."
 title = "الميزات"
 
 [admin.settings.features.serverCertificate]
-description = "تهيئة إنشاء شهادة على جانب الخادم لوظيفة \"Sign with Stirling-PDF\""
+description = "تهيئة إنشاء شهادة على جانب الخادم لوظيفة \"Sign with AziralPDF\""
 label = "شهادة الخادم"
 
 [admin.settings.features.serverCertificate.enabled]
-description = "تمكين شهادة على جانب الخادم لخيار \"Sign with Stirling-PDF\""
+description = "تمكين شهادة على جانب الخادم لخيار \"Sign with AziralPDF\""
 label = "تمكين شهادة الخادم"
 
 [admin.settings.features.serverCertificate.organizationName]
@@ -1030,7 +1030,7 @@ description = "عنوان URL أو اسم الملف الخاص بسياسة م�
 label = "سياسة ملفات تعريف الارتباط"
 
 [admin.settings.legal.disclaimer]
-message = "من خلال تخصيص هذه الوثائق القانونية، تتحمل المسؤولية الكاملة عن ضمان الامتثال لجميع القوانين واللوائح المعمول بها، بما في ذلك على سبيل المثال لا الحصر GDPR ومتطلبات حماية البيانات الأخرى في الاتحاد الأوروبي. لا تُعدّل هذه الإعدادات إلا إذا: (1) كنت تدير نسخة شخصية/خاصة، (2) كنت خارج ولاية الاتحاد الأوروبي القضائية وتفهم التزاماتك القانونية المحلية، أو (3) حصلت على استشارة قانونية مناسبة وتقبل تحمل المسؤولية الكاملة وحدك عن جميع بيانات المستخدم والامتثال القانوني. لا تتحمل Stirling-PDF ومطوروها أي مسؤولية عن التزاماتك القانونية."
+message = "من خلال تخصيص هذه الوثائق القانونية، تتحمل المسؤولية الكاملة عن ضمان الامتثال لجميع القوانين واللوائح المعمول بها، بما في ذلك على سبيل المثال لا الحصر GDPR ومتطلبات حماية البيانات الأخرى في الاتحاد الأوروبي. لا تُعدّل هذه الإعدادات إلا إذا: (1) كنت تدير نسخة شخصية/خاصة، (2) كنت خارج ولاية الاتحاد الأوروبي القضائية وتفهم التزاماتك القانونية المحلية، أو (3) حصلت على استشارة قانونية مناسبة وتقبل تحمل المسؤولية الكاملة وحدك عن جميع بيانات المستخدم والامتثال القانوني. لا تتحمل AziralPDF ومطوروها أي مسؤولية عن التزاماتك القانونية."
 title = "تحذير المسؤولية القانونية"
 
 [admin.settings.legal.impressum]
@@ -1402,7 +1402,7 @@ description = "عند التمكين، يمكن فقط لمعرفات المست
 label = "السماح بمعرفات مستخدم محددة"
 
 [admin.settings.telegram.enabled]
-description = "السماح للمستخدمين بالتفاعل مع Stirling PDF عبر روبوت Telegram المُكوَّن لديك."
+description = "السماح للمستخدمين بالتفاعل مع AziralPDF عبر روبوت Telegram المُكوَّن لديك."
 label = "تمكين روبوت Telegram"
 
 [admin.settings.telegram.feedback]
@@ -1479,7 +1479,7 @@ settingsOverview = "هذه هي <strong>لوحة الإعدادات</strong>. ت
 systemCustomization = "لدينا طرق واسعة لتخصيص واجهة المستخدم: تتيح لك <strong>إعدادات النظام</strong> تغيير اسم التطبيق واللغات، وتتيح <strong>الميزات</strong> إدارة شهادة الخادم، وتتيح <strong>نقاط النهاية</strong> تمكين أو تعطيل أدوات محددة لمستخدميك."
 teamsAndUsers = "إدارة <strong>الفرق</strong> والمستخدمين الأفراد هنا. يمكنك دعوة مستخدمين جدد عبر البريد الإلكتروني أو الروابط القابلة للمشاركة، أو إنشاء حسابات مخصصة لهم بنفسك."
 welcome = "مرحبًا بك في <strong>جولة المسؤول</strong>! فلنستكشف الميزات المؤسسية القوية والإعدادات المتاحة لمسؤولي النظام."
-wrapUp = "كانت هذه جولة المسؤول! لقد اطّلعت على الميزات المؤسسية التي تجعل Stirling PDF حلاً قويًا وقابلاً للتخصيص للمؤسسات. يمكنك الوصول إلى هذه الجولة في أي وقت من قائمة <strong>المساعدة</strong>."
+wrapUp = "كانت هذه جولة المسؤول! لقد اطّلعت على الميزات المؤسسية التي تجعل AziralPDF حلاً قويًا وقابلاً للتخصيص للمؤسسات. يمكنك الوصول إلى هذه الجولة في أي وقت من قائمة <strong>المساعدة</strong>."
 
 [adminUserSettings]
 actions = "الإجراءات"
@@ -1516,11 +1516,11 @@ webOnlyUser = "مستخدم الويب فقط"
 disable = "تعطيل الإحصائيات"
 enable = "تفعيل الإحصائيات"
 learnMore = "اعرف المزيد"
-paragraph1 = "Stirling PDF يحتوي على إحصائيات مختصة للمساعدة في تحسين المنتج. لا نتبع أي معلومات شخصية أو محتوى الملفات."
-paragraph2 = "يرجى مراعاة تفعيل الإحصائيات لمساعدتنا على نمو Stirling-PDF وتوفير فهم أفضل لمستخدمينا."
+paragraph1 = "AziralPDF يحتوي على إحصائيات مختصة للمساعدة في تحسين المنتج. لا نتبع أي معلومات شخصية أو محتوى الملفات."
+paragraph2 = "يرجى مراعاة تفعيل الإحصائيات لمساعدتنا على نمو AziralPDF وتوفير فهم أفضل لمستخدمينا."
 privacyAssurance = "لا نقوم بتتبع أي معلومات شخصية أو محتوى ملفاتك."
 settings = "يمكنك تغيير إعدادات الإحصائيات في ملف config/settings.yml"
-title = "هل تريد تحسين Stirling PDF؟"
+title = "هل تريد تحسين AziralPDF؟"
 
 [annotation]
 annotationStyle = "نمط التعليق التوضيحي"
@@ -1923,7 +1923,7 @@ tags = "pdf,تقسيم,مستند,تنظيم"
 description = "اطبع وأدخل وامسح ضوئيًا وارفع، ودعنا نفصل مستنداتك تلقائيًا. لا حاجة للفرز اليدوي."
 dividerDownload2 = "تنزيل 'فاصل التقسيم التلقائي (مع التعليمات).pdf'"
 duplexMode = "وضع الطباعة على الوجهين (المسح الضوئي للوجه الأمامي والخلفي)"
-formPrompt = "أرسل ملف PDF يحتوي على فواصل صفحات Stirling-PDF:"
+formPrompt = "أرسل ملف PDF يحتوي على فواصل صفحات AziralPDF:"
 header = "تقسيم PDF تلقائيًا"
 submit = "إرسال"
 tags = "مبني على QR,فصل,تقسيم المسح الضوئي,تنظيم"
@@ -1932,7 +1932,7 @@ title = "تقسيم PDF تلقائيًا"
 [autoSplitPDF.selectText]
 1 = "اطبع بعض أوراق الفاصل من أدناه (الأبيض والأسود جيد)."
 2 = "امسح جميع مستنداتك دفعة واحدة عن طريق إدخال ورقة الفاصل بينها."
-3 = "ارفع ملف PDF الممسوح ضوئيًا الكبير الواحد ودع Stirling PDF يتولى الباقي."
+3 = "ارفع ملف PDF الممسوح ضوئيًا الكبير الواحد ودع AziralPDF يتولى الباقي."
 4 = "يتم اكتشاف صفحات الفاصل تلقائيًا وإزالتها، مما يضمن مستندًا نهائيًا نظيفًا."
 
 [backendHealth]
@@ -2491,7 +2491,7 @@ bullet1 = "يدعم PEM وPKCS12 وJKS وشهادات الخادم"
 bullet2 = "خيار إظهار/إخفاء التوقيع على PDF"
 bullet3 = "إضافة السبب والموقع واسم الموقّع"
 bullet4 = "اختر الصفحة لوضع التواقيع المرئية"
-bullet5 = "استخدم شهادة الخادم لخيار بسيط 'وقّع مع Stirling-PDF'"
+bullet5 = "استخدم شهادة الخادم لخيار بسيط 'وقّع مع AziralPDF'"
 text = "للتوقيع على PDF تحتاج إلى شهادة رقمية (مثل PEM أو PKCS12 أو JKS). يمكنك جعل التوقيع مرئيًا على المستند أو إبقاءه غير مرئي للأمان فقط."
 title = "إضافة التواقيع"
 
@@ -3014,15 +3014,15 @@ upgradeButton = "ترقية الحساب"
 chartAriaLabel = "استخدام الأرصدة: شُمِل {{includedUsed}} من {{includedTotal}}، المُشتَرى {{purchasedUsed}} من {{purchasedTotal}}"
 copyKeyAriaLabel = "نسخ مفتاح API"
 creditsRemaining = "الأرصدة المتبقية"
-description = "مفتاح API للوصول إلى مجموعة أدوات Stirling الخاصة بـ PDF. انسخه إلى مشروعك أو حدّثه لإنشاء مفتاح جديد."
-docsDescription = "معرفة المزيد حول التكامل مع Stirling PDF:"
+description = "مفتاح API للوصول إلى مجموعة أدوات AziralPDF الخاصة بـ PDF. انسخه إلى مشروعك أو حدّثه لإنشاء مفتاح جديد."
+docsDescription = "معرفة المزيد حول التكامل مع AziralPDF:"
 docsLink = "توثيق API"
 docsTitle = "توثيق API"
 generateError = "تعذّر علينا إنشاء مفتاح API."
 goToAccount = "الانتقال إلى الحساب"
 guestInfo = "لا يتلقى المستخدمون الضيوف مفاتيح API. أنشئ حسابًا للحصول على مفتاح API لاستخدامه في تطبيقاتك."
 includedCredits = "الأرصدة المشمولة"
-intro = "استخدم مفتاح API للوصول برمجيًا إلى قدرات المعالجة في Stirling PDF."
+intro = "استخدم مفتاح API للوصول برمجيًا إلى قدرات المعالجة في AziralPDF."
 label = "مفتاح API"
 lastApiUse = "آخر استخدام لـ API"
 nextReset = "إعادة التعيين التالية"
@@ -3066,7 +3066,7 @@ system = "تهيئة النظام"
 [connectionMode.status]
 localOffline = "وضع عدم الاتصال قيد التشغيل"
 localOnline = "وضع عدم الاتصال قيد التشغيل"
-saas = "متصل بـ Stirling Cloud"
+saas = "متصل بـ AziralPDF Cloud"
 selfhostedChecking = "متصل بخادم مُستضاف ذاتيًا (جارٍ التحقق...)"
 selfhostedOffline = "تعذّر الوصول إلى الخادم المُستضاف ذاتيًا"
 selfhostedOnline = "متصل بخادم مُستضاف ذاتيًا"
@@ -3196,7 +3196,7 @@ showPreferencesBtn = "إدارة التفضيلات"
 title = "كيف نستخدم ملفات تعريف الارتباط"
 
 [cookieBanner.popUp.description]
-1 = "نستخدم ملفات تعريف الارتباط وتقنيات أخرى لجعل Stirling PDF يعمل بشكل أفضل لك—نساعدنا على تحسين أدواتنا والاستمرار في بناء ميزات ستحبها."
+1 = "نستخدم ملفات تعريف الارتباط وتقنيات أخرى لجعل AziralPDF يعمل بشكل أفضل لك—نساعدنا على تحسين أدواتنا والاستمرار في بناء ميزات ستحبها."
 2 = "If you’d rather not, clicking 'No Thanks' will only enable the essential cookies needed to keep things running smoothly."
 
 [cookieBanner.preferencesModal]
@@ -3209,12 +3209,12 @@ subtitle = "استخدام ملفات تعريف الارتباط"
 title = "مركز تفضيلات الموافقة"
 
 [cookieBanner.preferencesModal.analytics]
-description = "تساعدنا هذه الملفات على فهم كيفية استخدام أدواتنا، كي نركّز على بناء الميزات الأكثر قيمة لمجتمعنا. كن مطمئنًا—‏Stirling PDF لا يمكنه ولن يتتبع محتوى المستندات التي تعمل عليها."
+description = "تساعدنا هذه الملفات على فهم كيفية استخدام أدواتنا، كي نركّز على بناء الميزات الأكثر قيمة لمجتمعنا. كن مطمئنًا—‏AziralPDF لا يمكنه ولن يتتبع محتوى المستندات التي تعمل عليها."
 title = "التحليلات"
 
 [cookieBanner.preferencesModal.description]
-1 = "يستخدم Stirling PDF ملفات تعريف الارتباط وتقنيات مشابهة لتحسين تجربتك وفهم كيفية استخدام أدواتنا. يساعدنا ذلك على تحسين الأداء وتطوير الميزات التي تهمك وتقديم دعم مستمر لمستخدمينا."
-2 = "لا يمكن لـ Stirling PDF—ولن—يتتبع أو يصل إلى محتوى المستندات التي تستخدمها."
+1 = "يستخدم AziralPDF ملفات تعريف الارتباط وتقنيات مشابهة لتحسين تجربتك وفهم كيفية استخدام أدواتنا. يساعدنا ذلك على تحسين الأداء وتطوير الميزات التي تهمك وتقديم دعم مستمر لمستخدمينا."
+2 = "لا يمكن لـ AziralPDF—ولن—يتتبع أو يصل إلى محتوى المستندات التي تستخدمها."
 3 = "خصوصيتك وثقتك في صميم ما نقوم به."
 
 [cookieBanner.preferencesModal.necessary]
@@ -3383,7 +3383,7 @@ unexpectedError = "حدث خطأ أثناء معالجة الملف. يرجى ا
 [defaultApp]
 description = "يمكنك تغيير ذلك لاحقاً من إعدادات النظام."
 dismiss = "تجاهل"
-message = "هل ترغب في تعيين Stirling PDF كمحرر PDF الافتراضي؟"
+message = "هل ترغب في تعيين AziralPDF كمحرر PDF الافتراضي؟"
 notNow = "ليس الآن"
 setDefault = "تعيين كافتراضي"
 title = "تعيين كتطبيق PDF الافتراضي"
@@ -3393,15 +3393,15 @@ message = "فشل تعيين معالج PDF الافتراضي"
 title = "خطأ"
 
 [defaultApp.prompt]
-message = "اجعل Stirling PDF التطبيق الافتراضي لفتح ملفات PDF."
+message = "اجعل AziralPDF التطبيق الافتراضي لفتح ملفات PDF."
 title = "تعيين كمحرر PDF افتراضي"
 
 [defaultApp.settingsOpened]
-message = "يرجى اختيار Stirling PDF في إعدادات النظام"
+message = "يرجى اختيار AziralPDF في إعدادات النظام"
 title = "تم فتح الإعدادات"
 
 [defaultApp.success]
-message = "أصبح Stirling PDF محرر PDF الافتراضي لديك"
+message = "أصبح AziralPDF محرر PDF الافتراضي لديك"
 title = "تم تعيين التطبيق الافتراضي"
 
 [editTableOfContents]
@@ -3543,9 +3543,9 @@ visitsTooltip = "الزيارات: {0} ({1}% من الإجمالي)"
 
 [enterpriseEdition]
 button = "ترقية إلى محترف"
-ssoAdvert = "هل تبحث عن المزيد من ميزات إدارة المستخدمين؟ اطلع على Stirling PDF Pro"
+ssoAdvert = "هل تبحث عن المزيد من ميزات إدارة المستخدمين؟ اطلع على AziralPDF Pro"
 warning = "هذه الخاصية متوفرة فقط للمستخدمين المحترفين."
-yamlAdvert = "يدعم Stirling PDF Pro ملفات الإعدادات YAML وميزات SSO أخرى"
+yamlAdvert = "يدعم AziralPDF Pro ملفات الإعدادات YAML وميزات SSO أخرى"
 
 [error]
 _value = "خطأ"
@@ -4021,7 +4021,7 @@ invisible = "غير مرئي (بيانات وصفية فقط)"
 location = "الموقع:"
 logo = "الشعار:"
 logoHidden = "بدون شعار"
-logoShown = "يظهر شعار Stirling PDF"
+logoShown = "يظهر شعار AziralPDF"
 participantCount = "{{count}} مشارك سيوقّعون بالترتيب"
 participants = "المشاركون"
 reason = "السبب:"
@@ -4073,7 +4073,7 @@ title = "التوقيع المتسلسل"
 dismiss = "إخفاء الشريط"
 message = "أنشئ حسابًا مجانيًا لحفظ عملك، والوصول إلى مزيد من الميزات، ودعم المشروع."
 signUp = "سجل مجانًا"
-title = "أنت تستخدم Stirling PDF كضيف!"
+title = "أنت تستخدم AziralPDF كضيف!"
 
 [home]
 alphabetical = "أبجدي"
@@ -4247,7 +4247,7 @@ tags = "دمج،جمع،توحيد"
 title = "دمج ملفات"
 
 [home.mobile]
-brandAlt = "شعار Stirling PDF"
+brandAlt = "شعار AziralPDF"
 openFiles = "فتح ملفات"
 swipeHint = "اسحب لليسار أو اليمين للتبديل بين العروض"
 tools = "الأدوات"
@@ -4287,7 +4287,7 @@ tags = "تنظيم،إعادة ترتيب،إعادة فرز"
 title = "منظم"
 
 [home.pdfTextEditor]
-desc = "مراجعة وتحرير صادرات Stirling PDF بصيغة JSON مع تحرير نصوص مجمّعة وإعادة إنشاء PDF"
+desc = "مراجعة وتحرير صادرات AziralPDF بصيغة JSON مع تحرير نصوص مجمّعة وإعادة إنشاء PDF"
 tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
 title = "محرر نصوص PDF"
 
@@ -4493,14 +4493,14 @@ passwordTooShort = "يجب أن تتكون كلمة المرور من 6 أحرف
 signIn = "تسجيل الدخول"
 validating = "جارٍ التحقق من الدعوة..."
 validationError = "فشل التحقق من رابط الدعوة"
-welcome = "مرحبًا بك في Stirling PDF"
+welcome = "مرحبًا بك في AziralPDF"
 welcomeSubtitle = "أكمل إعداد حسابك للبدء"
 welcomeTitle = "لقد تمت دعوتك!"
 
 [landing]
 addFiles = "إضافة ملفات"
 heroSubtitle = "اسحب وافلت أو أضف ملف PDF موجودا للبدء."
-heroTitle = "Stirling PDF"
+heroTitle = "AziralPDF"
 mobileUpload = "رفع من الهاتف المحمول"
 openFromComputer = "فتح من الكمبيوتر"
 uploadFromComputer = "الرفع من الكمبيوتر"
@@ -4526,7 +4526,7 @@ title = "تراخيص الطرف الثالث"
 version = "الإصدار"
 
 [localMode]
-toolUnavailable = "هذه الأداة تتطلب حسابًا. سجّل الدخول إلى Stirling Cloud أو اتصل بخادم مُستضاف ذاتيًا لاستخدامها."
+toolUnavailable = "هذه الأداة تتطلب حسابًا. سجّل الدخول إلى AziralPDF Cloud أو اتصل بخادم مُستضاف ذاتيًا لاستخدامها."
 
 [localMode.banner]
 message = "سجّل الدخول لإلغاء قفل جميع الأدوات."
@@ -4602,7 +4602,7 @@ signinTitle = "الرجاء تسجيل الدخول"
 signInWith = "تسجيل الدخول بواسطة"
 signOut = "تسجيل الخروج"
 ssoSignIn = "تسجيل الدخول عبر تسجيل الدخول الأحادي"
-subtitle = "سجّل الدخول مجددًا إلى Stirling PDF"
+subtitle = "سجّل الدخول مجددًا إلى AziralPDF"
 title = "تسجيل الدخول"
 toManySessions = "لديك عدة جلسات نشطة"
 unexpectedError = "خطأ غير متوقع: {{message}}"
@@ -4621,7 +4621,7 @@ subtitle = "مع أكثر من 12 أداة تساعدك على تنقيح ملف
 title = "حرّر ملفات PDF لعرض/تأمين المعلومات التي تريدها"
 
 [login.slides.overview]
-alt = "نظرة عامة على Stirling PDF"
+alt = "نظرة عامة على AziralPDF"
 subtitle = "حزمة سحابية تضع الخصوصية أولاً لملفات PDF تتيح لك تحويل المستندات وتوقيعها وتنقيحها وإدارتها، إلى جانب أكثر من 50 أداة قوية أخرى."
 title = "كل ما تحتاجه لـ PDF في مكان واحد."
 
@@ -4787,7 +4787,7 @@ message = "لم تتم المصادقة بنجاح. يمكنك إغلاق هذه
 title = "فشلت المصادقة"
 
 [oauth.success]
-message = "يمكنك إغلاق هذه النافذة والعودة إلى Stirling PDF."
+message = "يمكنك إغلاق هذه النافذة والعودة إلى AziralPDF."
 title = "تمت المصادقة بنجاح"
 
 [ocr]
@@ -4911,7 +4911,7 @@ runButton = "بعد تهيئة الأداة، يتيح لك هذا الزر تش
 selectControls = "يحتوي <strong>الشريط الأيمن</strong> على أزرار لتحديد/إلغاء تحديد جميع ملفات PDF النشطة بسرعة، بالإضافة إلى أزرار لتغيير سمة التطبيق أو لغته."
 selectCropTool = "لنختر أداة <strong>القص</strong> لشرح كيفية استخدام إحدى الأدوات."
 startTour = "بدء الجولة"
-startTourDescription = "قم بجولة إرشادية للتعرّف على الميزات الرئيسية في Stirling PDF"
+startTourDescription = "قم بجولة إرشادية للتعرّف على الميزات الرئيسية في AziralPDF"
 toolInterface = "هذه هي واجهة أداة <strong>القص</strong>. كما ترى، لا يوجد الكثير هنا لأننا لم نُضِف بعد أي ملفات PDF للعمل عليها."
 viewer = "يتيح لك <strong>المشاهد</strong> قراءة ملفات PDF وكتابة التعليقات عليها."
 viewSwitcher = "استخدم هذه الضوابط لاختيار طريقة عرض ملفات PDF."
@@ -4927,22 +4927,22 @@ skipForNow = "تخطي الآن"
 skipTheTour = "تخطي الجولة"
 
 [onboarding.desktopInstall]
-body = "يعمل Stirling بشكل أفضل كتطبيق سطح مكتب. يمكنك استخدامه دون اتصال، والوصول إلى المستندات بسرعة أكبر، وإجراء التعديلات محلياً على جهازك."
+body = "يعمل AziralPDF بشكل أفضل كتطبيق سطح مكتب. يمكنك استخدامه دون اتصال، والوصول إلى المستندات بسرعة أكبر، وإجراء التعديلات محلياً على جهازك."
 title = "تنزيل"
 titleWithOs = "تنزيل لـ {{osLabel}}"
 
 [onboarding.freeTrial]
 afterTrialWithoutPayment = "بعد انتهاء تجربتك، ستستمر على المستوى المجاني. أضف طريقة دفع للاحتفاظ بوصول Pro."
 afterTrialWithPayment = "سيبدأ اشتراك Pro تلقائيًا عند انتهاء التجربة."
-body = "لديك وصول كامل إلى ميزات Stirling PDF Pro أثناء التجربة. استمتع بتحويلات غير محدودة، وأحجام ملفات أكبر، ومعالجة ذات أولوية."
+body = "لديك وصول كامل إلى ميزات AziralPDF Pro أثناء التجربة. استمتع بتحويلات غير محدودة، وأحجام ملفات أكبر، ومعالجة ذات أولوية."
 daysRemaining = "{{days}} يومًا متبقيًا"
 daysRemainingSingular = "{{days}} يوم متبقٍ"
 title = "تجربة Pro لمدة 30 يومًا"
 trialEnds = "تنتهي التجربة في {{date}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "بمجرد تمكين وضع تسجيل الدخول، يمكنك إدارة المستخدمين، وضبط الإعدادات، ومراقبة حالة الخادم. أول <strong>{{freeTierLimit}}</strong> شخصاً على خادمك يستخدمون Stirling مجاناً."
-adminBodyLoginEnabled = "بصفتك مشرفاً، يمكنك إدارة المستخدمين، وضبط الإعدادات، ومراقبة حالة الخادم. أول <strong>{{freeTierLimit}}</strong> شخصاً على خادمك يستخدمون Stirling مجاناً."
+adminBodyLoginDisabled = "بمجرد تمكين وضع تسجيل الدخول، يمكنك إدارة المستخدمين، وضبط الإعدادات، ومراقبة حالة الخادم. أول <strong>{{freeTierLimit}}</strong> شخصاً على خادمك يستخدمون AziralPDF مجاناً."
+adminBodyLoginEnabled = "بصفتك مشرفاً، يمكنك إدارة المستخدمين، وضبط الإعدادات، ومراقبة حالة الخادم. أول <strong>{{freeTierLimit}}</strong> شخصاً على خادمك يستخدمون AziralPDF مجاناً."
 adminTitle = "نظرة عامة للمشرف"
 userBody = "ادعُ زملاءك، وخصص الأدوار، واحفظ مستنداتك منظمة في مساحة عمل آمنة واحدة. فعّل وضع تسجيل الدخول عندما تكون مستعداً للتوسع بعد الاستخدام الفردي."
 userTitle = "نظرة عامة على الخطة"
@@ -4951,16 +4951,16 @@ userTitle = "نظرة عامة على الخطة"
 message = "خضعت التطبيق لتغييرات كبيرة مؤخراً. قد يتطلب ذلك انتباه مشرف الخادم. يرجى تأكيد دورك للمتابعة."
 
 [onboarding.serverLicense]
-freeBody = "ترخيص <strong>Open-Core</strong> لدينا يسمح حتى <strong>{{freeTierLimit}}</strong> مستخدمين مجاناً لكل خادم. للتوسع بسلاسة والحصول على وصول مبكر إلى <strong>أداة تحرير نصوص PDF</strong> الجديدة، نوصي بخطة خادم Stirling - تحرير كامل و<strong>مقاعد غير محدودة</strong> مقابل $99/خادم/شهرياً."
+freeBody = "ترخيص <strong>Open-Core</strong> لدينا يسمح حتى <strong>{{freeTierLimit}}</strong> مستخدمين مجاناً لكل خادم. للتوسع بسلاسة والحصول على وصول مبكر إلى <strong>أداة تحرير نصوص PDF</strong> الجديدة، نوصي بخطة خادم AziralPDF - تحرير كامل و<strong>مقاعد غير محدودة</strong> مقابل $99/خادم/شهرياً."
 freeTitle = "ترخيص الخادم"
-overLimitBody = "ترخيصنا يسمح حتى <strong>{{freeTierLimit}}</strong> مستخدمين مجاناً لكل خادم. لديك <strong>{{overLimitUserCopy}}</strong> مستخدمي Stirling. للمتابعة دون انقطاع، ارقَ إلى خطة خادم Stirling - <strong>مقاعد غير محدودة</strong>، تحرير نصوص PDF، وتحكم إداري كامل مقابل $99/خادم/شهرياً."
+overLimitBody = "ترخيصنا يسمح حتى <strong>{{freeTierLimit}}</strong> مستخدمين مجاناً لكل خادم. لديك <strong>{{overLimitUserCopy}}</strong> مستخدمي AziralPDF. للمتابعة دون انقطاع، ارقَ إلى خطة خادم AziralPDF - <strong>مقاعد غير محدودة</strong>، تحرير نصوص PDF، وتحكم إداري كامل مقابل $99/خادم/شهرياً."
 overLimitTitle = "مطلوب ترخيص خادم"
 seePlans = "عرض الخطط →"
 skip = "تخطي الآن"
 upgrade = "الترقية الآن →"
 
 [onboarding.tourOverview]
-body = "تأتي Stirling PDF V2 بعشرات الأدوات وتصميم مُحدَّث. خذ جولة سريعة لترى ما الذي تغيّر وأين تجد الميزات التي تحتاجها."
+body = "تأتي AziralPDF بعشرات الأدوات وتصميم مُحدَّث. خذ جولة سريعة لترى ما الذي تغيّر وأين تجد الميزات التي تحتاجها."
 title = "نظرة عامة على الجولة"
 
 [onboarding.welcomeModal]
@@ -4969,11 +4969,11 @@ dontShowAgain = "عدم الإظهار مجددًا"
 helpHint = "يمكنك دائمًا الوصول إلى هذه الجولة لاحقًا من زر <strong>المساعدة</strong> في أسفل اليسار."
 maybeLater = "ربما لاحقًا"
 startTour = "بدء الجولة"
-title = "مرحبًا بك في Stirling PDF!"
+title = "مرحبًا بك في AziralPDF!"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF أصبح جاهزاً الآن للفرق من جميع الأحجام. يتضمن هذا التحديث تخطيطاً جديداً، وإمكانات إدارية قوية، وأكثر ميزة طُلبت - <strong>تحرير النص</strong>."
-title = "مرحباً بك في Stirling"
+body = "AziralPDF أصبح جاهزاً الآن للفرق من جميع الأحجام. يتضمن هذا التحديث تخطيطاً جديداً، وإمكانات إدارية قوية، وأكثر ميزة طُلبت - <strong>تحرير النص</strong>."
+title = "مرحباً بك في AziralPDF"
 
 [onboarding.whatsNew]
 activeFilesView = "استخدم الملفات النشطة لرؤية كل ما فتحته واختيار ما ستعمل عليه."
@@ -4982,7 +4982,7 @@ leftPanel = "يعرض اللوح الأيسر <strong>الأدوات</strong> ك
 pageEditorView = "بدّل إلى محرر الصفحات لإعادة الترتيب أو التدوير أو حذف الصفحات."
 quickAccess = "ابدأ من شريط <strong>الوصول السريع</strong> للتنقل بين Reader وAutomate وملفاتك وكل الجولات."
 topBar = "يتيح لك الشريط العلوي التبديل بين <strong>العارض</strong> و<strong>محرر الصفحات</strong> و<strong>الملفات النشطة</strong>."
-wrapUp = "هذا ما هو جديد في V2. افتح قائمة <strong>الجولات</strong> في أي وقت لإعادة تشغيل هذه الجولة أو جولة الأدوات أو جولة المسؤول."
+wrapUp = "هذا ما هو جديد في . افتح قائمة <strong>الجولات</strong> في أي وقت لإعادة تشغيل هذه الجولة أو جولة الأدوات أو جولة المسؤول."
 
 [overlay-pdfs]
 desc = "تراكب ملف PDF فوق آخر"
@@ -5794,7 +5794,7 @@ included = "مشمولة"
 name = "مجانية"
 
 [plan.licenseWarning]
-body = "لديك {{total}} مستخدماً لكن الشريحة المجانية تدعم {{limit}} فقط لكل خادم. قم بالترقية للحفاظ على عمل Stirling PDF بسلاسة."
+body = "لديك {{total}} مستخدماً لكن الشريحة المجانية تدعم {{limit}} فقط لكل خادم. قم بالترقية للحفاظ على عمل AziralPDF بسلاسة."
 cta = "عرض الخطط"
 overLimit = "أكثر من {{limit}}"
 title = "تم بلوغ حد الاستضافة الذاتية المجاني"
@@ -6148,7 +6148,7 @@ whatsNewTourDesc = "جولة في التصميم المُحدَّث"
 
 [quickAccess.toursTooltip]
 admin = "شاهد الشروحات هنا: جولة الأدوات، جولة التصميم الجديد V2، وجولة المسؤول."
-user = "شاهد الشروحات هنا: جولة الأدوات وجولة التصميم الجديد V2."
+user = "شاهد الشروحات هنا: جولة الأدوات وجولة التصميم الجديد . "
 
 [redact]
 submit = "Manual Redaction"
@@ -6733,8 +6733,8 @@ hideTools = "إخفاء الأدوات غير المتاحة ▴"
 messageNoFallback = "الأدوات غير متاحة حتى يعود خادمك إلى الاتصال."
 messageWithFallback = "تتطلب بعض الأدوات اتصالاً بالخادم."
 showTools = "عرض الأدوات غير المتاحة ▾"
-title = "خادم Stirling-PDF الخاص بك غير قابل للوصول"
-toolNotAvailableLocally = "خادم Stirling-PDF الخاص بك غير متصل و\"{{endpoint}}\" غير متاح في الواجهة الخلفية المحلية."
+title = "خادم AziralPDF الخاص بك غير قابل للوصول"
+toolNotAvailableLocally = "خادم AziralPDF الخاص بك غير متصل و\"{{endpoint}}\" غير متاح في الواجهة الخلفية المحلية."
 
 [session]
 expired = "لقد انتهت جلستك. يرجى تحديث الصفحة والمحاولة مرة أخرى"
@@ -6791,7 +6791,7 @@ user = "تم تسجيل الدخول باسم"
 
 [settings.connection.mode]
 local = "محلي فقط"
-saas = "Stirling Cloud"
+saas = "AziralPDF Cloud"
 selfhosted = "مستضاف ذاتياً"
 
 [settings.developer]
@@ -6806,7 +6806,7 @@ autoUnzipFileLimitDescription = "الحد الأقصى لعدد الملفات �
 autoUnzipFileLimitTooltip = "لا يتم فك الضغط إلا إذا احتوى ملف ZIP على هذا العدد من الملفات أو أقل. ارفع القيمة لاستخراج ملفات ZIP الأكبر."
 autoUnzipTooltip = "فك ضغط ملفات ZIP التي تُعاد من عمليات API تلقائيًا. عطّل للحفاظ على ملفات ZIP كما هي. هذا لا يؤثر على سير عمل الأتمتة."
 defaultPdfEditor = "محرر PDF الافتراضي"
-defaultPdfEditorActive = "Stirling PDF هو محرر PDF الافتراضي لديك"
+defaultPdfEditorActive = "AziralPDF هو محرر PDF الافتراضي لديك"
 defaultPdfEditorChecking = "جارٍ الفحص..."
 defaultPdfEditorInactive = "تطبيق آخر معيّن كافتراضي"
 defaultPdfEditorSet = "افتراضي بالفعل"
@@ -6913,7 +6913,7 @@ usageAnalytics = "تحليلات الاستخدام"
 [settings.planBilling]
 currentPlan = "الخطة الحالية"
 loading = "جارٍ تحميل معلومات الفوترة..."
-notAvailable = "الخطة والفوترة متاحتان فقط عند الاتصال بـ Stirling Cloud (وضع SaaS)."
+notAvailable = "الخطة والفوترة متاحتان فقط عند الاتصال بـ AziralPDF Cloud (وضع SaaS)."
 title = "الخطة والفوترة"
 
 [settings.planBilling.billing]
@@ -7023,13 +7023,13 @@ teams = "الفرق"
 title = "مساحة العمل"
 
 [setup]
-description = "ابدأ باختيار كيفية استخدام Stirling PDF"
-welcome = "مرحباً بك في Stirling PDF"
+description = "ابدأ باختيار كيفية استخدام AziralPDF"
+welcome = "مرحباً بك في AziralPDF"
 
 [setup.login]
 connectingTo = "جارٍ الاتصال بـ:"
 hideInstructions = "إخفاء الإرشادات"
-instructions = "لتمكين تسجيل الدخول على خادم Stirling PDF الخاص بك:"
+instructions = "لتمكين تسجيل الدخول على خادم AziralPDF الخاص بك:"
 instructionsEnvVar = "عيّن متغيّر البيئة:"
 instructionsOrYml = "أو في settings.yml:"
 instructionsRestart = "ثم أعد تشغيل الخادم لتصبح التغييرات نافذة."
@@ -7063,16 +7063,16 @@ label = "اسم المستخدم"
 placeholder = "أدخل اسم المستخدم"
 
 [setup.mode.saas]
-description = "سجّل الدخول بحساب Stirling الخاص بك"
-title = "Stirling Cloud"
+description = "سجّل الدخول بحساب AziralPDF الخاص بك"
+title = "AziralPDF Cloud"
 
 [setup.mode.selfhosted]
-description = "اتصل بخادم Stirling PDF الخاص بك"
+description = "اتصل بخادم AziralPDF الخاص بك"
 title = "خادم مستضاف ذاتياً"
 
 [setup.saas]
-subtitle = "سجّل الدخول بحساب Stirling الخاص بك"
-title = "سجّل الدخول إلى Stirling"
+subtitle = "سجّل الدخول بحساب AziralPDF الخاص بك"
+title = "سجّل الدخول إلى AziralPDF"
 
 [setup.selfhosted]
 changeServerLocked = "لقد قيّدت مؤسستك هذا التطبيق بخادم محدد"
@@ -7111,11 +7111,11 @@ step3 = "أعد تشغيل الخادم"
 title = "تسجيل الدخول غير مفعّل"
 
 [setup.server.type]
-saas = "Stirling PDF SaaS"
+saas = "AziralPDF SaaS"
 selfhosted = "خادم مستضاف ذاتياً"
 
 [setup.server.url]
-description = "أدخل عنوان URL الكامل لخادم Stirling PDF المستضاف ذاتياً"
+description = "أدخل عنوان URL الكامل لخادم AziralPDF المستضاف ذاتياً"
 label = "عنوان URL للخادم"
 
 [setup.step1]
@@ -7340,7 +7340,7 @@ passwordsDoNotMatch = "كلمتا المرور غير متطابقتين"
 passwordTooShort = "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
 pleaseFillAllFields = "يرجى ملء جميع الحقول"
 signUp = "إنشاء حساب"
-subtitle = "انضم إلى Stirling PDF للبدء"
+subtitle = "انضم إلى AziralPDF للبدء"
 title = "إنشاء حساب"
 unexpectedError = "خطأ غير متوقع: {{message}}"
 useEmailInstead = "استخدم البريد الإلكتروني بدلًا من ذلك"
@@ -7627,7 +7627,7 @@ download = "تنزيل"
 downloaded = "تم التنزيل"
 downloadFailed = "تعذّر تنزيل هذا الملف."
 downloadsCount = "عمليات التنزيل: {{count}}"
-emailWarningBody = "يبدو هذا عنوان بريد إلكتروني. إذا لم يكن هذا الشخص مستخدم Stirling PDF بالفعل، فلن يتمكن من الوصول إلى الملف."
+emailWarningBody = "يبدو هذا عنوان بريد إلكتروني. إذا لم يكن هذا الشخص مستخدم AziralPDF بالفعل، فلن يتمكن من الوصول إلى الملف."
 emailWarningConfirm = "المشاركة على أي حال"
 emailWarningTitle = "عنوان بريد إلكتروني"
 errorTitle = "فشلت المشاركة"
@@ -7657,7 +7657,7 @@ manageTitle = "إدارة المشاركة"
 noActivity = "لا يوجد نشاط بعد."
 noLinks = "لا توجد روابط مشاركة نشطة بعد."
 noSharedUsers = "لا يملك أي مستخدم وصولًا بعد."
-openInApp = "فتح في Stirling PDF"
+openInApp = "فتح في AziralPDF"
 ownerLabel = "المالك"
 ownerOnly = "يمكن للمالك فقط إدارة المشاركة."
 ownerUnknown = "غير معروف"
@@ -7718,28 +7718,28 @@ trialing = "تجريبي"
 
 [survey]
 button = "المشاركة في الاستطلاع"
-changes = "تحديث Stirling-PDF منذ آخر استبيان! للحصول على المزيد من المعلومات الرجاء زيارة مقالتنا في المدونة هنا:"
+changes = "تحديث AziralPDF منذ آخر استبيان! للحصول على المزيد من المعلومات الرجاء زيارة مقالتنا في المدونة هنا:"
 changes2 = "مع هذه التحديثات، نستفيد من الدعم العملي والمنحة المالية"
-description = "Stirling-PDF لا يحتوي على تتبع لذا نريد أن نسمع من مستخدمينا لتحسين Stirling-PDF!"
+description = "AziralPDF لا يحتوي على تتبع لذا نريد أن نسمع من مستخدمينا لتحسين AziralPDF!"
 disabled = "(سيتم تعطيل النافذة المنبثقة للاستطلاع في التحديثات التالية ولكنها ستكون متاحة في أسفل الصفحة)"
 dontShowAgain = "عدم الإظهار مرة أخرى"
 nav = "استطلاع"
 please = "يرجى النظر في المشاركة في استطلاعنا!"
-title = "استطلاع Stirling-PDF"
+title = "استطلاع AziralPDF"
 
 [survey.meeting]
-1 = "إذا كنت تستخدم Stirling PDF في العمل، يسعدنا التحدث معك. نقدّم جلسات دعم تقني مقابل جلسة اكتشاف مستخدم مدتها 15 دقيقة."
+1 = "إذا كنت تستخدم AziralPDF في العمل، يسعدنا التحدث معك. نقدّم جلسات دعم تقني مقابل جلسة اكتشاف مستخدم مدتها 15 دقيقة."
 2 = "هذه فرصة لـ:"
 3 = "الحصول على مساعدة في النشر، التكاملات، أو استكشاف الأخطاء"
 4 = "تقديم ملاحظات مباشرة حول الأداء والحالات الحدّية وثغرات الميزات"
-5 = "مساعدتنا على تحسين Stirling PDF للاستخدام المؤسسي الواقعي"
+5 = "مساعدتنا على تحسين AziralPDF للاستخدام المؤسسي الواقعي"
 6 = "إذا كنت مهتمًا، يمكنك حجز وقت مع فريقنا مباشرةً. (اللغة الإنجليزية فقط)"
-7 = "نتطلع للتعمّق في استخداماتك وجعل Stirling PDF أفضل!"
+7 = "نتطلع للتعمّق في استخداماتك وجعل AziralPDF أفضل!"
 button = "احجز موعدًا"
 notInterested = "لست شركة و/أو غير مهتم بالاجتماع؟"
 
 [swagger]
-desc = "عرض واختبار نقاط نهاية Stirling PDF API"
+desc = "عرض واختبار نقاط نهاية AziralPDF API"
 header = "توثيق API"
 tags = "api,documentation,swagger,endpoints,development"
 title = "توثيق API"
@@ -7883,7 +7883,7 @@ favorites = "المفضلة"
 heading = "كل الأدوات (عرض ملء الشاشة)"
 noResults = "جرّب ضبط البحث أو تبديل الوصف للعثور على ما تحتاجه."
 recommended = "موصى به"
-selfHostedOffline = "يتطلب خادم Stirling-PDF الخاص بك (غير متصل حاليًا):"
+selfHostedOffline = "يتطلب خادم AziralPDF الخاص بك (غير متصل حاليًا):"
 showDetails = "إظهار التفاصيل"
 unavailable = "معطَّل من قِبل مسؤول الخادم:"
 unavailableDependency = "غير متاح - الأداة المطلوبة مفقودة على الخادم:"
@@ -7892,7 +7892,7 @@ unfavorite = "إزالة من المفضلة"
 [toolPanel.modePrompt]
 chooseFullscreen = "استخدم وضع ملء الشاشة"
 chooseSidebar = "استخدم وضع الشريط الجانبي"
-description = "عاين التخطيطين وقرّر كيف تريد استكشاف أدوات Stirling PDF."
+description = "عاين التخطيطين وقرّر كيف تريد استكشاف أدوات AziralPDF."
 dismiss = "ربما لاحقًا"
 fullscreenDescription = "تصفّح كل أداة في كتالوج يغطي مساحة العمل حتى تختار واحدة."
 fullscreenTitle = "وضع ملء الشاشة - (قديم)"
@@ -7986,7 +7986,7 @@ attentionBody = "يجب على المشرف تسجيل الدخول لرؤية �
 attentionBodyAdmin = "راجع متطلبات الترخيص للحفاظ على امتثال هذا الخادم."
 attentionTitle = "هذا الخادم يحتاج إلى انتباه المشرف"
 dismiss = "تجاهل الشريط"
-message = "احصل على أقصى استفادة من Stirling PDF مع مستخدمين غير محدودين وميزات متقدمة"
+message = "احصل على أقصى استفادة من AziralPDF مع مستخدمين غير محدودين وميزات متقدمة"
 seeInfo = "عرض المعلومات"
 title = "الترقية إلى خطة الخادم"
 upgradeButton = "الترقية الآن"
@@ -8108,7 +8108,7 @@ continued = "متابعة"
 downloads = "التنزيلات"
 entryLabel = "ملخص التوقيع"
 filesEvaluated = "تم تقييم {{count}} ملفًا"
-footer = "تم التحقق عبر Stirling PDF"
+footer = "تم التحقق عبر AziralPDF"
 generatedAt = "تم الإنشاء"
 noPdf = "سيكون تقرير PDF متاحًا بعد تحقق ناجح."
 page = "صفحة"

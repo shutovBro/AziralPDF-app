@@ -63,7 +63,7 @@ export const DEFAULT_RUNTIME_STATE: OnboardingRuntimeState = {
   analyticsEnabled: false,
   licenseNotice: {
     totalUsers: null,
-    freeTierLimit: 5,
+    freeTierLimit: Number.MAX_SAFE_INTEGER,
     isOverLimit: false,
     requiresLicense: false,
   },
@@ -92,7 +92,8 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
     id: "admin-overview",
     type: "modal-slide",
     slideId: "admin-overview",
-    condition: (ctx) => ctx.effectiveIsAdmin,
+    // AziralPDF: Stirling-PDF Open-Core tier limits irrelevant for our product — slide disabled.
+    condition: () => false,
   },
   {
     id: "desktop-install",
@@ -122,8 +123,8 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
     id: "server-license",
     type: "modal-slide",
     slideId: "server-license",
-    condition: (ctx) =>
-      ctx.effectiveIsAdmin && ctx.licenseNotice.requiresLicense,
+    // AziralPDF: no separate paid license — slide always hidden.
+    condition: () => false,
   },
   {
     id: "mfa-setup",

@@ -14,7 +14,7 @@ interface FirstLoginSlideProps {
   usingDefaultCredentials?: boolean;
 }
 
-const DEFAULT_PASSWORD = "AziralAdmin2026!";
+// Default credential prefill disabled — initial password is operator-supplied (SECURITY_INITIALLOGIN_PASSWORD).
 
 function FirstLoginForm({
   username,
@@ -22,10 +22,8 @@ function FirstLoginForm({
   usingDefaultCredentials = false,
 }: FirstLoginSlideProps) {
   const { t } = useTranslation();
-  // If using default credentials, pre-fill with "stirling" - user won't see this field
-  const [currentPassword, setCurrentPassword] = useState(
-    usingDefaultCredentials ? DEFAULT_PASSWORD : "",
-  );
+  // Initial password is operator-supplied via SECURITY_INITIALLOGIN_PASSWORD; user enters it manually.
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);

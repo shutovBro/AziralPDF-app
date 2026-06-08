@@ -1,15 +1,13 @@
 import { useEffect } from "react";
 import { useBanner } from "@app/contexts/BannerContext";
-import UpgradeBanner from "@app/components/shared/UpgradeBanner";
 
+// AziralPDF: Stirling Open-Core upsell banner permanently hidden.
+// Original UpgradeBanner component preserved in repo but no longer mounted.
 export function UpgradeBannerInitializer() {
   const { setBanner } = useBanner();
 
   useEffect(() => {
-    setBanner(<UpgradeBanner />);
-    return () => {
-      setBanner(null);
-    };
+    setBanner(null);
   }, [setBanner]);
 
   return null;

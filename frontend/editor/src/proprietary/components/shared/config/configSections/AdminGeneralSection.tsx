@@ -1035,7 +1035,7 @@ export default function AdminGeneralSection() {
                     },
                   })
                 }
-                placeholder="Stirling-PDF"
+                placeholder="AziralPDF"
                 disabled={!loginEnabled}
               />
             </div>
@@ -1069,7 +1069,7 @@ export default function AdminGeneralSection() {
                     },
                   })
                 }
-                placeholder="Stirling-PDF"
+                placeholder="AziralPDF"
                 disabled={!loginEnabled}
               />
             </div>

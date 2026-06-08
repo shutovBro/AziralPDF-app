@@ -878,11 +878,11 @@ description = "Cấu hình các tính năng và chức năng tùy chọn."
 title = "Tính năng"
 
 [admin.settings.features.serverCertificate]
-description = "Cấu hình tạo chứng chỉ phía máy chủ cho chức năng \"Sign with Stirling-PDF\""
+description = "Cấu hình tạo chứng chỉ phía máy chủ cho chức năng \"Sign with AziralPDF\""
 label = "Chứng chỉ máy chủ"
 
 [admin.settings.features.serverCertificate.enabled]
-description = "Bật chứng chỉ phía máy chủ cho tùy chọn \"Sign with Stirling-PDF\""
+description = "Bật chứng chỉ phía máy chủ cho tùy chọn \"Sign with AziralPDF\""
 label = "Bật chứng chỉ máy chủ"
 
 [admin.settings.features.serverCertificate.organizationName]
@@ -1030,7 +1030,7 @@ description = "URL hoặc tên tệp cho chính sách cookie"
 label = "Chính sách cookie"
 
 [admin.settings.legal.disclaimer]
-message = "Bằng cách tùy chỉnh các tài liệu pháp lý này, bạn tự chịu hoàn toàn trách nhiệm bảo đảm tuân thủ mọi luật và quy định áp dụng, bao gồm nhưng không giới hạn GDPR và các yêu cầu bảo vệ dữ liệu của EU khác. Chỉ sửa các cài đặt này nếu: (1) bạn đang vận hành bản cài đặt cá nhân/riêng tư, (2) bạn ở ngoài phạm vi pháp lý của EU và hiểu nghĩa vụ pháp lý địa phương của mình, hoặc (3) bạn đã nhận được tư vấn pháp lý phù hợp và chấp nhận tự chịu trách nhiệm với toàn bộ dữ liệu người dùng và tuân thủ pháp lý. Stirling-PDF và các nhà phát triển không chịu bất kỳ trách nhiệm nào cho nghĩa vụ pháp lý của bạn."
+message = "Bằng cách tùy chỉnh các tài liệu pháp lý này, bạn tự chịu hoàn toàn trách nhiệm bảo đảm tuân thủ mọi luật và quy định áp dụng, bao gồm nhưng không giới hạn GDPR và các yêu cầu bảo vệ dữ liệu của EU khác. Chỉ sửa các cài đặt này nếu: (1) bạn đang vận hành bản cài đặt cá nhân/riêng tư, (2) bạn ở ngoài phạm vi pháp lý của EU và hiểu nghĩa vụ pháp lý địa phương của mình, hoặc (3) bạn đã nhận được tư vấn pháp lý phù hợp và chấp nhận tự chịu trách nhiệm với toàn bộ dữ liệu người dùng và tuân thủ pháp lý. AziralPDF và các nhà phát triển không chịu bất kỳ trách nhiệm nào cho nghĩa vụ pháp lý của bạn."
 title = "Cảnh báo trách nhiệm pháp lý"
 
 [admin.settings.legal.impressum]
@@ -1402,7 +1402,7 @@ description = "Khi bật, chỉ các User ID trong danh sách mới được dù
 label = "Chỉ cho phép User ID cụ thể"
 
 [admin.settings.telegram.enabled]
-description = "Cho phép người dùng tương tác với Stirling PDF qua bot Telegram đã cấu hình của bạn."
+description = "Cho phép người dùng tương tác với AziralPDF qua bot Telegram đã cấu hình của bạn."
 label = "Bật Bot Telegram"
 
 [admin.settings.telegram.feedback]
@@ -1479,7 +1479,7 @@ settingsOverview = "Đây là <strong>Bảng Cài đặt</strong>. Cài đặt q
 systemCustomization = "Chúng tôi có nhiều cách tùy biến UI: <strong>Cài đặt hệ thống</strong> cho phép đổi tên ứng dụng và ngôn ngữ, <strong>Tính năng</strong> cho phép quản lý chứng chỉ máy chủ, và <strong>Endpoint</strong> cho phép bật/tắt công cụ cụ thể cho người dùng của bạn."
 teamsAndUsers = "Quản lý <strong>Nhóm</strong> và người dùng riêng lẻ tại đây. Bạn có thể mời người dùng mới qua email, liên kết chia sẻ, hoặc tự tạo tài khoản tùy chỉnh cho họ."
 welcome = "Chào mừng đến với <strong>Chuyến tham quan Quản trị</strong>! Hãy khám phá các tính năng enterprise mạnh mẽ và cài đặt dành cho quản trị viên hệ thống."
-wrapUp = "Đó là chuyến tham quan quản trị! Bạn đã thấy các tính năng enterprise giúp Stirling PDF trở thành giải pháp mạnh mẽ, tùy biến cho các tổ chức. Truy cập chuyến tham quan này bất cứ lúc nào từ menu <strong>Trợ giúp</strong>."
+wrapUp = "Đó là chuyến tham quan quản trị! Bạn đã thấy các tính năng enterprise giúp AziralPDF trở thành giải pháp mạnh mẽ, tùy biến cho các tổ chức. Truy cập chuyến tham quan này bất cứ lúc nào từ menu <strong>Trợ giúp</strong>."
 
 [adminUserSettings]
 actions = "Hành động"
@@ -1516,11 +1516,11 @@ webOnlyUser = "Chỉ người dùng web"
 disable = "Tắt phân tích"
 enable = "Bật phân tích"
 learnMore = "Tìm hiểu thêm"
-paragraph1 = "Stirling PDF có thu thập phân tích theo tùy chọn để giúp chúng tôi cải thiện sản phẩm. Chúng tôi không theo dõi bất kỳ thông tin cá nhân hoặc nội dung tệp nào."
-paragraph2 = "Vui lòng cân nhắc bật phân tích để giúp Stirling-PDF phát triển và cho phép chúng tôi hiểu người dùng tốt hơn."
+paragraph1 = "AziralPDF có thu thập phân tích theo tùy chọn để giúp chúng tôi cải thiện sản phẩm. Chúng tôi không theo dõi bất kỳ thông tin cá nhân hoặc nội dung tệp nào."
+paragraph2 = "Vui lòng cân nhắc bật phân tích để giúp AziralPDF phát triển và cho phép chúng tôi hiểu người dùng tốt hơn."
 privacyAssurance = "Chúng tôi không theo dõi thông tin cá nhân hay nội dung tệp của bạn."
 settings = "Bạn có thể thay đổi cài đặt phân tích trong tệp config/settings.yml"
-title = "Bạn muốn giúp cải thiện Stirling PDF không?"
+title = "Bạn muốn giúp cải thiện AziralPDF không?"
 
 [annotation]
 annotationStyle = "Kiểu chú thích"
@@ -1923,7 +1923,7 @@ tags = "pdf,chia,tài liệu,tổ chức"
 description = "In, chèn, quét, tải lên và để chúng tôi tự động tách tài liệu của bạn. Không cần sắp xếp thủ công."
 dividerDownload2 = "Tải xuống 'Trang phân cách tự động (có hướng dẫn).pdf'"
 duplexMode = "Chế độ hai mặt (Quét mặt trước và sau)"
-formPrompt = "Gửi PDF chứa trang phân cách Stirling-PDF:"
+formPrompt = "Gửi PDF chứa trang phân cách AziralPDF:"
 header = "Tự động chia PDF"
 submit = "Gửi"
 tags = "Dựa trên QR,tách,phân đoạn quét,sắp xếp"
@@ -1932,7 +1932,7 @@ title = "Tự động chia PDF"
 [autoSplitPDF.selectText]
 1 = "In một số trang phân cách từ bên dưới (Đen trắng là được)."
 2 = "Quét tất cả tài liệu của bạn cùng một lúc bằng cách chèn trang phân cách giữa chúng."
-3 = "Tải lên tệp PDF quét lớn duy nhất và để Stirling PDF xử lý phần còn lại."
+3 = "Tải lên tệp PDF quét lớn duy nhất và để AziralPDF xử lý phần còn lại."
 4 = "Các trang phân cách được tự động phát hiện và xóa, đảm bảo tài liệu cuối cùng gọn gàng."
 
 [backendHealth]
@@ -2491,7 +2491,7 @@ bullet1 = "Hỗ trợ định dạng PEM, PKCS12, JKS và chứng chỉ máy ch�
 bullet2 = "Tùy chọn hiển thị hoặc ẩn chữ ký trên PDF"
 bullet3 = "Thêm lý do, địa điểm và tên người ký"
 bullet4 = "Chọn trang để đặt chữ ký hiển thị"
-bullet5 = "Dùng chứng chỉ máy chủ cho tùy chọn 'Sign with Stirling-PDF' đơn giản"
+bullet5 = "Dùng chứng chỉ máy chủ cho tùy chọn 'Sign with AziralPDF' đơn giản"
 text = "Để ký PDF, bạn cần chứng chỉ số (như PEM, PKCS12 hoặc JKS). Bạn có thể chọn hiển thị chữ ký trên tài liệu hoặc giữ ẩn chỉ vì mục đích bảo mật."
 title = "Thêm chữ ký"
 
@@ -3014,15 +3014,15 @@ upgradeButton = "Nâng cấp tài khoản"
 chartAriaLabel = "Sử dụng tín dụng: đã dùng {{includedUsed}} trên {{includedTotal}} đi kèm, đã dùng {{purchasedUsed}} trên {{purchasedTotal}} đã mua"
 copyKeyAriaLabel = "Sao chép khóa API"
 creditsRemaining = "Tín dụng còn lại"
-description = "Khóa API của bạn để truy cập bộ công cụ PDF của Stirling. Sao chép vào dự án của bạn hoặc làm mới để tạo khóa mới."
-docsDescription = "Tìm hiểu thêm về tích hợp với Stirling PDF:"
+description = "Khóa API của bạn để truy cập bộ công cụ PDF của AziralPDF. Sao chép vào dự án của bạn hoặc làm mới để tạo khóa mới."
+docsDescription = "Tìm hiểu thêm về tích hợp với AziralPDF:"
 docsLink = "Tài liệu API"
 docsTitle = "Tài liệu API"
 generateError = "Chúng tôi không thể tạo khóa API của bạn."
 goToAccount = "Đến Tài khoản"
 guestInfo = "Người dùng khách không nhận khóa API. Tạo tài khoản để có khóa API dùng trong ứng dụng của bạn."
 includedCredits = "Tín dụng đi kèm"
-intro = "Sử dụng khóa API của bạn để truy cập lập trình vào khả năng xử lý của Stirling PDF."
+intro = "Sử dụng khóa API của bạn để truy cập lập trình vào khả năng xử lý của AziralPDF."
 label = "Khóa API"
 lastApiUse = "Lần dùng API gần nhất"
 nextReset = "Lần đặt lại tiếp theo"
@@ -3066,7 +3066,7 @@ system = "Cấu hình hệ thống"
 [connectionMode.status]
 localOffline = "Đang chạy ở chế độ ngoại tuyến"
 localOnline = "Đang chạy ở chế độ ngoại tuyến"
-saas = "Đã kết nối với Stirling Cloud"
+saas = "Đã kết nối với AziralPDF Cloud"
 selfhostedChecking = "Đã kết nối tới máy chủ tự lưu trữ (đang kiểm tra...)"
 selfhostedOffline = "Máy chủ tự lưu trữ không thể truy cập"
 selfhostedOnline = "Đã kết nối tới máy chủ tự lưu trữ"
@@ -3196,7 +3196,7 @@ showPreferencesBtn = "Quản lý tùy chọn"
 title = "Cách chúng tôi sử dụng Cookie"
 
 [cookieBanner.popUp.description]
-1 = "Chúng tôi sử dụng cookie và các công nghệ khác để Stirling PDF hoạt động tốt hơn cho bạn — giúp cải thiện công cụ và tiếp tục xây dựng các tính năng bạn sẽ yêu thích."
+1 = "Chúng tôi sử dụng cookie và các công nghệ khác để AziralPDF hoạt động tốt hơn cho bạn — giúp cải thiện công cụ và tiếp tục xây dựng các tính năng bạn sẽ yêu thích."
 2 = "If you’d rather not, clicking 'No Thanks' will only enable the essential cookies needed to keep things running smoothly."
 
 [cookieBanner.preferencesModal]
@@ -3209,12 +3209,12 @@ subtitle = "Cách sử dụng cookie"
 title = "Trung tâm tùy chọn đồng ý"
 
 [cookieBanner.preferencesModal.analytics]
-description = "Những cookie này giúp chúng tôi hiểu cách công cụ được sử dụng, để chúng tôi tập trung xây dựng các tính năng mà cộng đồng coi trọng nhất. Hãy yên tâm — Stirling PDF không và sẽ không bao giờ theo dõi nội dung tài liệu bạn làm việc cùng."
+description = "Những cookie này giúp chúng tôi hiểu cách công cụ được sử dụng, để chúng tôi tập trung xây dựng các tính năng mà cộng đồng coi trọng nhất. Hãy yên tâm — AziralPDF không và sẽ không bao giờ theo dõi nội dung tài liệu bạn làm việc cùng."
 title = "Phân tích"
 
 [cookieBanner.preferencesModal.description]
-1 = "Stirling PDF sử dụng cookie và các công nghệ tương tự để nâng cao trải nghiệm của bạn và hiểu cách các công cụ được sử dụng. Điều này giúp chúng tôi cải thiện hiệu năng, phát triển các tính năng bạn quan tâm và hỗ trợ người dùng lâu dài."
-2 = "Stirling PDF không thể — và sẽ không bao giờ — theo dõi hoặc truy cập nội dung các tài liệu bạn sử dụng."
+1 = "AziralPDF sử dụng cookie và các công nghệ tương tự để nâng cao trải nghiệm của bạn và hiểu cách các công cụ được sử dụng. Điều này giúp chúng tôi cải thiện hiệu năng, phát triển các tính năng bạn quan tâm và hỗ trợ người dùng lâu dài."
+2 = "AziralPDF không thể — và sẽ không bao giờ — theo dõi hoặc truy cập nội dung các tài liệu bạn sử dụng."
 3 = "Quyền riêng tư và sự tin tưởng của bạn là cốt lõi trong những gì chúng tôi làm."
 
 [cookieBanner.preferencesModal.necessary]
@@ -3383,7 +3383,7 @@ unexpectedError = "Đã xảy ra lỗi khi xử lý tệp. Vui lòng thử lại
 [defaultApp]
 description = "Bạn có thể thay đổi sau trong cài đặt hệ thống."
 dismiss = "Bỏ qua"
-message = "Bạn có muốn đặt Stirling PDF làm trình chỉnh sửa PDF mặc định không?"
+message = "Bạn có muốn đặt AziralPDF làm trình chỉnh sửa PDF mặc định không?"
 notNow = "Để sau"
 setDefault = "Đặt mặc định"
 title = "Đặt làm ứng dụng PDF mặc định"
@@ -3393,15 +3393,15 @@ message = "Không thể đặt trình xử lý PDF mặc định"
 title = "Lỗi"
 
 [defaultApp.prompt]
-message = "Đặt Stirling PDF làm ứng dụng mặc định để mở tệp PDF."
+message = "Đặt AziralPDF làm ứng dụng mặc định để mở tệp PDF."
 title = "Đặt làm trình chỉnh sửa PDF mặc định"
 
 [defaultApp.settingsOpened]
-message = "Vui lòng chọn Stirling PDF trong cài đặt hệ thống"
+message = "Vui lòng chọn AziralPDF trong cài đặt hệ thống"
 title = "Đã mở Cài đặt"
 
 [defaultApp.success]
-message = "Stirling PDF hiện là trình chỉnh sửa PDF mặc định của bạn"
+message = "AziralPDF hiện là trình chỉnh sửa PDF mặc định của bạn"
 title = "Đã đặt ứng dụng mặc định"
 
 [editTableOfContents]
@@ -3543,9 +3543,9 @@ visitsTooltip = "Lượt truy cập: {0} ({1}% tổng số)"
 
 [enterpriseEdition]
 button = "Nâng cấp lên Pro"
-ssoAdvert = "Cần thêm các tính năng quản lý người dùng? Hãy xem Stirling PDF Pro"
+ssoAdvert = "Cần thêm các tính năng quản lý người dùng? Hãy xem AziralPDF Pro"
 warning = "Tính năng này chỉ dành cho người dùng Pro."
-yamlAdvert = "Stirling PDF Pro hỗ trợ tệp cấu hình YAML và các tính năng SSO khác."
+yamlAdvert = "AziralPDF Pro hỗ trợ tệp cấu hình YAML và các tính năng SSO khác."
 
 [error]
 _value = "Lỗi"
@@ -4021,7 +4021,7 @@ invisible = "Ẩn (chỉ siêu dữ liệu)"
 location = "Vị trí:"
 logo = "Logo:"
 logoHidden = "Không có logo"
-logoShown = "Hiển thị logo Stirling PDF"
+logoShown = "Hiển thị logo AziralPDF"
 participantCount = "{{count}} người tham gia sẽ ký theo thứ tự"
 participants = "Người tham gia"
 reason = "Lý do:"
@@ -4073,7 +4073,7 @@ title = "Ký tuần tự"
 dismiss = "Ẩn banner"
 message = "Tạo tài khoản miễn phí để lưu công việc, truy cập nhiều tính năng hơn và ủng hộ dự án."
 signUp = "Đăng ký miễn phí"
-title = "Bạn đang dùng Stirling PDF với tư cách khách!"
+title = "Bạn đang dùng AziralPDF với tư cách khách!"
 
 [home]
 alphabetical = "Theo bảng chữ cái"
@@ -4247,7 +4247,7 @@ tags = "kết hợp,ghép,hợp nhất"
 title = "Ghép nối"
 
 [home.mobile]
-brandAlt = "Logo Stirling PDF"
+brandAlt = "Logo AziralPDF"
 openFiles = "Mở tệp"
 swipeHint = "Vuốt sang trái hoặc phải để chuyển chế độ xem"
 tools = "Công cụ"
@@ -4287,7 +4287,7 @@ tags = "tổ chức,sắp xếp lại,đổi thứ tự"
 title = "Sắp xếp"
 
 [home.pdfTextEditor]
-desc = "Xem và chỉnh sửa xuất JSON của Stirling PDF với chỉnh sửa văn bản theo nhóm và tái tạo PDF"
+desc = "Xem và chỉnh sửa xuất JSON của AziralPDF với chỉnh sửa văn bản theo nhóm và tái tạo PDF"
 tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
 title = "Trình chỉnh sửa văn bản PDF"
 
@@ -4493,14 +4493,14 @@ passwordTooShort = "Mật khẩu phải có ít nhất 6 ký tự"
 signIn = "Đăng nhập"
 validating = "Đang xác thực lời mời..."
 validationError = "Không thể xác thực liên kết mời"
-welcome = "Chào mừng đến với Stirling PDF"
+welcome = "Chào mừng đến với AziralPDF"
 welcomeSubtitle = "Hoàn tất thiết lập tài khoản để bắt đầu"
 welcomeTitle = "Bạn đã được mời!"
 
 [landing]
 addFiles = "Thêm tệp"
 heroSubtitle = "Kéo thả hoặc thêm một PDF hiện có để bắt đầu."
-heroTitle = "Stirling PDF"
+heroTitle = "AziralPDF"
 mobileUpload = "Tải lên từ Di động"
 openFromComputer = "Mở từ máy tính"
 uploadFromComputer = "Tải lên từ máy tính"
@@ -4526,7 +4526,7 @@ title = "Giấy phép bên thứ 3"
 version = "Phiên bản"
 
 [localMode]
-toolUnavailable = "Công cụ này cần có tài khoản. Đăng nhập vào Stirling Cloud hoặc kết nối với máy chủ tự lưu trữ để sử dụng."
+toolUnavailable = "Công cụ này cần có tài khoản. Đăng nhập vào AziralPDF Cloud hoặc kết nối với máy chủ tự lưu trữ để sử dụng."
 
 [localMode.banner]
 message = "Đăng nhập để mở khóa tất cả công cụ."
@@ -4602,7 +4602,7 @@ signinTitle = "Vui lòng đăng nhập"
 signInWith = "Đăng nhập với"
 signOut = "Đăng xuất"
 ssoSignIn = "Đăng nhập qua Single Sign-on"
-subtitle = "Đăng nhập lại vào Stirling PDF"
+subtitle = "Đăng nhập lại vào AziralPDF"
 title = "Đăng nhập"
 toManySessions = "Bạn có quá nhiều phiên hoạt động"
 unexpectedError = "Lỗi không mong muốn: {{message}}"
@@ -4621,7 +4621,7 @@ subtitle = "Với hơn chục công cụ giúp bạn ẩn/xóa, ký, đọc và 
 title = "Chỉnh sửa PDF để hiển thị/bảo vệ thông tin bạn muốn"
 
 [login.slides.overview]
-alt = "Tổng quan Stirling PDF"
+alt = "Tổng quan AziralPDF"
 subtitle = "Bộ công cụ đám mây ưu tiên quyền riêng tư cho PDF cho phép bạn chuyển đổi, ký, ẩn/xóa thông tin và quản lý tài liệu, cùng hơn 50 công cụ mạnh mẽ khác."
 title = "Giải pháp tất cả trong một cho mọi nhu cầu PDF của bạn."
 
@@ -4787,7 +4787,7 @@ message = "Xác thực không thành công. Bạn có thể đóng cửa sổ n�
 title = "Xác thực thất bại"
 
 [oauth.success]
-message = "Bạn có thể đóng cửa sổ này và quay lại Stirling PDF."
+message = "Bạn có thể đóng cửa sổ này và quay lại AziralPDF."
 title = "Xác thực thành công"
 
 [ocr]
@@ -4911,7 +4911,7 @@ runButton = "Khi công cụ đã được cấu hình, nút này cho phép chạ
 selectControls = "<strong>Thanh bên phải</strong> chứa các nút để nhanh chóng chọn/bỏ chọn tất cả PDF đang hoạt động, cùng các nút đổi chủ đề hoặc ngôn ngữ ứng dụng."
 selectCropTool = "Hãy chọn công cụ <strong>Cắt xén</strong> để minh họa cách sử dụng một công cụ."
 startTour = "Bắt đầu tham quan"
-startTourDescription = "Tham quan có hướng dẫn các tính năng chính của Stirling PDF"
+startTourDescription = "Tham quan có hướng dẫn các tính năng chính của AziralPDF"
 toolInterface = "Đây là giao diện công cụ <strong>Cắt xén</strong>. Như bạn thấy, chưa có nhiều vì chúng ta chưa thêm tệp PDF nào để làm việc."
 viewer = "<strong>Trình xem</strong> cho phép đọc và chú thích PDF."
 viewSwitcher = "Dùng các điều khiển này để chọn cách bạn muốn xem PDF."
@@ -4927,22 +4927,22 @@ skipForNow = "Bỏ qua tạm thời"
 skipTheTour = "Bỏ qua hướng dẫn"
 
 [onboarding.desktopInstall]
-body = "Stirling hoạt động tốt nhất như ứng dụng desktop. Bạn có thể dùng offline, truy cập tài liệu nhanh hơn và chỉnh sửa trực tiếp trên máy."
+body = "AziralPDF hoạt động tốt nhất như ứng dụng desktop. Bạn có thể dùng offline, truy cập tài liệu nhanh hơn và chỉnh sửa trực tiếp trên máy."
 title = "Tải xuống"
 titleWithOs = "Tải cho {{osLabel}}"
 
 [onboarding.freeTrial]
 afterTrialWithoutPayment = "Sau khi kết thúc dùng thử, bạn sẽ tiếp tục với bậc miễn phí của chúng tôi. Thêm phương thức thanh toán để giữ quyền truy cập Pro."
 afterTrialWithPayment = "Gói Pro của bạn sẽ tự động bắt đầu khi dùng thử kết thúc."
-body = "Bạn có toàn quyền truy cập tính năng Pro của Stirling PDF trong thời gian dùng thử. Tận hưởng chuyển đổi không giới hạn, kích thước tệp lớn hơn và xử lý ưu tiên."
+body = "Bạn có toàn quyền truy cập tính năng Pro của AziralPDF trong thời gian dùng thử. Tận hưởng chuyển đổi không giới hạn, kích thước tệp lớn hơn và xử lý ưu tiên."
 daysRemaining = "Còn {{days}} ngày"
 daysRemainingSingular = "Còn {{days}} ngày"
 title = "Dùng thử Pro 30 ngày của bạn"
 trialEnds = "Dùng thử kết thúc vào {{date}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Khi bật chế độ đăng nhập, bạn có thể quản lý người dùng, cấu hình cài đặt và theo dõi tình trạng server. <strong>{{freeTierLimit}}</strong> người đầu tiên trên server của bạn được dùng Stirling miễn phí."
-adminBodyLoginEnabled = "Là admin, bạn có thể quản lý người dùng, cấu hình cài đặt và theo dõi tình trạng server. <strong>{{freeTierLimit}}</strong> người đầu tiên trên server của bạn được dùng Stirling miễn phí."
+adminBodyLoginDisabled = "Khi bật chế độ đăng nhập, bạn có thể quản lý người dùng, cấu hình cài đặt và theo dõi tình trạng server. <strong>{{freeTierLimit}}</strong> người đầu tiên trên server của bạn được dùng AziralPDF miễn phí."
+adminBodyLoginEnabled = "Là admin, bạn có thể quản lý người dùng, cấu hình cài đặt và theo dõi tình trạng server. <strong>{{freeTierLimit}}</strong> người đầu tiên trên server của bạn được dùng AziralPDF miễn phí."
 adminTitle = "Tổng quan Admin"
 userBody = "Mời đồng đội, gán vai trò và quản lý tài liệu gọn gàng trong một không gian làm việc an toàn. Bật chế độ đăng nhập khi bạn sẵn sàng vượt qua chế độ dùng cá nhân."
 userTitle = "Tổng quan gói"
@@ -4951,16 +4951,16 @@ userTitle = "Tổng quan gói"
 message = "Ứng dụng vừa có nhiều thay đổi. Có thể cần sự chú ý của quản trị viên server. Vui lòng xác nhận vai trò của bạn để tiếp tục."
 
 [onboarding.serverLicense]
-freeBody = "Giấy phép <strong>Open-Core</strong> của chúng tôi cho phép tối đa <strong>{{freeTierLimit}}</strong> người dùng miễn phí mỗi server. Để mở rộng không gián đoạn và truy cập sớm <strong>công cụ chỉnh sửa văn bản PDF</strong> mới, chúng tôi khuyến nghị gói Stirling Server - chỉnh sửa đầy đủ và <strong>số ghế không giới hạn</strong> với $99/server/tháng."
+freeBody = "Giấy phép <strong>Open-Core</strong> của chúng tôi cho phép tối đa <strong>{{freeTierLimit}}</strong> người dùng miễn phí mỗi server. Để mở rộng không gián đoạn và truy cập sớm <strong>công cụ chỉnh sửa văn bản PDF</strong> mới, chúng tôi khuyến nghị gói AziralPDF Server - chỉnh sửa đầy đủ và <strong>số ghế không giới hạn</strong> với $99/server/tháng."
 freeTitle = "Giấy phép Server"
-overLimitBody = "Giấy phép của chúng tôi cho phép tối đa <strong>{{freeTierLimit}}</strong> người dùng miễn phí mỗi server. Bạn có <strong>{{overLimitUserCopy}}</strong> người dùng Stirling. Để tiếp tục không gián đoạn, hãy nâng cấp lên gói Stirling Server - <strong>số ghế không giới hạn</strong>, chỉnh sửa văn bản PDF và toàn quyền quản trị với $99/server/tháng."
+overLimitBody = "Giấy phép của chúng tôi cho phép tối đa <strong>{{freeTierLimit}}</strong> người dùng miễn phí mỗi server. Bạn có <strong>{{overLimitUserCopy}}</strong> người dùng AziralPDF. Để tiếp tục không gián đoạn, hãy nâng cấp lên gói AziralPDF Server - <strong>số ghế không giới hạn</strong>, chỉnh sửa văn bản PDF và toàn quyền quản trị với $99/server/tháng."
 overLimitTitle = "Cần giấy phép Server"
 seePlans = "Xem gói →"
 skip = "Bỏ qua tạm thời"
 upgrade = "Nâng cấp ngay →"
 
 [onboarding.tourOverview]
-body = "Stirling PDF V2 đi kèm hàng chục công cụ và bố cục được làm mới. Hãy tham quan nhanh để xem những thay đổi và nơi tìm các tính năng bạn cần."
+body = "AziralPDF đi kèm hàng chục công cụ và bố cục được làm mới. Hãy tham quan nhanh để xem những thay đổi và nơi tìm các tính năng bạn cần."
 title = "Tổng quan tour"
 
 [onboarding.welcomeModal]
@@ -4969,11 +4969,11 @@ dontShowAgain = "Không hiện lại"
 helpHint = "Bạn luôn có thể truy cập chuyến tham quan này sau từ nút <strong>Trợ giúp</strong> ở góc trái dưới."
 maybeLater = "Để sau"
 startTour = "Bắt đầu tham quan"
-title = "Chào mừng đến với Stirling PDF!"
+title = "Chào mừng đến với AziralPDF!"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF nay sẵn sàng cho mọi quy mô đội nhóm. Bản cập nhật này có bố cục mới, khả năng quản trị mạnh mẽ và tính năng được yêu cầu nhiều nhất - <strong>Chỉnh sửa văn bản</strong>."
-title = "Chào mừng đến với Stirling"
+body = "AziralPDF nay sẵn sàng cho mọi quy mô đội nhóm. Bản cập nhật này có bố cục mới, khả năng quản trị mạnh mẽ và tính năng được yêu cầu nhiều nhất - <strong>Chỉnh sửa văn bản</strong>."
+title = "Chào mừng đến với AziralPDF"
 
 [onboarding.whatsNew]
 activeFilesView = "Dùng Tệp đang hoạt động để xem mọi thứ bạn đang mở và chọn việc cần làm."
@@ -4982,7 +4982,7 @@ leftPanel = "Bảng <strong>Công cụ</strong> bên trái liệt kê mọi vi�
 pageEditorView = "Chuyển sang Trình chỉnh sửa trang để sắp xếp lại, xoay hoặc xóa trang."
 quickAccess = "Bắt đầu tại thanh <strong>Truy cập nhanh</strong> để chuyển giữa Reader, Automate, tệp của bạn và tất cả các hướng dẫn."
 topBar = "Thanh trên cho phép bạn chuyển giữa <strong>Trình xem</strong>, <strong>Trình chỉnh sửa trang</strong> và <strong>Tệp đang hoạt động</strong>."
-wrapUp = "Đó là những điểm mới trong V2. Mở menu <strong>Hướng dẫn</strong> bất cứ lúc nào để xem lại nội dung này, tour Công cụ hoặc tour Quản trị."
+wrapUp = "Đó là những điểm mới trong . Mở menu <strong>Hướng dẫn</strong> bất cứ lúc nào để xem lại nội dung này, tour Công cụ hoặc tour Quản trị."
 
 [overlay-pdfs]
 desc = "Chồng một PDF lên trên PDF khác"
@@ -5794,7 +5794,7 @@ included = "Bao gồm"
 name = "Miễn phí"
 
 [plan.licenseWarning]
-body = "Bạn có {{total}} người dùng nhưng gói miễn phí chỉ hỗ trợ {{limit}} mỗi server. Hãy nâng cấp để Stirling PDF hoạt động ổn định."
+body = "Bạn có {{total}} người dùng nhưng gói miễn phí chỉ hỗ trợ {{limit}} mỗi server. Hãy nâng cấp để AziralPDF hoạt động ổn định."
 cta = "Xem gói"
 overLimit = "nhiều hơn {{limit}}"
 title = "Đã đạt giới hạn miễn phí tự lưu trữ"
@@ -6733,8 +6733,8 @@ hideTools = "Ẩn các công cụ không khả dụng ▴"
 messageNoFallback = "Các công cụ sẽ không khả dụng cho đến khi máy chủ của bạn trực tuyến trở lại."
 messageWithFallback = "Một số công cụ cần kết nối máy chủ."
 showTools = "Xem các công cụ không khả dụng ▾"
-title = "Máy chủ Stirling-PDF của bạn không thể truy cập"
-toolNotAvailableLocally = "Máy chủ Stirling-PDF của bạn đang ngoại tuyến và \"{{endpoint}}\" không có sẵn trên backend cục bộ."
+title = "Máy chủ AziralPDF của bạn không thể truy cập"
+toolNotAvailableLocally = "Máy chủ AziralPDF của bạn đang ngoại tuyến và \"{{endpoint}}\" không có sẵn trên backend cục bộ."
 
 [session]
 expired = "Phiên của bạn đã hết hạn. Vui lòng làm mới trang và thử lại."
@@ -6791,7 +6791,7 @@ user = "Đăng nhập với tư cách"
 
 [settings.connection.mode]
 local = "Chỉ cục bộ"
-saas = "Stirling Cloud"
+saas = "AziralPDF Cloud"
 selfhosted = "Tự lưu trữ"
 
 [settings.developer]
@@ -6806,7 +6806,7 @@ autoUnzipFileLimitDescription = "Số lượng tệp tối đa để giải nén
 autoUnzipFileLimitTooltip = "Chỉ giải nén nếu ZIP chứa số tệp bằng hoặc ít hơn giá trị này. Tăng lên để giải nén ZIP lớn hơn."
 autoUnzipTooltip = "Tự động giải nén các tệp ZIP trả về từ thao tác API. Tắt để giữ nguyên tệp ZIP. Điều này không ảnh hưởng đến các quy trình tự động."
 defaultPdfEditor = "Trình chỉnh sửa PDF mặc định"
-defaultPdfEditorActive = "Stirling PDF là trình chỉnh sửa PDF mặc định của bạn"
+defaultPdfEditorActive = "AziralPDF là trình chỉnh sửa PDF mặc định của bạn"
 defaultPdfEditorChecking = "Đang kiểm tra..."
 defaultPdfEditorInactive = "Ứng dụng khác đang được đặt mặc định"
 defaultPdfEditorSet = "Đã là mặc định"
@@ -6913,7 +6913,7 @@ usageAnalytics = "Phân tích sử dụng"
 [settings.planBilling]
 currentPlan = "Gói hiện tại"
 loading = "Đang tải thông tin thanh toán..."
-notAvailable = "Gói & Thanh toán chỉ khả dụng khi kết nối với Stirling Cloud (chế độ SaaS)."
+notAvailable = "Gói & Thanh toán chỉ khả dụng khi kết nối với AziralPDF Cloud (chế độ SaaS)."
 title = "Gói & Thanh toán"
 
 [settings.planBilling.billing]
@@ -7023,13 +7023,13 @@ teams = "Nhóm"
 title = "Không gian làm việc"
 
 [setup]
-description = "Bắt đầu bằng cách chọn cách bạn muốn sử dụng Stirling PDF"
-welcome = "Chào mừng đến với Stirling PDF"
+description = "Bắt đầu bằng cách chọn cách bạn muốn sử dụng AziralPDF"
+welcome = "Chào mừng đến với AziralPDF"
 
 [setup.login]
 connectingTo = "Đang kết nối đến:"
 hideInstructions = "Ẩn hướng dẫn"
-instructions = "Để bật đăng nhập trên máy chủ Stirling PDF của bạn:"
+instructions = "Để bật đăng nhập trên máy chủ AziralPDF của bạn:"
 instructionsEnvVar = "Đặt biến môi trường:"
 instructionsOrYml = "Hoặc trong settings.yml:"
 instructionsRestart = "Sau đó khởi động lại máy chủ để các thay đổi có hiệu lực."
@@ -7063,16 +7063,16 @@ label = "Tên người dùng"
 placeholder = "Nhập tên người dùng"
 
 [setup.mode.saas]
-description = "Đăng nhập bằng tài khoản Stirling"
-title = "Stirling Cloud"
+description = "Đăng nhập bằng tài khoản AziralPDF"
+title = "AziralPDF Cloud"
 
 [setup.mode.selfhosted]
-description = "Kết nối đến server Stirling PDF của bạn"
+description = "Kết nối đến server AziralPDF của bạn"
 title = "Server tự lưu trữ"
 
 [setup.saas]
-subtitle = "Đăng nhập bằng tài khoản Stirling"
-title = "Đăng nhập vào Stirling"
+subtitle = "Đăng nhập bằng tài khoản AziralPDF"
+title = "Đăng nhập vào AziralPDF"
 
 [setup.selfhosted]
 changeServerLocked = "Tổ chức của bạn đã giới hạn ứng dụng này vào một máy chủ cụ thể"
@@ -7111,11 +7111,11 @@ step3 = "Khởi động lại máy chủ"
 title = "Chưa bật đăng nhập"
 
 [setup.server.type]
-saas = "Stirling PDF SaaS"
+saas = "AziralPDF SaaS"
 selfhosted = "Server tự lưu trữ"
 
 [setup.server.url]
-description = "Nhập URL đầy đủ của server Stirling PDF tự lưu trữ"
+description = "Nhập URL đầy đủ của server AziralPDF tự lưu trữ"
 label = "URL server"
 
 [setup.step1]
@@ -7340,7 +7340,7 @@ passwordsDoNotMatch = "Mật khẩu không khớp"
 passwordTooShort = "Mật khẩu phải có ít nhất 6 ký tự"
 pleaseFillAllFields = "Vui lòng điền đầy đủ tất cả các trường"
 signUp = "Đăng ký"
-subtitle = "Tham gia Stirling PDF để bắt đầu"
+subtitle = "Tham gia AziralPDF để bắt đầu"
 title = "Tạo tài khoản"
 unexpectedError = "Lỗi không mong muốn: {{message}}"
 useEmailInstead = "Sử dụng Email thay thế"
@@ -7627,7 +7627,7 @@ download = "Tải xuống"
 downloaded = "Đã tải xuống"
 downloadFailed = "Không thể tải xuống tệp này."
 downloadsCount = "Lượt tải xuống: {{count}}"
-emailWarningBody = "Có vẻ đây là một địa chỉ email. Nếu người này chưa là người dùng Stirling PDF, họ sẽ không thể truy cập tệp."
+emailWarningBody = "Có vẻ đây là một địa chỉ email. Nếu người này chưa là người dùng AziralPDF, họ sẽ không thể truy cập tệp."
 emailWarningConfirm = "Vẫn chia sẻ"
 emailWarningTitle = "Địa chỉ email"
 errorTitle = "Chia sẻ thất bại"
@@ -7657,7 +7657,7 @@ manageTitle = "Quản lý chia sẻ"
 noActivity = "Chưa có hoạt động."
 noLinks = "Chưa có liên kết chia sẻ đang hoạt động."
 noSharedUsers = "Chưa có người dùng nào có quyền truy cập."
-openInApp = "Mở trong Stirling PDF"
+openInApp = "Mở trong AziralPDF"
 ownerLabel = "Chủ sở hữu"
 ownerOnly = "Chỉ chủ sở hữu mới có thể quản lý chia sẻ."
 ownerUnknown = "Không xác định"
@@ -7718,28 +7718,28 @@ trialing = "Dùng thử"
 
 [survey]
 button = "Tham gia khảo sát"
-changes = "Stirling-PDF đã thay đổi kể từ khảo sát trước! Để biết thêm vui lòng xem bài viết blog của chúng tôi tại đây:"
+changes = "AziralPDF đã thay đổi kể từ khảo sát trước! Để biết thêm vui lòng xem bài viết blog của chúng tôi tại đây:"
 changes2 = "Với những thay đổi này chúng tôi nhận được hỗ trợ doanh nghiệp có trả phí và tài trợ"
-description = "Stirling-PDF không có cài đặt theo dõi nên chúng tôi muốn nghe từ người dùng để cải thiện Stirling-PDF!"
+description = "AziralPDF không có cài đặt theo dõi nên chúng tôi muốn nghe từ người dùng để cải thiện AziralPDF!"
 disabled = "(Cửa sổ popup khảo sát sẽ bị vô hiệu hóa trong các bản cập nhật tiếp theo nhưng vẫn tìm thấy ở cuối trang)"
 dontShowAgain = "Không hiển thị lại"
 nav = "Khảo sát"
 please = "Vui lòng cân nhắc tham gia khảo sát của chúng tôi!"
-title = "Khảo sát Stirling-PDF"
+title = "Khảo sát AziralPDF"
 
 [survey.meeting]
-1 = "Nếu bạn đang sử dụng Stirling PDF tại nơi làm việc, chúng tôi rất muốn trao đổi. Chúng tôi cung cấp phiên hỗ trợ kỹ thuật đổi lại một buổi khám phá người dùng 15 phút."
+1 = "Nếu bạn đang sử dụng AziralPDF tại nơi làm việc, chúng tôi rất muốn trao đổi. Chúng tôi cung cấp phiên hỗ trợ kỹ thuật đổi lại một buổi khám phá người dùng 15 phút."
 2 = "Đây là cơ hội để:"
 3 = "Nhận trợ giúp triển khai, tích hợp hoặc khắc phục sự cố"
 4 = "Cung cấp phản hồi trực tiếp về hiệu năng, các trường hợp biên và khoảng trống tính năng"
-5 = "Giúp chúng tôi tinh chỉnh Stirling PDF cho nhu cầu doanh nghiệp thực tế"
+5 = "Giúp chúng tôi tinh chỉnh AziralPDF cho nhu cầu doanh nghiệp thực tế"
 6 = "Nếu quan tâm, bạn có thể đặt lịch trực tiếp với đội ngũ của chúng tôi. (Chỉ tiếng Anh)"
-7 = "Mong được tìm hiểu trường hợp sử dụng của bạn và làm cho Stirling PDF tốt hơn nữa!"
+7 = "Mong được tìm hiểu trường hợp sử dụng của bạn và làm cho AziralPDF tốt hơn nữa!"
 button = "Đặt lịch họp"
 notInterested = "Không phải doanh nghiệp và/hoặc không quan tâm đến cuộc họp?"
 
 [swagger]
-desc = "Xem và thử các điểm cuối API của Stirling PDF"
+desc = "Xem và thử các điểm cuối API của AziralPDF"
 header = "Tài liệu API"
 tags = "api,tài liệu,swagger,điểm cuối,phát triển"
 title = "Tài liệu API"
@@ -7883,7 +7883,7 @@ favorites = "Mục yêu thích"
 heading = "Tất cả công cụ (chế độ toàn màn hình)"
 noResults = "Hãy thử điều chỉnh tìm kiếm hoặc chuyển đổi mô tả để tìm thứ bạn cần."
 recommended = "Đề xuất"
-selfHostedOffline = "Cần máy chủ Stirling-PDF của bạn (hiện đang ngoại tuyến):"
+selfHostedOffline = "Cần máy chủ AziralPDF của bạn (hiện đang ngoại tuyến):"
 showDetails = "Hiển thị chi tiết"
 unavailable = "Bị quản trị viên server vô hiệu hóa:"
 unavailableDependency = "Không khả dụng - thiếu công cụ cần thiết trên server:"
@@ -7892,7 +7892,7 @@ unfavorite = "Xóa khỏi Mục yêu thích"
 [toolPanel.modePrompt]
 chooseFullscreen = "Dùng chế độ toàn màn hình"
 chooseSidebar = "Dùng chế độ thanh bên"
-description = "Xem trước cả hai bố cục và quyết định cách bạn muốn khám phá các công cụ của Stirling PDF."
+description = "Xem trước cả hai bố cục và quyết định cách bạn muốn khám phá các công cụ của AziralPDF."
 dismiss = "Để sau"
 fullscreenDescription = "Duyệt mọi công cụ trong một danh mục che khu vực làm việc cho đến khi bạn chọn một công cụ."
 fullscreenTitle = "Chế độ toàn màn hình - (cũ)"
@@ -7986,7 +7986,7 @@ attentionBody = "Admin của bạn cần đăng nhập để xem thêm thông ti
 attentionBodyAdmin = "Xem lại yêu cầu giấy phép để giữ server tuân thủ."
 attentionTitle = "Server này cần sự chú ý của admin"
 dismiss = "Ẩn banner"
-message = "Tận dụng tối đa Stirling PDF với người dùng không giới hạn và tính năng nâng cao"
+message = "Tận dụng tối đa AziralPDF với người dùng không giới hạn và tính năng nâng cao"
 seeInfo = "Xem thông tin"
 title = "Nâng cấp lên gói Server"
 upgradeButton = "Nâng cấp ngay"
@@ -8108,7 +8108,7 @@ continued = "Còn tiếp"
 downloads = "Tải xuống"
 entryLabel = "Tóm tắt chữ ký"
 filesEvaluated = "Đã đánh giá {{count}} tệp"
-footer = "Xác thực qua Stirling PDF"
+footer = "Xác thực qua AziralPDF"
 generatedAt = "Đã tạo"
 noPdf = "Báo cáo PDF sẽ khả dụng sau khi xác thực thành công."
 page = "Trang"

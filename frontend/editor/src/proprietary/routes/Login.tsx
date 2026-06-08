@@ -683,7 +683,7 @@ export default function Login() {
               >
                 {t("login.password", "Password")}:
               </Text>{" "}
-              stirling
+              {t("login.passwordEnvHint", "set via SECURITY_INITIALLOGIN_PASSWORD")}
             </Text>
             <Text
               size="xs"

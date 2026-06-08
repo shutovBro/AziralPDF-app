@@ -306,7 +306,7 @@ export function ChatPanel({ onBack, backLabel }: ChatPanelProps) {
                 {isLoading && <span className="agent-status-dot" />}
               </span>
               <span className="chat-panel__agent-pill-label">
-                {t("agents.stirling_name", "Stirling")}
+                {t("agents.stirling_name", "AziralPDF")}
               </span>
               <KeyboardArrowDownIcon
                 sx={{ fontSize: 18, color: "var(--text-muted)" }}

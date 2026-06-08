@@ -249,7 +249,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
               <Text size="sm" c="dimmed" mt={2}>
                 {t(
                   "update.modalSubtitle",
-                  "A new version of Stirling-PDF is ready to install.",
+                  "A new version of AziralPDF is ready to install.",
                 )}
               </Text>
             </Box>
@@ -356,7 +356,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
               <Text size="sm">
                 {t(
                   "desktopUpdate.blocked.message",
-                  "Stirling-PDF does not have permission to update itself on this machine.",
+                  "AziralPDF does not have permission to update itself on this machine.",
                 )}{" "}
                 <Anchor
                   href={WINDOWS_INSTALL_DOCS_URL}
@@ -400,7 +400,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                 <Text
                   size="sm"
                   component="a"
-                  href={`https://github.com/Stirling-Tools/Stirling-PDF/releases/tag/v${updateSummary.latest_version}`}
+                  href={`https://github.com/shutovBro/AziralPDF-app/releases/tag/v${updateSummary.latest_version}`}
                   target="_blank"
                   c="blue"
                   style={{
@@ -416,7 +416,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                 <Text
                   size="sm"
                   component="a"
-                  href="https://github.com/Stirling-Tools/Stirling-PDF/releases"
+                  href="https://github.com/shutovBro/AziralPDF-app/releases"
                   target="_blank"
                   c="dimmed"
                   style={{
@@ -598,7 +598,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                         <Group gap={4}>
                           <Button
                             component="a"
-                            href={`https://github.com/Stirling-Tools/Stirling-PDF/releases/tag/v${version.version}`}
+                            href={`https://github.com/shutovBro/AziralPDF-app/releases/tag/v${version.version}`}
                             target="_blank"
                             variant="subtle"
                             size="xs"

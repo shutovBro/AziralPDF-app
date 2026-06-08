@@ -884,11 +884,11 @@ description = "Configure optional features and functionality."
 title = "Features"
 
 [admin.settings.features.serverCertificate]
-description = "Configure server-side certificate generation for \"Sign with Stirling-PDF\" functionality"
+description = "Configure server-side certificate generation for \"Sign with AziralPDF\" functionality"
 label = "Server Certificate"
 
 [admin.settings.features.serverCertificate.enabled]
-description = "Enable server-side certificate for \"Sign with Stirling-PDF\" option"
+description = "Enable server-side certificate for \"Sign with AziralPDF\" option"
 label = "Enable Server Certificate"
 
 [admin.settings.features.serverCertificate.organizationName]
@@ -1036,7 +1036,7 @@ description = "URL or filename to cookie policy"
 label = "Cookie Policy"
 
 [admin.settings.legal.disclaimer]
-message = "By customizing these legal documents, you assume full responsibility for ensuring compliance with all applicable laws and regulations, including but not limited to GDPR and other EU data protection requirements. Only modify these settings if: (1) you are operating a personal/private instance, (2) you are outside EU jurisdiction and understand your local legal obligations, or (3) you have obtained proper legal counsel and accept sole responsibility for all user data and legal compliance. Stirling-PDF and its developers assume no liability for your legal obligations."
+message = "By customizing these legal documents, you assume full responsibility for ensuring compliance with all applicable laws and regulations, including but not limited to GDPR and other EU data protection requirements. Only modify these settings if: (1) you are operating a personal/private instance, (2) you are outside EU jurisdiction and understand your local legal obligations, or (3) you have obtained proper legal counsel and accept sole responsibility for all user data and legal compliance. AziralPDF and its developers assume no liability for your legal obligations."
 title = "Legal Responsibility Warning"
 
 [admin.settings.legal.impressum]
@@ -1408,7 +1408,7 @@ description = "When enabled, only listed user IDs can use the bot."
 label = "Allow Specific User IDs"
 
 [admin.settings.telegram.enabled]
-description = "Allow users to interact with Stirling PDF through your configured Telegram bot."
+description = "Allow users to interact with AziralPDF through your configured Telegram bot."
 label = "Enable Telegram Bot"
 
 [admin.settings.telegram.feedback]
@@ -1473,7 +1473,7 @@ settingsOverview = "This is the <strong>Settings Panel</strong>. Admin settings 
 systemCustomization = "We have extensive ways to customise the UI: <strong>System Settings</strong> let you change the app name and languages, <strong>Features</strong> allows server certificate management, and <strong>Endpoints</strong> lets you enable or disable specific tools for your users."
 teamsAndUsers = "Manage <strong>Teams</strong> and individual users here. You can invite new users via email, shareable links, or create custom accounts for them yourself."
 welcome = "Welcome to the <strong>Admin Tour</strong>! Let's explore the powerful enterprise features and settings available to system administrators."
-wrapUp = "That's the admin tour! You've seen the enterprise features that make Stirling PDF a powerful, customisable solution for organisations. You can replay it anytime - just open <strong>Settings</strong> and find it here in the <strong>Tours</strong> section under Help."
+wrapUp = "That's the admin tour! You've seen the enterprise features that make AziralPDF a powerful, customisable solution for organisations. You can replay it anytime - just open <strong>Settings</strong> and find it here in the <strong>Tours</strong> section under Help."
 
 [adminUserSettings]
 actions = "Actions"
@@ -1519,7 +1519,7 @@ doc_summary_description = "Summarise long documents"
 doc_summary_name = "Summariser"
 form_filler_description = "Fill PDF forms intelligently"
 form_filler_name = "Form Filler"
-fullscreen_title = "Stirling Agents"
+fullscreen_title = "AziralPDF Agents"
 pdf_to_markdown_description = "Convert PDFs to clean Markdown"
 pdf_to_markdown_name = "PDF to Markdown"
 section_title = "Agents"
@@ -1527,21 +1527,21 @@ show_less = "Show less"
 start_chat = "Start chatting"
 stirling_description = "Your general-purpose PDF assistant"
 stirling_running = "Running..."
-stirling_full_name = "Stirling General Agent"
+stirling_full_name = "AziralPDF General Agent"
 stirling_long_description = "General purpose PDF assistant that can run tools, create PDFs and extract insights from your documents."
-stirling_name = "Stirling"
-stirling_tooltip = "Stirling agent"
+stirling_name = "AziralPDF"
+stirling_tooltip = "AziralPDF agent"
 view_all = "View all agents"
 
 [analytics]
 disable = "Disable analytics"
 enable = "Enable analytics"
 learnMore = "Learn more about our analytics"
-paragraph1 = "Stirling PDF has opt-in analytics to help us improve the product. We do not track any personal information or file contents."
-paragraph2 = "Please consider enabling analytics to help Stirling-PDF grow and to allow us to understand our users better."
+paragraph1 = "AziralPDF has opt-in analytics to help us improve the product. We do not track any personal information or file contents."
+paragraph2 = "Please consider enabling analytics to help AziralPDF grow and to allow us to understand our users better."
 privacyAssurance = "We do not track any personal information or the contents of your files."
 settings = "You can change the settings for analytics in the config/settings.yml file"
-title = "Do you want to help make Stirling PDF better?"
+title = "Do you want to help make AziralPDF better?"
 
 [annotation]
 annotationStyle = "Annotation style"
@@ -1955,7 +1955,7 @@ tags = "pdf,split,document,organization"
 description = "Print, Insert, Scan, upload, and let us auto-separate your documents. No manual work sorting needed."
 dividerDownload2 = "Download 'Auto Splitter Divider (with instructions).pdf'"
 duplexMode = "Duplex Mode (Front and back scanning)"
-formPrompt = "Submit PDF containing Stirling-PDF Page dividers:"
+formPrompt = "Submit PDF containing AziralPDF Page dividers:"
 header = "Auto Split PDF"
 submit = "Submit"
 tags = "QR-based,separate,scan-segment,organize"
@@ -1964,7 +1964,7 @@ title = "Auto Split PDF"
 [autoSplitPDF.selectText]
 1 = "Print out some divider sheets from below (Black and white is fine)."
 2 = "Scan all your documents at once by inserting the divider sheet between them."
-3 = "Upload the single large scanned PDF file and let Stirling PDF handle the rest."
+3 = "Upload the single large scanned PDF file and let AziralPDF handle the rest."
 4 = "Divider pages are automatically detected and removed, guaranteeing a neat final document."
 
 [backendHealth]
@@ -2523,7 +2523,7 @@ bullet1 = "Supports PEM, PKCS12, JKS, and server certificate formats"
 bullet2 = "Option to show or hide signature on the PDF"
 bullet3 = "Add reason, location, and signer name"
 bullet4 = "Choose which page to place visible signatures"
-bullet5 = "Use server certificate for simple 'Sign with Stirling-PDF' option"
+bullet5 = "Use server certificate for simple 'Sign with AziralPDF' option"
 text = "To sign a PDF, you need a digital certificate (like PEM, PKCS12, or JKS). You can choose to make the signature visible on the document or keep it invisible for security only."
 title = "Adding Signatures"
 
@@ -2723,7 +2723,7 @@ resize = "Resize chat panel"
 copy = "Copy message"
 
 [chat.header]
-agentMenu = "Stirling agent options"
+agentMenu = "AziralPDF agent options"
 clearChat = "Clear chat"
 settings = "Agent settings"
 
@@ -3090,15 +3090,15 @@ upgradeButton = "Upgrade Account"
 chartAriaLabel = "Credits usage: included {{includedUsed}} of {{includedTotal}}, purchased {{purchasedUsed}} of {{purchasedTotal}}"
 copyKeyAriaLabel = "Copy API key"
 creditsRemaining = "Credits Remaining"
-description = "Your API key for accessing Stirling's suite of PDF tools. Copy it to your project or refresh to generate a new one."
-docsDescription = "Learn more about integrating with Stirling PDF:"
+description = "Your API key for accessing AziralPDF's suite of PDF tools. Copy it to your project or refresh to generate a new one."
+docsDescription = "Learn more about integrating with AziralPDF:"
 docsLink = "API Documentation"
 docsTitle = "API Documentation"
 generateError = "We couldn't generate your API key."
 goToAccount = "Go to Account"
 guestInfo = "Guest users do not receive API keys. Create an account to get an API key you can use in your applications."
 includedCredits = "Included credits"
-intro = "Use your API key to programmatically access Stirling PDF's processing capabilities."
+intro = "Use your API key to programmatically access AziralPDF's processing capabilities."
 label = "API Key"
 lastApiUse = "Last API Use"
 nextReset = "Next Reset"
@@ -3142,7 +3142,7 @@ system = "System Configuration"
 [connectionMode.status]
 localOffline = "Offline mode running"
 localOnline = "Offline mode running"
-saas = "Connected to Stirling Cloud"
+saas = "Connected to AziralPDF Cloud"
 selfhostedChecking = "Connected to self-hosted server (checking...)"
 selfhostedOffline = "Self-hosted server unreachable"
 selfhostedOnline = "Connected to self-hosted server"
@@ -3272,7 +3272,7 @@ showPreferencesBtn = "Manage preferences"
 title = "How we use Cookies"
 
 [cookieBanner.popUp.description]
-1 = "We use cookies and other technologies to make Stirling PDF work better for you-helping us improve our tools and keep building features you'll love."
+1 = "We use cookies and other technologies to make AziralPDF work better for you-helping us improve our tools and keep building features you'll love."
 2 = "If you'd rather not, clicking 'No Thanks' will only enable the essential cookies needed to keep things running smoothly."
 
 [cookieBanner.preferencesModal]
@@ -3285,12 +3285,12 @@ subtitle = "Cookie Usage"
 title = "Consent Preferences Center"
 
 [cookieBanner.preferencesModal.analytics]
-description = "These cookies help us understand how our tools are being used, so we can focus on building the features our community values most. Rest assured-Stirling PDF cannot and will never track the content of the documents you work with."
+description = "These cookies help us understand how our tools are being used, so we can focus on building the features our community values most. Rest assured-AziralPDF cannot and will never track the content of the documents you work with."
 title = "Analytics"
 
 [cookieBanner.preferencesModal.description]
-1 = "Stirling PDF uses cookies and similar technologies to enhance your experience and understand how our tools are used. This helps us improve performance, develop the features you care about, and provide ongoing support to our users."
-2 = "Stirling PDF cannot-and will never-track or access the content of the documents you use."
+1 = "AziralPDF uses cookies and similar technologies to enhance your experience and understand how our tools are used. This helps us improve performance, develop the features you care about, and provide ongoing support to our users."
+2 = "AziralPDF cannot-and will never-track or access the content of the documents you use."
 3 = "Your privacy and trust are at the core of what we do."
 
 [cookieBanner.preferencesModal.necessary]
@@ -3459,7 +3459,7 @@ unexpectedError = "There was an error processing the file. Please try again."
 [defaultApp]
 description = "You can change this later in your system settings."
 dismiss = "Dismiss"
-message = "Would you like to set Stirling PDF as your default PDF editor?"
+message = "Would you like to set AziralPDF as your default PDF editor?"
 notNow = "Not Now"
 setDefault = "Set Default"
 title = "Set as Default PDF App"
@@ -3469,15 +3469,15 @@ message = "Failed to set default PDF handler"
 title = "Error"
 
 [defaultApp.prompt]
-message = "Make Stirling PDF your default application for opening PDF files."
+message = "Make AziralPDF your default application for opening PDF files."
 title = "Set as Default PDF Editor"
 
 [defaultApp.settingsOpened]
-message = "In Windows Settings, search for 'PDF' and select Stirling PDF as your default app"
+message = "In Windows Settings, search for 'PDF' and select AziralPDF as your default app"
 title = "Settings Opened"
 
 [defaultApp.success]
-message = "Stirling PDF is now your default PDF editor"
+message = "AziralPDF is now your default PDF editor"
 title = "Default App Set"
 
 [desktopUpdate]
@@ -3493,7 +3493,7 @@ updateFailedMessage = "Failed to download or install the update."
 
 [desktopUpdate.blocked]
 docsLink = "View installation documentation"
-message = "Stirling-PDF does not have permission to update itself on this machine."
+message = "AziralPDF does not have permission to update itself on this machine."
 title = "Administrator permissions required"
 
 [editTableOfContents]
@@ -3635,9 +3635,9 @@ visitsTooltip = "Visits: {0} ({1}% of total)"
 
 [enterpriseEdition]
 button = "Upgrade to Pro"
-ssoAdvert = "Looking for more user management features? Check out Stirling PDF Pro"
+ssoAdvert = "Looking for more user management features? Check out AziralPDF Pro"
 warning = "This feature is only available to Pro users."
-yamlAdvert = "Stirling PDF Pro supports YAML configuration files and other SSO features."
+yamlAdvert = "AziralPDF Pro supports YAML configuration files and other SSO features."
 
 [error]
 _value = "Error"
@@ -4027,7 +4027,7 @@ moveDialog.newFolderToggle = "Create new folder…"
 moveDialog.title = "Move to folder"
 origin.all = "All sources"
 origin.cloud = "Cloud"
-origin.cloudHint = "Stored on the Stirling server"
+origin.cloudHint = "Stored on the AziralPDF server"
 origin.local = "Local"
 origin.localHint = "Only stored in this browser"
 origin.shared = "Shared"
@@ -4307,7 +4307,7 @@ invisible = "Invisible (metadata only)"
 location = "Location:"
 logo = "Logo:"
 logoHidden = "No logo"
-logoShown = "Stirling PDF logo shown"
+logoShown = "AziralPDF logo shown"
 participantCount = "{{count}} participant(s) will sign in order"
 participants = "Participants"
 reason = "Reason:"
@@ -4359,7 +4359,7 @@ title = "Sequential Signing"
 dismiss = "Dismiss banner"
 message = "Create a free account to save your work, access more features, and support the project."
 signUp = "Sign Up Free"
-title = "You're using Stirling PDF as a guest!"
+title = "You're using AziralPDF as a guest!"
 
 [home]
 alphabetical = "Alphabetical"
@@ -4533,7 +4533,7 @@ tags = "combine,join,unite,merge,merge PDFs,combine PDFs,join PDFs,concatenate,a
 title = "Merge"
 
 [home.mobile]
-brandAlt = "Stirling PDF logo"
+brandAlt = "AziralPDF logo"
 openFiles = "Open files"
 swipeHint = "Swipe left or right to switch views"
 tools = "Tools"
@@ -4779,14 +4779,14 @@ passwordTooShort = "Password must be at least 6 characters"
 signIn = "Sign in"
 validating = "Validating invitation..."
 validationError = "Failed to validate invitation link"
-welcome = "Welcome to Stirling PDF"
+welcome = "Welcome to AziralPDF"
 welcomeSubtitle = "Complete your account setup to get started"
 welcomeTitle = "You've been invited!"
 
 [landing]
 addFiles = "Add Files"
 heroSubtitle = "Drop in or add an existing PDF to get started."
-heroTitle = "Stirling PDF"
+heroTitle = "AziralPDF"
 mobileUpload = "Upload from Mobile"
 openFromComputer = "Open from computer"
 uploadFromComputer = "Upload from computer"
@@ -4812,7 +4812,7 @@ title = "3rd Party Licences"
 version = "Version"
 
 [localMode]
-toolUnavailable = "This tool requires an account. Sign in to Stirling Cloud or connect to a self-hosted server to use it."
+toolUnavailable = "This tool requires an account. Sign in to AziralPDF Cloud or connect to a self-hosted server to use it."
 
 [localMode.banner]
 message = "Sign in to unlock all tools."
@@ -4888,7 +4888,7 @@ signinTitle = "Please sign in"
 signInWith = "Sign in with"
 signOut = "Sign Out"
 ssoSignIn = "Login via Single Sign-on"
-subtitle = "Sign back in to Stirling PDF"
+subtitle = "Sign back in to AziralPDF"
 title = "Sign in"
 toManySessions = "You have too many active sessions"
 unexpectedError = "Unexpected error: {{message}}"
@@ -4907,7 +4907,7 @@ subtitle = "With over a dozen tools to help you redact, sign, read and manipulat
 title = "Edit PDFs to display/secure the information you want"
 
 [login.slides.overview]
-alt = "Stirling PDF overview"
+alt = "AziralPDF overview"
 subtitle = "A privacy-first cloud suite for PDFs that lets you convert, sign, redact, and manage documents, along with 50+ other powerful tools."
 title = "Your one-stop-shop for all your PDF needs."
 
@@ -5073,7 +5073,7 @@ message = "Authentication was not successful. You can close this window and try 
 title = "Authentication Failed"
 
 [oauth.success]
-message = "You can close this window and return to Stirling PDF."
+message = "You can close this window and return to AziralPDF."
 title = "Authentication Successful"
 
 [ocr]
@@ -5197,7 +5197,7 @@ runButton = "Once the tool has been configured, this button allows you to run th
 selectControls = "The <strong>Right Rail</strong> contains buttons to quickly select/deselect all of your active PDFs, along with buttons to change the app's theme or language."
 selectCropTool = "Let's select the <strong>Crop</strong> tool to demonstrate how to use one of the tools."
 startTour = "Start Tour"
-startTourDescription = "Take a guided tour of Stirling PDF's key features"
+startTourDescription = "Take a guided tour of AziralPDF's key features"
 toolInterface = "This is the <strong>Crop</strong> tool interface. As you can see, there's not much there because we haven't added any PDF files to work with yet."
 viewer = "The <strong>Viewer</strong> lets you read and annotate your PDFs."
 viewSwitcher = "Use these controls to select how you want to view your PDFs."
@@ -5213,22 +5213,22 @@ skipForNow = "Skip for now"
 skipTheTour = "Skip the tour"
 
 [onboarding.desktopInstall]
-body = "Stirling works best as a desktop app. You can use it offline, access documents faster, and make edits locally on your computer."
+body = "AziralPDF works best as a desktop app. You can use it offline, access documents faster, and make edits locally on your computer."
 title = "Download"
 titleWithOs = "Download for {{osLabel}}"
 
 [onboarding.freeTrial]
 afterTrialWithoutPayment = "After your trial ends, you'll continue with our free tier. Add a payment method to keep Pro access."
 afterTrialWithPayment = "Your Pro subscription will start automatically when the trial ends."
-body = "You have full access to Stirling PDF Pro features during your trial. Enjoy unlimited conversions, larger file sizes, and priority processing."
+body = "You have full access to AziralPDF Pro features during your trial. Enjoy unlimited conversions, larger file sizes, and priority processing."
 daysRemaining = "{{days}} days remaining"
 daysRemainingSingular = "{{days}} day remaining"
 title = "Your 30-Day Pro Trial"
 trialEnds = "Trial ends {{date}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Once you enable login mode, you can manage users, configure settings, and monitor server health. The first <strong>{{freeTierLimit}}</strong> people on your server get to use Stirling free of charge."
-adminBodyLoginEnabled = "As an admin, you can manage users, configure settings, and monitor server health. The first <strong>{{freeTierLimit}}</strong> people on your server get to use Stirling free of charge."
+adminBodyLoginDisabled = "Once you enable login mode, you can manage users, configure settings, and monitor server health. The first <strong>{{freeTierLimit}}</strong> people on your server get to use AziralPDF free of charge."
+adminBodyLoginEnabled = "As an admin, you can manage users, configure settings, and monitor server health. The first <strong>{{freeTierLimit}}</strong> people on your server get to use AziralPDF free of charge."
 adminTitle = "Admin Overview"
 userBody = "Invite teammates, assign roles, and keep your documents organized in one secure workspace. Enable login mode whenever you're ready to grow beyond solo use."
 userTitle = "Plan Overview"
@@ -5237,16 +5237,16 @@ userTitle = "Plan Overview"
 message = "The application has undergone significant changes recently. Your server admin's attention may be required. Please confirm your role to continue."
 
 [onboarding.serverLicense]
-freeBody = "Our <strong>Open-Core</strong> licensing permits up to <strong>{{freeTierLimit}}</strong> users for free per server. To scale uninterrupted, we recommend the Stirling Server plan - <strong>unlimited seats</strong> and <strong>SSO support</strong> for $99/server/mo."
+freeBody = "Our <strong>Open-Core</strong> licensing permits up to <strong>{{freeTierLimit}}</strong> users for free per server. To scale uninterrupted, we recommend the AziralPDF Server plan - <strong>unlimited seats</strong> and <strong>SSO support</strong> for $99/server/mo."
 freeTitle = "Server License"
-overLimitBody = "Our licensing permits up to <strong>{{freeTierLimit}}</strong> users for free per server. You have <strong>{{overLimitUserCopy}}</strong> Stirling users. To continue uninterrupted, upgrade to the Stirling Server plan - <strong>unlimited seats</strong>, PDF text editing, and full admin control for $99/server/mo."
+overLimitBody = "Our licensing permits up to <strong>{{freeTierLimit}}</strong> users for free per server. You have <strong>{{overLimitUserCopy}}</strong> AziralPDF users. To continue uninterrupted, upgrade to the AziralPDF Server plan - <strong>unlimited seats</strong>, PDF text editing, and full admin control for $99/server/mo."
 overLimitTitle = "Server License Needed"
 seePlans = "See Plans →"
 skip = "Skip for now"
 upgrade = "Upgrade now →"
 
 [onboarding.tourOverview]
-body = "Stirling PDF V2 ships with dozens of tools and a refreshed layout. Take a quick tour to see what changed and where to find the features you need."
+body = "AziralPDF ships with dozens of tools and a refreshed layout. Take a quick tour to see what changed and where to find the features you need."
 title = "Tour Overview"
 
 [onboarding.welcomeModal]
@@ -5255,11 +5255,11 @@ dontShowAgain = "Don't Show Again"
 helpHint = "You can always access this tour later from the <strong>Help</strong> button in the bottom left."
 maybeLater = "Maybe Later"
 startTour = "Start Tour"
-title = "Welcome to Stirling PDF!"
+title = "Welcome to AziralPDF!"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF is now ready for teams of all sizes. This update includes a new layout, powerful new admin capabilities, and our most requested feature - <strong>Edit Text</strong>."
-title = "Welcome to Stirling"
+body = "AziralPDF is now ready for teams of all sizes. This update includes a new layout, powerful new admin capabilities, and our most requested feature - <strong>Edit Text</strong>."
+title = "Welcome to AziralPDF"
 
 [onboarding.whatsNew]
 activeFilesView = "Use Active Files to see everything you have open and pick what to work on."
@@ -5268,7 +5268,7 @@ leftPanel = "The left <strong>Tools</strong> panel lists everything you can do. 
 pageEditorView = "Switch to the Page Editor to reorder, rotate, or delete pages."
 quickAccess = "Start at the <strong>Quick Access</strong> rail to jump between Reader, Automate, your files, and all the tours."
 topBar = "The top bar lets you swap between <strong>Viewer</strong>, <strong>Page Editor</strong>, and <strong>Active Files</strong>."
-wrapUp = "That is what is new in V2. Open the <strong>Tours</strong> menu anytime to replay this, the Tools tour, or the Admin tour."
+wrapUp = "That is what is new in this release. Open the <strong>Tours</strong> menu anytime to replay this, the Tools tour, or the Admin tour."
 
 [overlay-pdfs]
 desc = "Overlay one PDF on top of another"
@@ -6080,7 +6080,7 @@ included = "Included"
 name = "Free"
 
 [plan.licenseWarning]
-body = "You have {{total}} users but the free tier only supports {{limit}} per server. Upgrade to keep Stirling PDF running smoothly."
+body = "You have {{total}} users but the free tier only supports {{limit}} per server. Upgrade to keep AziralPDF running smoothly."
 cta = "See plans"
 overLimit = "more than {{limit}}"
 title = "Free self-hosted limit reached"
@@ -6429,7 +6429,7 @@ adminTour = "Admin Tour"
 adminTourDesc = "Explore admin settings & features"
 toolsTour = "Tools Tour"
 toolsTourDesc = "Learn what the tools can do"
-whatsNewTour = "See what's new in V2"
+whatsNewTour = "See what's new in this release"
 whatsNewTourDesc = "Tour the updated layout"
 
 [quickAccess.toursTooltip]
@@ -7021,8 +7021,8 @@ hideTools = "Hide unavailable tools ▴"
 messageNoFallback = "Tools are unavailable until your server comes back online."
 messageWithFallback = "Some tools require a server connection."
 showTools = "View unavailable tools ▾"
-title = "Your Stirling-PDF server is unreachable"
-toolNotAvailableLocally = "Your Stirling-PDF server is offline and \"{{endpoint}}\" is not available on the local backend."
+title = "Your AziralPDF server is unreachable"
+toolNotAvailableLocally = "Your AziralPDF server is offline and \"{{endpoint}}\" is not available on the local backend."
 
 [session]
 expired = "Your session has expired. Please refresh the page and try again."
@@ -7079,7 +7079,7 @@ user = "Logged in as"
 
 [settings.connection.mode]
 local = "Local Only"
-saas = "Stirling Cloud"
+saas = "AziralPDF Cloud"
 selfhosted = "Self-Hosted"
 
 [settings.developer]
@@ -7094,7 +7094,7 @@ autoUnzipFileLimitDescription = "Maximum number of files to extract from ZIP"
 autoUnzipFileLimitTooltip = "Only unzip if the ZIP contains this many files or fewer. Set higher to extract larger ZIPs."
 autoUnzipTooltip = "Automatically extract ZIP files returned from API operations. Disable to keep ZIP files intact. This does not affect automation workflows."
 defaultPdfEditor = "Default PDF editor"
-defaultPdfEditorActive = "Stirling PDF is your default PDF editor"
+defaultPdfEditorActive = "AziralPDF is your default PDF editor"
 defaultPdfEditorChecking = "Checking..."
 defaultPdfEditorInactive = "Another application is set as default"
 defaultPdfEditorSet = "Already Default"
@@ -7154,7 +7154,7 @@ updateBehavior = "Update behavior"
 updateBehaviorDescription = "Choose whether to prompt before installing updates, install them automatically, or skip update checks entirely."
 updateBehaviorError = "Could not change update behavior"
 updateBehaviorErrorLocked = "This setting is locked by your administrator."
-updateBehaviorLockedDescription = "Your administrator has configured how Stirling-PDF handles updates on this machine. Contact them to change this."
+updateBehaviorLockedDescription = "Your administrator has configured how AziralPDF handles updates on this machine. Contact them to change this."
 updateBehaviorSaved = "Update behavior saved."
 versionMismatch = "Warning: A mismatch has been detected between the client version and the AppConfig version. Using different versions can lead to compatibility issues, errors, and security risks. Please ensure that server and client are using the same version."
 viewDetails = "View Details"
@@ -7211,7 +7211,7 @@ usageAnalytics = "Usage Analytics"
 [settings.planBilling]
 currentPlan = "Current Plan"
 loading = "Loading billing information..."
-notAvailable = "Plan & Billing is only available when connected to Stirling Cloud (SaaS mode)."
+notAvailable = "Plan & Billing is only available when connected to AziralPDF Cloud (SaaS mode)."
 title = "Plan & Billing"
 
 [settings.planBilling.billing]
@@ -7321,13 +7321,13 @@ teams = "Teams"
 title = "Workspace"
 
 [setup]
-description = "Get started by choosing how you want to use Stirling PDF"
-welcome = "Welcome to Stirling PDF"
+description = "Get started by choosing how you want to use AziralPDF"
+welcome = "Welcome to AziralPDF"
 
 [setup.login]
 connectingTo = "Connecting to:"
 hideInstructions = "Hide instructions"
-instructions = "To enable login on your Stirling PDF server:"
+instructions = "To enable login on your AziralPDF server:"
 instructionsEnvVar = "Set the environment variable:"
 instructionsOrYml = "Or in settings.yml:"
 instructionsRestart = "Then restart your server for the changes to take effect."
@@ -7361,16 +7361,16 @@ label = "Username"
 placeholder = "Enter your username"
 
 [setup.mode.saas]
-description = "Sign in with your Stirling account"
-title = "Stirling Cloud"
+description = "Sign in with your AziralPDF account"
+title = "AziralPDF Cloud"
 
 [setup.mode.selfhosted]
-description = "Connect to your own Stirling PDF server with your personal account"
+description = "Connect to your own AziralPDF server with your personal account"
 title = "Self-Hosted Server"
 
 [setup.saas]
-subtitle = "Sign in with your Stirling account"
-title = "Sign in to Stirling"
+subtitle = "Sign in with your AziralPDF account"
+title = "Sign in to AziralPDF"
 
 [setup.selfhosted]
 changeServerLocked = "Your organisation has restricted this app to a specific server"
@@ -7409,11 +7409,11 @@ step3 = "Restart the server"
 title = "Login Not Enabled"
 
 [setup.server.type]
-saas = "Stirling PDF SaaS"
+saas = "AziralPDF SaaS"
 selfhosted = "Self-hosted server"
 
 [setup.server.url]
-description = "Enter the full URL of your self-hosted Stirling PDF server"
+description = "Enter the full URL of your self-hosted AziralPDF server"
 label = "Server URL"
 
 [setup.step1]
@@ -7638,7 +7638,7 @@ passwordsDoNotMatch = "Passwords do not match"
 passwordTooShort = "Password must be at least 6 characters long"
 pleaseFillAllFields = "Please fill in all fields"
 signUp = "Sign Up"
-subtitle = "Join Stirling PDF to get started"
+subtitle = "Join AziralPDF to get started"
 title = "Create an account"
 unexpectedError = "Unexpected error: {{message}}"
 useEmailInstead = "Use Email Instead"
@@ -7925,7 +7925,7 @@ download = "Download"
 downloaded = "Downloaded"
 downloadFailed = "Unable to download this file."
 downloadsCount = "Downloads: {{count}}"
-emailWarningBody = "This looks like an email address. If this person is not already a Stirling PDF user, they will not be able to access the file."
+emailWarningBody = "This looks like an email address. If this person is not already a AziralPDF user, they will not be able to access the file."
 emailWarningConfirm = "Share anyway"
 emailWarningTitle = "Email address"
 errorTitle = "Share failed"
@@ -7955,7 +7955,7 @@ manageTitle = "Manage Sharing"
 noActivity = "No activity yet."
 noLinks = "No active share links yet."
 noSharedUsers = "No users have access yet."
-openInApp = "Open in Stirling PDF"
+openInApp = "Open in AziralPDF"
 ownerLabel = "Owner"
 ownerOnly = "Only the owner can manage sharing."
 ownerUnknown = "Unknown"
@@ -8017,28 +8017,28 @@ trialing = "Trial"
 
 [survey]
 button = "Take Survey"
-changes = "Stirling-PDF has changed since the last survey! To find out more please check our blog post here:"
+changes = "AziralPDF has changed since the last survey! To find out more please check our blog post here:"
 changes2 = "With these changes we are getting paid business support and funding"
-description = "Stirling-PDF has no tracking so we want to hear from our users to improve Stirling-PDF!"
+description = "AziralPDF has no tracking so we want to hear from our users to improve AziralPDF!"
 disabled = "(Survey popup will be disabled in following updates but available at foot of page)"
 dontShowAgain = "Don't show again"
 nav = "Survey"
-please = "Please consider taking our survey to have input on the future of Stirling-PDF!"
-title = "Stirling-PDF Survey"
+please = "Please consider taking our survey to have input on the future of AziralPDF!"
+title = "AziralPDF Survey"
 
 [survey.meeting]
-1 = "If you're using Stirling PDF at work, we'd love to speak to you. We're offering technical support sessions in exchange for a 15 minute user discovery session."
+1 = "If you're using AziralPDF at work, we'd love to speak to you. We're offering technical support sessions in exchange for a 15 minute user discovery session."
 2 = "This is a chance to:"
 3 = "Get help with deployment, integrations, or troubleshooting"
 4 = "Provide direct feedback on performance, edge cases, and feature gaps"
-5 = "Help us refine Stirling PDF for real-world enterprise use"
+5 = "Help us refine AziralPDF for real-world enterprise use"
 6 = "If you're interested, you can book time with our team directly. (English speaking only)"
-7 = "Looking forward to digging into your use cases and making Stirling PDF even better!"
+7 = "Looking forward to digging into your use cases and making AziralPDF even better!"
 button = "Book meeting"
 notInterested = "Not a business and/or interested in a meeting?"
 
 [swagger]
-desc = "View and test the Stirling PDF API endpoints"
+desc = "View and test the AziralPDF API endpoints"
 header = "API Documentation"
 tags = "api,documentation,swagger,endpoints,development"
 title = "API Documentation"
@@ -8193,7 +8193,7 @@ favorites = "Favourites"
 heading = "All tools (fullscreen view)"
 noResults = "Try adjusting your search or toggle descriptions to find what you need."
 recommended = "Recommended"
-selfHostedOffline = "Requires your Stirling-PDF server (currently offline):"
+selfHostedOffline = "Requires your AziralPDF server (currently offline):"
 showDetails = "Show Details"
 unavailable = "Disabled by server administrator:"
 unavailableDependency = "Unavailable - required tool missing on server:"
@@ -8202,7 +8202,7 @@ unfavorite = "Remove from favourites"
 [toolPanel.modePrompt]
 chooseFullscreen = "Use fullscreen mode"
 chooseSidebar = "Use sidebar mode"
-description = "Preview both layouts and decide how you want to explore Stirling PDF tools."
+description = "Preview both layouts and decide how you want to explore AziralPDF tools."
 dismiss = "Maybe later"
 fullscreenDescription = "Browse every tool in a catalogue that covers the workspace until you pick one."
 fullscreenTitle = "Fullscreen mode - (legacy)"
@@ -8279,7 +8279,7 @@ loadingDetailedInfo = "Loading detailed information..."
 migrationGuide = "Migration Guide"
 migrationGuides = "Migration Guides"
 migrationGuidesDesc = "Review important changes before updating."
-modalSubtitle = "A new version of Stirling PDF is ready to install."
+modalSubtitle = "A new version of AziralPDF is ready to install."
 modalTitle = "Update Available"
 notes = "Notes"
 priorityLabel = "Priority"
@@ -8308,7 +8308,7 @@ attentionBody = "Your admin needs to sign in to see more info. Please contact th
 attentionBodyAdmin = "Review the license requirements to keep this server compliant."
 attentionTitle = "This server needs admin attention"
 dismiss = "Dismiss banner"
-message = "Get the most out of Stirling PDF with unlimited users and advanced features"
+message = "Get the most out of AziralPDF with unlimited users and advanced features"
 seeInfo = "See info"
 title = "Upgrade to Server Plan"
 upgradeButton = "Upgrade Now"
@@ -8430,7 +8430,7 @@ continued = "Continued"
 downloads = "Downloads"
 entryLabel = "Signature Summary"
 filesEvaluated = "{{count}} files evaluated"
-footer = "Validated via Stirling PDF"
+footer = "Validated via AziralPDF"
 generatedAt = "Generated"
 noPdf = "PDF report will be available after a successful validation."
 page = "Page"

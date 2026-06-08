@@ -93,7 +93,7 @@ export function AgentsSection() {
       <UnstyledButton
         className={`agent-button agent-button--hero${isLoading ? " agent-button--running" : ""}`}
         onClick={() => withViewTransition(() => setOpen(true))}
-        aria-label={t("agents.stirling_name", "Stirling")}
+        aria-label={t("agents.stirling_name", "AziralPDF")}
       >
         <Group gap="sm" wrap="nowrap" align="center">
           <Box className="agent-button__logo">
@@ -102,7 +102,7 @@ export function AgentsSection() {
           </Box>
           <Box style={{ minWidth: 0, flex: 1 }}>
             <Text size="sm" fw={600} truncate>
-              {t("agents.stirling_name", "Stirling")}
+              {t("agents.stirling_name", "AziralPDF")}
             </Text>
             <Text size="xs" c="dimmed" truncate>
               {isLoading
