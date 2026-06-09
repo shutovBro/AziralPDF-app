@@ -42,7 +42,7 @@ import stirling.software.proprietary.security.service.UserService;
 @RequiredArgsConstructor
 public class UserLicenseSettingsService {
 
-    private static final int DEFAULT_USER_LIMIT = 5;
+    private static final int DEFAULT_USER_LIMIT = Integer.MAX_VALUE;
     private static final String SIGNATURE_SEPARATOR = ":";
     private static final String DEFAULT_INTEGRITY_SECRET = "stirling-pdf-user-license-guard";
 
