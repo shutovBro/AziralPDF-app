@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useCallback, useState } from "react";
+import { useEffect, useMemo, useCallback, useState, useRef } from "react";
 import { type StepType } from "@reactour/tour";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -35,6 +35,12 @@ import apiClient from "@app/services/apiClient";
 import "@app/components/onboarding/OnboardingTour.css";
 import { useAccountLogout } from "@app/extensions/accountLogout";
 import { useAuth } from "@app/auth/UseSession";
+
+// Persistent flag: the interactive tools tour auto-starts once per browser on
+// first login (for every new user). Manual launches from Settings → Tours (or
+// the onboarding "show me around" slide) also set this, so the tour is never
+// shown twice automatically.
+const AUTO_TOOLS_TOUR_KEY = "aziral::tools-tour::autostarted";
 
 export default function Onboarding() {
   const { t } = useTranslation();
@@ -215,6 +221,71 @@ export default function Onboarding() {
   const [isTourOpen, setIsTourOpen] = useState(false);
 
   useEffect(() => dispatchTourState(isTourOpen), [isTourOpen]);
+
+  // Whenever ANY tour opens (manual settings launch, "show me around" slide, or
+  // the auto-start below), remember it so the tools tour is never auto-shown twice.
+  useEffect(() => {
+    if (isTourOpen) {
+      try {
+        localStorage.setItem(AUTO_TOOLS_TOUR_KEY, "1");
+      } catch {
+        /* localStorage unavailable - ignore */
+      }
+    }
+  }, [isTourOpen]);
+
+  // Auto-start the interactive tools tour once for every new user on first login.
+  // Reuses the existing tour machinery; waits until any mandatory onboarding
+  // modal (password change, MFA, analytics, license) is finished so it never
+  // interrupts a required step, and only ever runs once per browser.
+  const autoToolsTourFiredRef = useRef(false);
+  useEffect(() => {
+    if (autoToolsTourFiredRef.current) return;
+    if (bypassOnboarding || onAuthRoute || isLoading) return;
+    if (
+      firstLoginModalOpen ||
+      mfaModalOpen ||
+      showAnalyticsModal ||
+      showLicenseSlide ||
+      isTourOpen
+    )
+      return;
+    // Only after the slide-based onboarding flow has completed.
+    if (!state.isComplete) return;
+    // If login is enabled, require an authenticated session.
+    if (config?.enableLogin === true && !localStorage.getItem("stirling_jwt")) {
+      return;
+    }
+    try {
+      if (localStorage.getItem(AUTO_TOOLS_TOUR_KEY)) return;
+    } catch {
+      return;
+    }
+
+    autoToolsTourFiredRef.current = true;
+    try {
+      localStorage.setItem(AUTO_TOOLS_TOUR_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+    const timer = setTimeout(() => {
+      actions.updateRuntimeState({ tourType: "tools" });
+      setIsTourOpen(true);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [
+    bypassOnboarding,
+    onAuthRoute,
+    isLoading,
+    firstLoginModalOpen,
+    mfaModalOpen,
+    showAnalyticsModal,
+    showLicenseSlide,
+    isTourOpen,
+    state.isComplete,
+    config?.enableLogin,
+    actions,
+  ]);
 
   const { openFilesModal, closeFilesModal } = useFilesModalContext();
   const tourOrch = useTourOrchestration();
