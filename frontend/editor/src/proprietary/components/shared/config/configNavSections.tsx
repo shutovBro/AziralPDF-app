@@ -14,7 +14,6 @@ import AdminPrivacySection from "@app/components/shared/config/configSections/Ad
 import AdminDatabaseSection from "@app/components/shared/config/configSections/AdminDatabaseSection";
 import AdminAdvancedSection from "@app/components/shared/config/configSections/AdminAdvancedSection";
 import AdminLegalSection from "@app/components/shared/config/configSections/AdminLegalSection";
-import AdminPlanSection from "@app/components/shared/config/configSections/AdminPlanSection";
 import AdminFeaturesSection from "@app/components/shared/config/configSections/AdminFeaturesSection";
 import AdminEndpointsSection from "@app/components/shared/config/configSections/AdminEndpointsSection";
 import AdminAuditSection from "@app/components/shared/config/configSections/AdminAuditSection";
@@ -186,14 +185,8 @@ export const useConfigNavSections = (
     sections.push({
       title: t("settings.licensingAnalytics.title", "Licensing & Analytics"),
       items: [
-        {
-          key: "adminPlan",
-          label: t("settings.licensingAnalytics.plan", "Plan"),
-          icon: "star-rounded",
-          component: <AdminPlanSection />,
-          disabled: requiresLogin,
-          disabledTooltip: requiresLogin ? enableLoginTooltip : undefined,
-        },
+        // AziralPDF: Stirling upstream "Plan" pricing storefront removed
+        // (own pricing lives in PRICING.md / landing). Seat cap already lifted.
         {
           key: "adminAudit",
           label: t("settings.licensingAnalytics.audit", "Audit"),
@@ -426,16 +419,7 @@ export const createConfigNavSections = (
     sections.push({
       title: "Licensing & Analytics",
       items: [
-        {
-          key: "adminPlan",
-          label: "Plan",
-          icon: "star-rounded",
-          component: <AdminPlanSection />,
-          disabled: requiresLogin,
-          disabledTooltip: requiresLogin
-            ? "Enable login mode first"
-            : undefined,
-        },
+        // AziralPDF: Stirling upstream "Plan" pricing storefront removed.
         {
           key: "adminAudit",
           label: "Audit",
