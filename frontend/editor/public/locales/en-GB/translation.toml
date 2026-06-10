@@ -7202,6 +7202,18 @@ title = "Keyboard Shortcuts"
 mac = "Include ⌘ (Command), ⌥ (Option), or another modifier in your shortcut."
 windows = "Include Ctrl, Alt, or another modifier in your shortcut."
 
+[settings.installApp]
+description = "Install AziralPDF on this computer to open it from your desktop in its own window."
+install = "Install on this computer"
+installed = "AziralPDF is already installed on this device."
+iosHint = "In Safari, add AziralPDF to your Home Screen:"
+iosStep1 = "Tap the Share button."
+iosStep2 = "Choose \"Add to Home Screen\"."
+manualHint = "Your browser does not offer one-click install here. You can still install it manually:"
+manualStep1 = "Open your browser menu (the ⋮ icon, top-right)."
+manualStep2 = "Choose \"Install AziralPDF\" or \"Install app\"."
+title = "Install App"
+
 [settings.licensingAnalytics]
 audit = "Audit"
 plan = "Plan"

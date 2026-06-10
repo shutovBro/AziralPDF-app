@@ -35,6 +35,25 @@ if (typeof window !== "undefined") {
   }
 }
 
+// Register a minimal service worker so the browser treats AziralPDF as an
+// installable PWA (enables the "Install App" button in Settings). Skipped in
+// the Tauri desktop shell and on insecure origins, where it is irrelevant.
+if (
+  typeof window !== "undefined" &&
+  "serviceWorker" in navigator &&
+  window.isSecureContext &&
+  !("__TAURI__" in window) &&
+  !("__TAURI_INTERNALS__" in window)
+) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register(`${BASE_PATH}/sw.js`)
+      .catch((err) =>
+        console.warn("Service worker registration failed:", err),
+      );
+  });
+}
+
 posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_KEY, {
   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
   defaults: "2025-05-24",
