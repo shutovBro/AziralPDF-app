@@ -16,6 +16,12 @@ import "@app/i18n"; // Initialize i18next
 import posthog from "posthog-js";
 import { PostHogProvider } from "@posthog/react";
 import { BASE_PATH } from "@app/constants/app";
+// Side-effect import: starts listening for `beforeinstallprompt` at app
+// startup. The settings modal is lazy-loaded, so importing the store only from
+// there would miss the early event and the PWA install button would never
+// appear. Importing here guarantees the listener is attached before the event
+// fires.
+import "@core/utils/pwaInstall";
 
 import { startEagerWasmCompilation } from "@app/services/wasmPrecompiler";
 

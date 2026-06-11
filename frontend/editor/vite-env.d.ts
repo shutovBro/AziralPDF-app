@@ -28,3 +28,6 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+/** Build-time cache-busting id, injected via Vite `define`. */
+declare const __BUILD_ID__: string;

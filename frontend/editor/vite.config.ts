@@ -143,6 +143,13 @@ export default defineConfig(async ({ mode }) => {
         };
 
   return {
+    define: {
+      // Cache-busting id stamped at build time. Appended to the runtime-fetched
+      // i18n TOML URLs so each deploy forces a fresh translation fetch despite
+      // the static-asset Cache-Control (max-age=86400, stale-while-revalidate).
+      // Stable within a single build, so caching still works between deploys.
+      __BUILD_ID__: JSON.stringify(Date.now().toString(36)),
+    },
     plugins: [
       react(),
       tsconfigPaths({

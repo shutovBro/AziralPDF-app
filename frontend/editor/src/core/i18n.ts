@@ -92,7 +92,12 @@ i18n
         const cleanBasePath = basePath.endsWith("/")
           ? basePath.slice(0, -1)
           : basePath;
-        return `${cleanBasePath}/locales/${lng}/${namespaces[0]}.toml`;
+        // ?v=<build id> busts the static-asset cache on each deploy so updated
+        // translations show immediately instead of being served stale for up
+        // to Cache-Control max-age. Stable within a build → still cacheable.
+        const cacheBust =
+          typeof __BUILD_ID__ !== "undefined" ? `?v=${__BUILD_ID__}` : "";
+        return `${cleanBasePath}/locales/${lng}/${namespaces[0]}.toml${cacheBust}`;
       },
     },
 
