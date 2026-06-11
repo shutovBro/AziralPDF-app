@@ -23,7 +23,7 @@
   },
   "bundle": {
     "active": true,
-    "createUpdaterArtifacts": true,
+    "createUpdaterArtifacts": false,
     "publisher": "AziralPDF Inc.",
     "targets": ["deb", "rpm", "appimage", "dmg", "app", "msi"],
     "icon": [
@@ -87,7 +87,7 @@
     },
     "updater": {
       "endpoints": [
-        "https://github.com/Stirling-Tools/Stirling-PDF/releases/latest/download/latest.json"
+        "https://github.com/shutovBro/AziralPDF-app/releases/latest/download/latest.json"
       ],
       "dialog": false,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDZEREM2QTgwNjdGNzdCOUQKUldTZGUvZG5nR3JjYmZ4TlZ3YVpHTVIzd2hBT2c4c000RDNIN2tLZENEblE4ZXFhU3J5V0lQanEK",
