@@ -160,7 +160,7 @@ fn check_default_macos() -> Result<bool, String> {
         add_log(format!("macOS PDF handler: {}", handler_str));
 
         // Check if it's our bundle identifier
-        let is_default = handler_str == "stirling.pdf.dev";
+        let is_default = handler_str == "com.aziral.pdf";
         Ok(is_default)
     }
 }
@@ -186,7 +186,7 @@ fn set_default_macos() -> Result<String, String> {
     unsafe {
         // Set our app as the default handler for PDF files
         let pdf_uti = CFString::new("com.adobe.pdf");
-        let our_bundle_id = CFString::new("stirling.pdf.dev");
+        let our_bundle_id = CFString::new("com.aziral.pdf");
 
         let status = LSSetDefaultRoleHandlerForContentType(
             pdf_uti.as_concrete_TypeRef(),
