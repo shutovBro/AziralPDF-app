@@ -1,5 +1,5 @@
 [package]
-name = "stirling-thumbnail-handler"
+name = "aziralpdf-thumbnail-handler"
 version = "0.1.0"
 edition = "2021"
 

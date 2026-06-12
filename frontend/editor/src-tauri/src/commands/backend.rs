@@ -73,7 +73,9 @@ fn find_bundled_jre(resource_dir: &PathBuf) -> Result<PathBuf, String> {
     Ok(java_executable)
 }
 
-// Find the Stirling-PDF JAR file
+// Find the bundled backend JAR file. The JAR keeps its upstream
+// "stirling-pdf-*" artifact name (set by the Gradle build) — that name is an
+// internal contract with the Java backend, not user-facing branding.
 fn find_stirling_jar(resource_dir: &PathBuf) -> Result<PathBuf, String> {
     let libs_dir = resource_dir.join("libs");
     let mut jar_files: Vec<_> = std::fs::read_dir(&libs_dir)
@@ -95,7 +97,7 @@ fn find_stirling_jar(resource_dir: &PathBuf) -> Result<PathBuf, String> {
         .collect();
 
     if jar_files.is_empty() {
-        let error_msg = "No Stirling-PDF JAR found in libs directory.".to_string();
+        let error_msg = "No backend JAR found in libs directory.".to_string();
         add_log(error_msg.clone());
         return Err(error_msg);
     }
@@ -208,7 +210,7 @@ fn run_stirling_pdf_jar(app: &tauri::AppHandle, java_path: &PathBuf, jar_path: &
         "-DBROWSER_OPEN=false",
         "-DSTIRLING_PDF_TAURI_MODE=true",
         &log_path_option,
-        "-Dlogging.file.name=stirling-pdf.log",
+        "-Dlogging.file.name=aziralpdf.log",
         "-Dserver.port=0",  // Let OS assign an available port
         "-Dsecurity.enableLogin=false",  // Disable login for desktop mode
         "-Dsecurity.csrfDisabled=true",  // Disable CSRF for desktop mode

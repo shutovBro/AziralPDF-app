@@ -1,5 +1,5 @@
 [package]
-name = "stirling-pdf"
+name = "aziralpdf"
 version = "0.1.0"
 description = "AziralPDF Desktop Application"
 authors = ["AziralPDF"]

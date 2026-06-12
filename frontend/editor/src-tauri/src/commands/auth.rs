@@ -28,7 +28,7 @@ pub struct UserInfo {
 }
 
 fn get_keyring_entry() -> Result<Entry, String> {
-    if std::env::var("STIRLING_PDF_TEST_FORCE_AUTH_KEYRING_FAIL").is_ok() {
+    if std::env::var("AZIRALPDF_TEST_FORCE_AUTH_KEYRING_FAIL").is_ok() {
         return Err("Forced keyring failure for tests".to_string());
     }
     log::debug!("Creating keyring entry with service='{}' username='{}'", KEYRING_SERVICE, KEYRING_TOKEN_KEY);
@@ -42,7 +42,7 @@ fn get_keyring_entry() -> Result<Entry, String> {
 }
 
 pub fn get_refresh_token_keyring_entry() -> Result<Entry, String> {
-    if std::env::var("STIRLING_PDF_TEST_FORCE_REFRESH_KEYRING_FAIL").is_ok() {
+    if std::env::var("AZIRALPDF_TEST_FORCE_REFRESH_KEYRING_FAIL").is_ok() {
         return Err("Forced keyring failure for tests".to_string());
     }
     Entry::new(KEYRING_SERVICE, KEYRING_REFRESH_TOKEN_KEY)

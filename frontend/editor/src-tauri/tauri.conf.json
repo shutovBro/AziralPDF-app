@@ -47,10 +47,10 @@
     ],
     "linux": {
       "deb": {
-        "desktopTemplate": "stirling-pdf.desktop"
+        "desktopTemplate": "aziralpdf.desktop"
       },
       "rpm": {
-        "desktopTemplate": "stirling-pdf.desktop"
+        "desktopTemplate": "aziralpdf.desktop"
       },
       "appimage": {
         "bundleMediaFramework": false
