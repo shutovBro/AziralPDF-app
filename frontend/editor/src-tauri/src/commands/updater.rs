@@ -190,7 +190,7 @@ pub struct CanInstallResult {
 /// version silently.
 ///
 /// Tauri's Windows updater runs msiexec against the downloaded MSI, which on
-/// a per-machine install writes to `C:\Program Files\Stirling-PDF`. If the
+/// a per-machine install writes to `C:\Program Files\AziralPDF`. If the
 /// current user can write to that directory without elevation, msiexec will
 /// succeed silently (passive install mode). If they can't, the install
 /// triggers a UAC prompt that can't be auto-approved — and for a managed
@@ -202,7 +202,7 @@ pub struct CanInstallResult {
 /// on Windows when UAC filtered tokens are in play.
 ///
 /// On macOS and Linux the probe-next-to-exe heuristic is misleading:
-/// `current_exe().parent()` on macOS is `Stirling-PDF.app/Contents/MacOS/`
+/// `current_exe().parent()` on macOS is `AziralPDF.app/Contents/MacOS/`
 /// which is almost always user-writable even when `/Applications/` is not,
 /// so the probe returns a false positive. On Linux the AppImage/deb install
 /// story is different and not gated by this kind of check. We platform-gate
@@ -244,7 +244,7 @@ pub fn can_install_updates() -> CanInstallResult {
         };
 
         let dir_display = parent.display().to_string();
-        let probe = parent.join(".stirling-auto-update-probe.tmp");
+        let probe = parent.join(".aziral-auto-update-probe.tmp");
         match std::fs::File::create(&probe) {
             Ok(_) => {
                 let _ = std::fs::remove_file(&probe);

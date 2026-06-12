@@ -82,7 +82,7 @@
     },
     "deep-link": {
       "desktop": {
-        "schemes": ["stirlingpdf"]
+        "schemes": ["aziralpdf"]
       }
     },
     "updater": {
