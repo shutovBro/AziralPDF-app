@@ -21,7 +21,7 @@ import { BASE_PATH } from "@app/constants/app";
 // there would miss the early event and the PWA install button would never
 // appear. Importing here guarantees the listener is attached before the event
 // fires.
-import "@core/utils/pwaInstall";
+import "@app/utils/pwaInstall";
 
 import { startEagerWasmCompilation } from "@app/services/wasmPrecompiler";
 

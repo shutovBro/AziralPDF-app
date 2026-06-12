@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { canInstall, isInstalled, subscribe } from "@core/utils/pwaInstall";
+import { canInstall, isInstalled, subscribe } from "@app/utils/pwaInstall";
 
 /**
  * Reactive view of the browser's PWA install state for the settings UI.

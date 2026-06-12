@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Alert, Button, List, Paper, Stack, Text } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import LocalIcon from "@app/components/shared/LocalIcon";
-import { usePwaInstall } from "@core/hooks/usePwaInstall";
-import { promptInstall } from "@core/utils/pwaInstall";
+import { usePwaInstall } from "@app/hooks/usePwaInstall";
+import { promptInstall } from "@app/utils/pwaInstall";
 
 const isIos = (): boolean =>
   typeof navigator !== "undefined" &&

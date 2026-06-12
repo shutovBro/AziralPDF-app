@@ -5,7 +5,7 @@ import HotkeysSection from "@app/components/shared/config/configSections/Hotkeys
 import GeneralSection from "@app/components/shared/config/configSections/GeneralSection";
 import HelpSection from "@app/components/shared/config/configSections/HelpSection";
 import InstallAppSection from "@app/components/shared/config/configSections/InstallAppSection";
-import { isDesktopShell } from "@core/utils/pwaInstall";
+import { isDesktopShell } from "@app/utils/pwaInstall";
 
 export interface ConfigNavItem {
   key: NavKey;
