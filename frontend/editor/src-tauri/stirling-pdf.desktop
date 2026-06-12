@@ -1,8 +1,8 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Stirling-PDF
-Comment=Locally hosted web application that allows you to perform various operations on PDF files
+Name=AziralPDF
+Comment=Desktop PDF toolkit — edit, convert, sign and manage PDF files locally
 TryExec={{exec}}
 Exec={{exec}} %F
 Icon={{icon}}

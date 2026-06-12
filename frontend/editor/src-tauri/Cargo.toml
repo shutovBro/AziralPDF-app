@@ -1,8 +1,8 @@
 [package]
 name = "stirling-pdf"
 version = "0.1.0"
-description = "Stirling-PDF Desktop Application"
-authors = ["Stirling-PDF Contributors"]
+description = "AziralPDF Desktop Application"
+authors = ["AziralPDF"]
 license = ""
 repository = ""
 edition = "2021"
