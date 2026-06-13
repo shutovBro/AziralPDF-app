@@ -54,9 +54,7 @@ if (
   window.addEventListener("load", () => {
     navigator.serviceWorker
       .register(`${BASE_PATH}/sw.js`)
-      .catch((err) =>
-        console.warn("Service worker registration failed:", err),
-      );
+      .catch((err) => console.warn("Service worker registration failed:", err));
   });
 }
 

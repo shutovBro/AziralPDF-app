@@ -88,10 +88,7 @@ const InstallAppSection: React.FC = () => {
               </Text>
               <List size="sm" spacing={4}>
                 <List.Item>
-                  {t(
-                    "settings.installApp.iosStep1",
-                    "Tap the Share button.",
-                  )}
+                  {t("settings.installApp.iosStep1", "Tap the Share button.")}
                 </List.Item>
                 <List.Item>
                   {t(

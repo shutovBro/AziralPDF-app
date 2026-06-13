@@ -86,7 +86,7 @@ class TotpServiceTest {
 
         String uri = service.buildOtpAuthUri("user@example.com", "SECRET");
 
-        assertTrue(uri.contains("issuer=Stirling%20PDF"));
+        assertTrue(uri.contains("issuer=AziralPDF"));
     }
 
     private String generateCode(TotpService service, byte[] secretBytes, long timeStep)

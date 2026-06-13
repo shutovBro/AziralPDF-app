@@ -683,7 +683,10 @@ export default function Login() {
               >
                 {t("login.password", "Password")}:
               </Text>{" "}
-              {t("login.passwordEnvHint", "set via SECURITY_INITIALLOGIN_PASSWORD")}
+              {t(
+                "login.passwordEnvHint",
+                "set via SECURITY_INITIALLOGIN_PASSWORD",
+              )}
             </Text>
             <Text
               size="xs"

@@ -10,11 +10,7 @@ export const usePwaInstall = (): {
   installable: boolean;
   installed: boolean;
 } => {
-  const installable = useSyncExternalStore(
-    subscribe,
-    canInstall,
-    () => false,
-  );
+  const installable = useSyncExternalStore(subscribe, canInstall, () => false);
   const installed = useSyncExternalStore(subscribe, isInstalled, () => false);
   return { installable, installed };
 };
