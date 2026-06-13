@@ -227,7 +227,7 @@ public class ReactRoutingController {
                             const encodedToken = encodeURIComponent(token);
                             const encodedServer = encodeURIComponent(serverUrl);
                             const encodedNonce = nonceFromUrl ? encodeURIComponent(nonceFromUrl) : '';
-                            const deepLink = `stirlingpdf://auth/sso-complete?server=${encodedServer}#access_token=${encodedToken}&nonce=${encodedNonce}&type=sso-selfhosted`;
+                            const deepLink = `aziralpdf://auth/sso-complete?server=${encodedServer}#access_token=${encodedToken}&nonce=${encodedNonce}&type=sso-selfhosted`;
                             window.location.href = deepLink;
                             return;
                           } catch (_) {
@@ -406,7 +406,7 @@ public class ReactRoutingController {
                               const encodedValue = encodeURIComponent(value || '');
                               const encodedServer = encodeURIComponent(serverUrl);
                               const hashKey = key || 'access_token';
-                              const deepLink = `stirlingpdf://auth/sso-complete?server=${encodedServer}#${hashKey}=${encodedValue}&type=${type}`;
+                              const deepLink = `aziralpdf://auth/sso-complete?server=${encodedServer}#${hashKey}=${encodedValue}&type=${type}`;
                               window.location.href = deepLink;
                             } catch (_) {
                               // ignore deep link errors
@@ -444,7 +444,7 @@ public class ReactRoutingController {
                                 const encodedToken = encodeURIComponent(token);
                                 const encodedServer = encodeURIComponent(serverUrl);
                                 const encodedNonce = nonceFromUrl ? encodeURIComponent(nonceFromUrl) : '';
-                                const deepLink = `stirlingpdf://auth/sso-complete?server=${encodedServer}#access_token=${encodedToken}&nonce=${encodedNonce}&type=sso-selfhosted`;
+                                const deepLink = `aziralpdf://auth/sso-complete?server=${encodedServer}#access_token=${encodedToken}&nonce=${encodedNonce}&type=sso-selfhosted`;
                                 window.location.href = deepLink;
                               } catch (err) {
                                 console.error('[Auth Callback] Failed to trigger deep link:', err);
