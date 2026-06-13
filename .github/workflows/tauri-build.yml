@@ -341,7 +341,7 @@ jobs:
           APPLE_SIGNING_IDENTITY: ${{ env.APPLE_SIGNING_IDENTITY }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_TEAM_ID: 6TW72WVCQQ # Apple Developer Team ID — not a secret (embedded in every signed binary)
           # AppImage signing — three env vars work together:
           #   SIGN=1                        tells linuxdeploy-plugin-appimage to forward --sign to appimagetool
           #   APPIMAGETOOL_SIGN_PASSPHRASE  appimagetool uses this to unlock the GPG key non-interactively
