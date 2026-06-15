@@ -1526,10 +1526,10 @@ section_title = "Agents"
 show_less = "Show less"
 start_chat = "Start chatting"
 stirling_description = "Your general-purpose PDF assistant"
-stirling_running = "Running..."
 stirling_full_name = "AziralPDF General Agent"
 stirling_long_description = "General purpose PDF assistant that can run tools, create PDFs and extract insights from your documents."
 stirling_name = "AziralPDF"
+stirling_running = "Running..."
 stirling_tooltip = "AziralPDF agent"
 view_all = "View all agents"
 
@@ -4868,6 +4868,7 @@ oAuth2RequiresLicense = "OAuth/SSO login requires a Server or Enterprise license
 or = "Or"
 password = "Password"
 passwordChangedSuccess = "Password changed successfully! Please sign in with your new password."
+passwordEnvHint = "set via SECURITY_INITIALLOGIN_PASSWORD"
 passwordResetSent = "Password reset link sent to {{email}}! Check your email and follow the instructions."
 passwordUpdatedSuccess = "Your password has been updated successfully."
 pleaseEnterBoth = "Please enter both email and password"
@@ -6052,6 +6053,9 @@ title = "API Credit Packages"
 loadError = "Unable to load plan pricing. Using default values."
 subtitle = "Choose the plan that fits your needs"
 title = "Available Plans"
+
+[plan.aziral]
+notice = "You are using AziralPDF. Subscription plans and billing are managed on the AziralPDF website. For team and business subscriptions (incl. invoicing for companies) contact us."
 
 [plan.enterprise]
 highlight1 = "Custom pricing"
@@ -8137,6 +8141,12 @@ right = "Right"
 [theme]
 toggle = "Toggle Theme"
 
+[time.relative]
+daysAgo = "{{count}}d ago"
+hoursAgo = "{{count}}h ago"
+justNow = "just now"
+minutesAgo = "{{count}}m ago"
+
 [timestampPdf]
 completed = "PDF timestamped successfully"
 desc = "Add an RFC 3161 document timestamp to your PDF using a trusted Time Stamp Authority (TSA) server."
@@ -8162,12 +8172,6 @@ label = "Select a TSA server"
 
 [timestampPdf.steps]
 settings = "Settings"
-
-[time.relative]
-daysAgo = "{{count}}d ago"
-hoursAgo = "{{count}}h ago"
-justNow = "just now"
-minutesAgo = "{{count}}m ago"
 
 [tool]
 endpointUnavailable = "This tool is unavailable on your server."
