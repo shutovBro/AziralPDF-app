@@ -4,6 +4,7 @@ import { Stack, Text, Button, Alert, Loader, Center } from "@mantine/core";
 import { DesktopAuthLayout } from "@app/components/SetupWizard/DesktopAuthLayout";
 import { ServerSelectionScreen } from "@app/components/SetupWizard/ServerSelectionScreen";
 import { SelfHostedLoginScreen } from "@app/components/SetupWizard/SelfHostedLoginScreen";
+import { SelfHostedSignupScreen } from "@app/components/SetupWizard/SelfHostedSignupScreen";
 import {
   ServerConfig,
   SSOProviderConfig,
@@ -23,6 +24,7 @@ import { DisabledButtonWithTooltip } from "@app/components/shared/DisabledButton
 enum SetupStep {
   ServerSelection,
   SelfHostedLogin,
+  SelfHostedSignup,
 }
 
 interface SetupWizardProps {
@@ -135,6 +137,35 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
         setSelfHostedMfaRequired(true);
       }
       console.error("[SetupWizard] Error message:", errorMessage);
+      setError(errorMessage);
+      setLoading(false);
+    }
+  };
+
+  const handleSelfHostedSignup = async (username: string, password: string) => {
+    if (!serverConfig) {
+      setError("No server configured");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Register creates the account (already enabled) and signs in.
+      await authService.register(serverConfig.url, username, password);
+      await connectionModeService.switchToSelfHosted(serverConfig);
+      await tauriBackendService.initializeExternalBackend();
+
+      onComplete();
+    } catch (err) {
+      console.error("[SetupWizard] ❌ Self-hosted signup failed:", err);
+      let errorMessage = "Sign up failed";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      } else if (typeof err === "string") {
+        errorMessage = err;
+      }
       setError(errorMessage);
       setLoading(false);
     }
@@ -441,6 +472,10 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
               requiresMfa={selfHostedMfaRequired}
               loading={loading}
               error={error}
+              onCreateAccount={() => {
+                setError(null);
+                setActiveStep(SetupStep.SelfHostedSignup);
+              }}
             />
             <div
               className="navigation-link-container"
@@ -470,6 +505,36 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
             </div>
           </>
         )}
+
+      {activeStep === SetupStep.SelfHostedSignup && (
+        <>
+          <SelfHostedSignupScreen
+            serverUrl={serverConfig?.url || ""}
+            onSignup={handleSelfHostedSignup}
+            loading={loading}
+            error={error}
+          />
+          <div
+            className="navigation-link-container"
+            style={{ marginTop: "1.5rem" }}
+          >
+            <button
+              type="button"
+              onClick={() => {
+                setError(null);
+                setActiveStep(SetupStep.SelfHostedLogin);
+              }}
+              className="navigation-link-button"
+              disabled={loading}
+            >
+              {t(
+                "setup.signup.backToLogin",
+                "Already have an account? Sign in",
+              )}
+            </button>
+          </div>
+        </>
+      )}
 
       {/* Back Button */}
       {!lockConnectionMode &&

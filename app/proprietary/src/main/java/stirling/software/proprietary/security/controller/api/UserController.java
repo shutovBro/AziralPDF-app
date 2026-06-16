@@ -114,7 +114,7 @@ public class UserController {
                             .username(username)
                             .password(password)
                             .team(team)
-                            .enabled(false);
+                            .enabled(true);
             User user = userService.saveUserCore(builder.build());
 
             log.info("User registered successfully: {}", username);

@@ -1,5 +1,6 @@
 package stirling.software.proprietary.security.controller.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
@@ -29,6 +31,7 @@ import stirling.software.proprietary.security.model.api.user.UsernameAndPass;
 import stirling.software.proprietary.security.repository.TeamRepository;
 import stirling.software.proprietary.security.service.EmailService;
 import stirling.software.proprietary.security.service.LoginAttemptService;
+import stirling.software.proprietary.security.service.SaveUserRequest;
 import stirling.software.proprietary.security.service.TeamService;
 import stirling.software.proprietary.security.service.UserService;
 import stirling.software.proprietary.security.session.SessionPersistentRegistry;
@@ -105,7 +108,7 @@ class UserControllerTest {
 
         User savedUser = new User();
         savedUser.setUsername("new@example.com");
-        savedUser.setEnabled(false);
+        savedUser.setEnabled(true);
         when(userService.saveUserCore(any())).thenReturn(savedUser);
 
         mockMvc.perform(
@@ -114,6 +117,11 @@ class UserControllerTest {
                                 .content(objectMapper.writeValueAsString(payload)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.user.username").value("new@example.com"));
+
+        ArgumentCaptor<SaveUserRequest> requestCaptor =
+                ArgumentCaptor.forClass(SaveUserRequest.class);
+        verify(userService).saveUserCore(requestCaptor.capture());
+        assertThat(requestCaptor.getValue().isEnabled()).isTrue();
     }
 
     @Test

@@ -7342,11 +7342,13 @@ welcome = "Welcome to AziralPDF"
 
 [setup.login]
 connectingTo = "Connecting to:"
+createAccount = "Create an account"
 hideInstructions = "Hide instructions"
 instructions = "To enable login on your AziralPDF server:"
 instructionsEnvVar = "Set the environment variable:"
 instructionsOrYml = "Or in settings.yml:"
 instructionsRestart = "Then restart your server for the changes to take effect."
+noAccount = "Don't have an account?"
 oauthPending = "Opening browser for authentication..."
 orContinueWith = "Or continue with email"
 serverRequirement = "Note: The server must have login enabled."
@@ -7431,6 +7433,11 @@ selfhosted = "Self-hosted server"
 [setup.server.url]
 description = "Enter the full URL of your self-hosted AziralPDF server"
 label = "Server URL"
+
+[setup.signup]
+backToLogin = "Already have an account? Sign in"
+subtitle = "Register a new account on your server"
+title = "Create an account"
 
 [setup.step1]
 description = "Offline or Server"
