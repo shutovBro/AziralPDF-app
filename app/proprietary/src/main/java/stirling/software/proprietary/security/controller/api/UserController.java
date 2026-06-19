@@ -79,6 +79,11 @@ public class UserController {
         try {
             log.debug("Registration attempt for user: {}", username);
 
+            if (username == null || username.isBlank()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "Username is required"));
+            }
+
             if (userService.usernameExistsIgnoreCase(username)) {
                 log.warn("Registration failed: username already exists: {}", username);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)

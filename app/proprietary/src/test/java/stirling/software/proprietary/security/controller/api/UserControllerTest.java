@@ -93,6 +93,21 @@ class UserControllerTest {
     }
 
     @Test
+    void registerRejectsMissingUsername() throws Exception {
+        UsernameAndPass payload = new UsernameAndPass();
+        payload.setPassword("pw");
+
+        mockMvc.perform(
+                        post("/api/v1/user/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Username is required"));
+
+        verify(userService, never()).saveUserCore(any());
+    }
+
+    @Test
     void registerCreatesUserWhenValid() throws Exception {
         UsernameAndPass payload = new UsernameAndPass();
         payload.setUsername("new@example.com");
