@@ -169,6 +169,21 @@ class RequestUriUtilsTest {
     }
 
     @Test
+    void testIsPublicAuthEndpoint_selfRegistrationPublic() {
+        // Open self-registration: both the SPA page and the API must be reachable anonymously
+        assertTrue(RequestUriUtils.isPublicAuthEndpoint("/signup", ""));
+        assertTrue(RequestUriUtils.isPublicAuthEndpoint("/api/v1/user/register", ""));
+        assertTrue(RequestUriUtils.isPublicAuthEndpoint("/app/signup", "/app"));
+    }
+
+    @Test
+    void testIsPublicAuthEndpoint_otherUserEndpointsStillProtected() {
+        // Only /api/v1/user/register is public; admin and other user endpoints stay protected
+        assertFalse(RequestUriUtils.isPublicAuthEndpoint("/api/v1/user/admin/saveUser", ""));
+        assertFalse(RequestUriUtils.isPublicAuthEndpoint("/api/v1/user/settings", ""));
+    }
+
+    @Test
     void testIsPublicAuthEndpoint_withContextPath() {
         assertTrue(RequestUriUtils.isPublicAuthEndpoint("/app/login", "/app"));
     }
