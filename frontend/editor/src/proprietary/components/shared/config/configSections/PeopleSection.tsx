@@ -671,7 +671,7 @@ export default function PeopleSection() {
                       {t("workspace.people.license.users", "users")}
                     </Text>
                   </Stack>
-                  <Badge color={plan.color} variant="light" size="sm">
+                  <Badge color={plan.color} variant="dot" size="sm">
                     {t(plan.nameKey, plan.fallback)}
                   </Badge>
                 </Group>
@@ -871,7 +871,7 @@ export default function PeopleSection() {
                         }
                         zIndex={Z_INDEX_OVER_CONFIG_MODAL}
                       >
-                        <Badge color={badge.color} variant="light" size="sm">
+                        <Badge color={badge.color} variant="dot" size="sm">
                           {t(badge.nameKey, badge.fallback)}
                         </Badge>
                       </Tooltip>
