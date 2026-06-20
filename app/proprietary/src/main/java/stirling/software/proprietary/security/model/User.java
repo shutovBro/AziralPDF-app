@@ -179,9 +179,13 @@ public class User implements UserDetails, Serializable {
 
     /**
      * The tier actually in effect right now: the stored tier unless it has expired, in which case
-     * the user falls back to {@link LicenseTier#FREE}.
+     * the user falls back to {@link LicenseTier#FREE}. Admins are always treated as ENTERPRISE
+     * (unlimited), regardless of any stored tier.
      */
     public LicenseTier getEffectiveLicenseTier() {
+        if (getRolesAsString().contains(Role.ADMIN.getRoleId())) {
+            return LicenseTier.ENTERPRISE;
+        }
         LicenseTier tier = licenseTier == null ? LicenseTier.FREE : licenseTier;
         if (tier == LicenseTier.FREE) {
             return LicenseTier.FREE;
