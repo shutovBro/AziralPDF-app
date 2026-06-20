@@ -49,3 +49,34 @@ export function isEnterpriseBlockedForFree(
 ): boolean {
   return currentTier === "free" && targetTier === "enterprise";
 }
+
+export interface PlanBadgeInfo {
+  /** i18n key for the plan display name (reuses the existing plan.* labels) */
+  nameKey: string;
+  /** Fallback label if the translation is missing */
+  fallback: string;
+  /** Mantine colour for the badge */
+  color: string;
+}
+
+/**
+ * Map a backend license string (config.license: NORMAL/SERVER/PRO/ENTERPRISE)
+ * to the display label shown as the account's subscription/plan.
+ */
+export function getPlanBadge(
+  license: string | null | undefined,
+): PlanBadgeInfo {
+  switch ((license ?? "").toUpperCase()) {
+    case "ENTERPRISE":
+      return {
+        nameKey: "plan.enterprise.name",
+        fallback: "Enterprise",
+        color: "violet",
+      };
+    case "SERVER":
+    case "PRO":
+      return { nameKey: "plan.pro.name", fallback: "Pro", color: "blue" };
+    default:
+      return { nameKey: "plan.free.name", fallback: "Free", color: "gray" };
+  }
+}

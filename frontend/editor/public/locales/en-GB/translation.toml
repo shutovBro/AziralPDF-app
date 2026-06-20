@@ -199,6 +199,10 @@ ssoDescription = "Two-factor authentication is managed by your identity provider
 ssoManaged = "Configure MFA through your identity provider."
 title = "Two-factor authentication"
 
+[account.subscription]
+description = "Your current AziralPDF plan."
+title = "Subscription"
+
 [add-page-numbers]
 tags = "paginate,label,organize,index"
 

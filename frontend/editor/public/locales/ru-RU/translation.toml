@@ -198,6 +198,10 @@ ssoDescription = "Двухфакторная аутентификация упр
 ssoManaged = "Настройте MFA через вашего провайдера идентификации."
 title = "Двухфакторная аутентификация"
 
+[account.subscription]
+description = "Ваш текущий тариф AziralPDF."
+title = "Подписка"
+
 [add-page-numbers]
 tags = "нумерация,метка,организация,индекс"
 
