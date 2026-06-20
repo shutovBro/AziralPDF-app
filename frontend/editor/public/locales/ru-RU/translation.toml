@@ -203,6 +203,10 @@ description = "Ваш текущий тариф AziralPDF."
 expiresOn = "Действует до {{date}}."
 title = "Подписка"
 
+[account.subscription.limitReached]
+body = "Вы израсходовали все бесплатные операции на сегодня. Перейдите на Pro для безлимитного доступа."
+title = "Достигнут лимит бесплатного тарифа"
+
 [add-page-numbers]
 tags = "нумерация,метка,организация,индекс"
 
@@ -8518,6 +8522,7 @@ noMembersFound = "Участники не найдены"
 role = "Роль"
 searchMembers = "Поиск участников..."
 status = "Статус"
+subscription = "Подписка"
 team = "Команда"
 title = "Люди"
 unlockAccount = "Разблокировать учетную запись"

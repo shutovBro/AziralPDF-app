@@ -18,6 +18,8 @@ import {
   CloseButton,
   Avatar,
   Box,
+  Paper,
+  SimpleGrid,
   type ComboboxItem,
 } from "@mantine/core";
 import LocalIcon from "@app/components/shared/LocalIcon";
@@ -31,6 +33,7 @@ import {
   subscriptionService,
   LicenseTier,
 } from "@app/services/subscriptionService";
+import { getPlanBadge } from "@app/utils/planTierUtils";
 import { Z_INDEX_OVER_CONFIG_MODAL } from "@app/styles/zIndex";
 import { useAppConfig } from "@app/contexts/AppConfigContext";
 import InviteMembersModal from "@app/components/shared/InviteMembersModal";
@@ -618,6 +621,66 @@ export default function PeopleSection() {
         </Tooltip>
       </Group>
 
+      {/* Subscription summary */}
+      {loginEnabled && users.length > 0 && (
+        <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="sm">
+          {(
+            [
+              {
+                tier: "FREE",
+                nameKey: "plan.free.name",
+                fallback: "Free",
+                color: "gray",
+              },
+              {
+                tier: "PRO",
+                nameKey: "plan.pro.name",
+                fallback: "Pro",
+                color: "blue",
+              },
+              {
+                tier: "ENTERPRISE",
+                nameKey: "plan.enterprise.name",
+                fallback: "Enterprise",
+                color: "violet",
+              },
+            ] as const
+          ).map((plan) => {
+            const count = users.filter(
+              (u) => (u.licenseTier || "FREE") === plan.tier,
+            ).length;
+            return (
+              <Paper
+                key={plan.tier}
+                withBorder
+                radius="md"
+                p="md"
+                style={{
+                  borderLeft: `3px solid var(--mantine-color-${plan.color}-6)`,
+                }}
+              >
+                <Group justify="space-between" align="flex-start" wrap="nowrap">
+                  <Stack gap={2}>
+                    <Text size="xs" c="dimmed" fw={600} tt="uppercase">
+                      {t(plan.nameKey, plan.fallback)}
+                    </Text>
+                    <Text fz={28} fw={700} lh={1}>
+                      {count}
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      {t("workspace.people.license.users", "users")}
+                    </Text>
+                  </Stack>
+                  <Badge color={plan.color} variant="light" size="sm">
+                    {t(plan.nameKey, plan.fallback)}
+                  </Badge>
+                </Group>
+              </Paper>
+            );
+          })}
+        </SimpleGrid>
+      )}
+
       {/* Members Table */}
       <Table
         horizontalSpacing="md"
@@ -650,13 +713,20 @@ export default function PeopleSection() {
             >
               {t("workspace.people.team")}
             </Table.Th>
+            <Table.Th
+              style={{ fontWeight: 600, color: "var(--mantine-color-gray-7)" }}
+              fz="sm"
+              w={140}
+            >
+              {t("workspace.people.subscription", "Subscription")}
+            </Table.Th>
             <Table.Th w={50}></Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
           {filteredUsers.length === 0 ? (
             <Table.Tr>
-              <Table.Td colSpan={4}>
+              <Table.Td colSpan={5}>
                 <Text ta="center" c="dimmed" py="xl">
                   {t("workspace.people.noMembersFound")}
                 </Text>
@@ -780,6 +850,33 @@ export default function PeopleSection() {
                   ) : (
                     <Text size="sm">—</Text>
                   )}
+                </Table.Td>
+                <Table.Td w={140}>
+                  {(() => {
+                    const badge = getPlanBadge(user.licenseTier);
+                    return (
+                      <Tooltip
+                        label={
+                          user.licenseExpiresAt
+                            ? t("account.subscription.expiresOn", {
+                                date: new Date(
+                                  user.licenseExpiresAt,
+                                ).toLocaleDateString(),
+                                defaultValue: "Active until {{date}}.",
+                              })
+                            : t(
+                                "workspace.people.license.lifetime",
+                                "No expiry",
+                              )
+                        }
+                        zIndex={Z_INDEX_OVER_CONFIG_MODAL}
+                      >
+                        <Badge color={badge.color} variant="light" size="sm">
+                          {t(badge.nameKey, badge.fallback)}
+                        </Badge>
+                      </Tooltip>
+                    );
+                  })()}
                 </Table.Td>
                 <Table.Td>
                   <Group gap="xs" wrap="nowrap">

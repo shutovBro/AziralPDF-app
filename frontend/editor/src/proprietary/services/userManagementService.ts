@@ -15,6 +15,9 @@ export interface User {
   };
   createdAt?: string;
   updatedAt?: string;
+  // AziralPDF subscription
+  licenseTier?: "FREE" | "PRO" | "ENTERPRISE";
+  licenseExpiresAt?: string | null;
   // Enriched client-side fields
   isActive?: boolean;
   lastRequest?: number; // timestamp in milliseconds

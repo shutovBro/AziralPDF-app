@@ -204,6 +204,10 @@ description = "Your current AziralPDF plan."
 expiresOn = "Active until {{date}}."
 title = "Subscription"
 
+[account.subscription.limitReached]
+body = "You've used all your free operations for today. Upgrade to Pro for unlimited access."
+title = "Free plan limit reached"
+
 [add-page-numbers]
 tags = "paginate,label,organize,index"
 
@@ -8851,6 +8855,7 @@ noMembersFound = "No members found"
 role = "Role"
 searchMembers = "Search members..."
 status = "Status"
+subscription = "Subscription"
 team = "Team"
 title = "People"
 unlockAccount = "Unlock Account"
