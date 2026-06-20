@@ -76,6 +76,7 @@ public class UserController {
             throws SQLException, UnsupportedProviderException {
         String username = usernameAndPass.getUsername();
         String password = usernameAndPass.getPassword();
+        String email = usernameAndPass.getEmail();
         try {
             log.debug("Registration attempt for user: {}", username);
 
@@ -101,6 +102,21 @@ public class UserController {
                         .body(Map.of("error", "Password is required"));
             }
 
+            if (email == null || email.isBlank()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "Email is required"));
+            }
+            String normalizedEmail = email.trim();
+            if (!normalizedEmail.contains("@") || !normalizedEmail.contains(".")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "Invalid email format"));
+            }
+            if (userRepository.findByEmail(normalizedEmail).isPresent()) {
+                log.warn("Registration failed: email already registered");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "Email already registered"));
+            }
+
             if (licenseSettingsService.wouldExceedLimit(1)) {
                 long availableSlots = licenseSettingsService.getAvailableUserSlots();
                 int maxAllowed = licenseSettingsService.calculateMaxAllowedUsers();
@@ -117,6 +133,7 @@ public class UserController {
             SaveUserRequest.Builder builder =
                     SaveUserRequest.builder()
                             .username(username)
+                            .email(normalizedEmail)
                             .password(password)
                             .team(team)
                             .enabled(true);

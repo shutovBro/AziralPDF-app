@@ -204,6 +204,7 @@ describe("SpringAuthClient", () => {
   describe("signUp", () => {
     it("should successfully register new user", async () => {
       const credentials = {
+        username: "newuser",
         email: "newuser@example.com",
         password: "newpassword123",
       };
@@ -211,7 +212,7 @@ describe("SpringAuthClient", () => {
       const mockUser = {
         id: "456",
         email: credentials.email,
-        username: credentials.email,
+        username: credentials.username,
         role: "USER",
       };
 
@@ -225,7 +226,8 @@ describe("SpringAuthClient", () => {
       expect(apiClient.post).toHaveBeenCalledWith(
         "/api/v1/user/register",
         {
-          username: credentials.email,
+          username: credentials.username,
+          email: credentials.email,
           password: credentials.password,
         },
         { withCredentials: true },
@@ -237,6 +239,7 @@ describe("SpringAuthClient", () => {
 
     it("should return error on failed registration", async () => {
       const credentials = {
+        username: "existinguser",
         email: "existing@example.com",
         password: "password123",
       };

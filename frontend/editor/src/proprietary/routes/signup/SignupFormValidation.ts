@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 export interface SignupFieldErrors {
   name?: string;
+  username?: string;
   email?: string;
   password?: string;
   confirmPassword?: string;
@@ -21,12 +22,29 @@ export const useSignupFormValidation = () => {
     password: string,
     confirmPassword: string,
     name?: string,
+    username?: string,
   ): SignupValidationResult => {
     const fieldErrors: SignupFieldErrors = {};
 
     // Validate name
     if (name !== undefined && name !== null && !name.trim()) {
       fieldErrors.name = t("signup.nameRequired", "Name is required");
+    }
+
+    // Validate username (only when the form collects it)
+    if (username !== undefined) {
+      const trimmed = username.trim();
+      if (!trimmed) {
+        fieldErrors.username = t(
+          "signup.usernameRequired",
+          "Username is required",
+        );
+      } else if (trimmed.length < 3 || trimmed.length > 50) {
+        fieldErrors.username = t(
+          "signup.usernameLength",
+          "Username must be between 3 and 50 characters",
+        );
+      }
     }
 
     // Validate email

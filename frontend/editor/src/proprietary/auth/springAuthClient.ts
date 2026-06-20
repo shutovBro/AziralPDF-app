@@ -502,6 +502,7 @@ class SpringAuthClient {
    * Sign up new user
    */
   async signUp(credentials: {
+    username: string;
     email: string;
     password: string;
     options?: { data?: { full_name?: string }; emailRedirectTo?: string };
@@ -510,7 +511,8 @@ class SpringAuthClient {
       const response = await apiClient.post(
         "/api/v1/user/register",
         {
-          username: credentials.email,
+          username: credentials.username,
+          email: credentials.email,
           password: credentials.password,
         },
         {

@@ -2,14 +2,14 @@ import { springAuth } from "@app/auth/springAuthClient";
 import { BASE_PATH } from "@app/constants/app";
 
 export const useAuthService = () => {
-  const signUp = async (email: string, password: string, name: string) => {
-    console.log("[Signup] Creating account for:", email);
+  const signUp = async (username: string, email: string, password: string) => {
+    console.log("[Signup] Creating account:", username);
 
     const { user, session, error } = await springAuth.signUp({
+      username: username.trim(),
       email: email.trim(),
       password: password,
       options: {
-        data: { full_name: name },
         emailRedirectTo: `${BASE_PATH}/auth/callback`,
       },
     });

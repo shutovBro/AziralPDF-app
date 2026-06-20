@@ -12,7 +12,11 @@ import "@app/routes/authShared/auth.css";
 
 interface SelfHostedSignupScreenProps {
   serverUrl: string;
-  onSignup: (username: string, password: string) => Promise<void>;
+  onSignup: (
+    username: string,
+    email: string,
+    password: string,
+  ) => Promise<void>;
   loading: boolean;
   error: string | null;
 }
@@ -24,6 +28,7 @@ export const SelfHostedSignupScreen: React.FC<SelfHostedSignupScreenProps> = ({
   error,
 }) => {
   const { t } = useTranslation();
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -41,14 +46,20 @@ export const SelfHostedSignupScreen: React.FC<SelfHostedSignupScreenProps> = ({
   const handleSubmit = async () => {
     resetErrors();
 
-    const validation = validateSignupForm(email, password, confirmPassword);
+    const validation = validateSignupForm(
+      email,
+      password,
+      confirmPassword,
+      undefined,
+      username,
+    );
     if (!validation.isValid) {
       setValidationError(validation.error);
       setFieldErrors(validation.fieldErrors || {});
       return;
     }
 
-    await onSignup(email.trim(), password);
+    await onSignup(username.trim(), email.trim(), password);
   };
 
   return (
@@ -71,9 +82,14 @@ export const SelfHostedSignupScreen: React.FC<SelfHostedSignupScreenProps> = ({
       </Text>
 
       <SignupForm
+        username={username}
         email={email}
         password={password}
         confirmPassword={confirmPassword}
+        setUsername={(value) => {
+          setUsername(value);
+          resetErrors();
+        }}
         setEmail={(value) => {
           setEmail(value);
           resetErrors();
@@ -90,6 +106,7 @@ export const SelfHostedSignupScreen: React.FC<SelfHostedSignupScreenProps> = ({
         isSubmitting={loading}
         fieldErrors={fieldErrors}
         showName={false}
+        showUsername={true}
         showTerms={false}
       />
     </>

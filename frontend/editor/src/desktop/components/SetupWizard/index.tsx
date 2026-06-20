@@ -142,7 +142,11 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
     }
   };
 
-  const handleSelfHostedSignup = async (username: string, password: string) => {
+  const handleSelfHostedSignup = async (
+    username: string,
+    email: string,
+    password: string,
+  ) => {
     if (!serverConfig) {
       setError("No server configured");
       return;
@@ -153,7 +157,7 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
       setError(null);
 
       // Register creates the account (already enabled) and signs in.
-      await authService.register(serverConfig.url, username, password);
+      await authService.register(serverConfig.url, username, email, password);
       await connectionModeService.switchToSelfHosted(serverConfig);
       await tauriBackendService.initializeExternalBackend();
 

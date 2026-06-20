@@ -110,19 +110,22 @@ class UserControllerTest {
     @Test
     void registerCreatesUserWhenValid() throws Exception {
         UsernameAndPass payload = new UsernameAndPass();
-        payload.setUsername("new@example.com");
+        payload.setUsername("newuser");
+        payload.setEmail("new@example.com");
         payload.setPassword("pw");
         Team defaultTeam = new Team();
         defaultTeam.setName(TeamService.DEFAULT_TEAM_NAME);
 
-        when(userService.usernameExistsIgnoreCase("new@example.com")).thenReturn(false);
-        when(userService.isUsernameValid("new@example.com")).thenReturn(true);
+        when(userService.usernameExistsIgnoreCase("newuser")).thenReturn(false);
+        when(userService.isUsernameValid("newuser")).thenReturn(true);
+        when(userRepository.findByEmail("new@example.com")).thenReturn(Optional.empty());
         when(licenseSettingsService.wouldExceedLimit(1)).thenReturn(false);
         when(teamRepository.findByName(TeamService.DEFAULT_TEAM_NAME))
                 .thenReturn(Optional.of(defaultTeam));
 
         User savedUser = new User();
-        savedUser.setUsername("new@example.com");
+        savedUser.setUsername("newuser");
+        savedUser.setEmail("new@example.com");
         savedUser.setEnabled(true);
         when(userService.saveUserCore(any())).thenReturn(savedUser);
 
@@ -131,12 +134,33 @@ class UserControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(payload)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.user.username").value("new@example.com"));
+                .andExpect(jsonPath("$.user.username").value("newuser"));
 
         ArgumentCaptor<SaveUserRequest> requestCaptor =
                 ArgumentCaptor.forClass(SaveUserRequest.class);
         verify(userService).saveUserCore(requestCaptor.capture());
         assertThat(requestCaptor.getValue().isEnabled()).isTrue();
+        assertThat(requestCaptor.getValue().getEmail()).isEqualTo("new@example.com");
+        assertThat(requestCaptor.getValue().getUsername()).isEqualTo("newuser");
+    }
+
+    @Test
+    void registerRejectsMissingEmail() throws Exception {
+        UsernameAndPass payload = new UsernameAndPass();
+        payload.setUsername("newuser");
+        payload.setPassword("pw");
+
+        when(userService.usernameExistsIgnoreCase("newuser")).thenReturn(false);
+        when(userService.isUsernameValid("newuser")).thenReturn(true);
+
+        mockMvc.perform(
+                        post("/api/v1/user/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Email is required"));
+
+        verify(userService, never()).saveUserCore(any());
     }
 
     @Test

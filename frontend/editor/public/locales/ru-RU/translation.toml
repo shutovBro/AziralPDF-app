@@ -7342,6 +7342,7 @@ emailRequired = "Требуется электронная почта"
 enterEmail = "Введите ваш email"
 enterName = "Введите ваше имя"
 enterPassword = "Введите ваш пароль"
+enterUsername = "Придумайте имя пользователя"
 invalidEmail = "Пожалуйста, введите корректный адрес email"
 name = "Имя"
 nameRequired = "Имя обязательно"
@@ -7356,6 +7357,9 @@ subtitle = "Присоединяйтесь к AziralPDF, чтобы начать
 title = "Создать аккаунт"
 unexpectedError = "Непредвиденная ошибка: {{message}}"
 useEmailInstead = "Вместо этого использовать электронную почту"
+username = "Имя пользователя"
+usernameLength = "Имя пользователя должно быть от 3 до 50 символов"
+usernameRequired = "Требуется имя пользователя"
 
 [sizes]
 large = "Большой"

@@ -329,6 +329,7 @@ export class AuthService {
   async register(
     serverUrl: string,
     username: string,
+    email: string,
     password: string,
   ): Promise<UserInfo> {
     const trimmedServer = serverUrl.replace(/\/+$/, "");
@@ -336,7 +337,7 @@ export class AuthService {
     try {
       await tauriHttpClient.post(
         `${trimmedServer}/api/v1/user/register`,
-        { username, password },
+        { username, email, password },
         { headers: { "Content-Type": "application/json" } },
       );
     } catch (error) {
