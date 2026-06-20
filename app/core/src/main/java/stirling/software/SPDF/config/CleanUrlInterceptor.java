@@ -46,6 +46,14 @@ public class CleanUrlInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        // Skip URL cleaning for translation files - they use a ?v=<build id>
+        // cache-bust query that must reach the static resource handler. Otherwise
+        // the redirect strips it and the browser keeps serving a stale, long-cached
+        // translation file (new i18n keys appear missing until the cache expires).
+        if (requestURI.contains("/locales/")) {
+            return true;
+        }
+
         String queryString = request.getQueryString();
         if (queryString != null && !queryString.isEmpty()) {
             Map<String, String> allowedParameters = new HashMap<>();
