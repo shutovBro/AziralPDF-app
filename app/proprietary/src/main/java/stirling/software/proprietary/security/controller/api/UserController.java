@@ -169,7 +169,13 @@ public class UserController {
     private Map<String, Object> buildUserResponse(User user) {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("id", user.getId());
-        userMap.put("email", user.getUsername()); // Use username as email
+        // Prefer the stored email; fall back to username for legacy accounts
+        // that were created with the email as the username.
+        String emailValue =
+                (user.getEmail() != null && !user.getEmail().isBlank())
+                        ? user.getEmail()
+                        : user.getUsername();
+        userMap.put("email", emailValue);
         userMap.put("username", user.getUsername());
         userMap.put("role", user.getRolesAsString());
         userMap.put("enabled", user.isEnabled());
