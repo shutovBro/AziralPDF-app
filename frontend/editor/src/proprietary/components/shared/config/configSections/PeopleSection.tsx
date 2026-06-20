@@ -27,6 +27,10 @@ import {
   User,
 } from "@app/services/userManagementService";
 import { teamService, Team } from "@app/services/teamService";
+import {
+  subscriptionService,
+  LicenseTier,
+} from "@app/services/subscriptionService";
 import { Z_INDEX_OVER_CONFIG_MODAL } from "@app/styles/zIndex";
 import { useAppConfig } from "@app/contexts/AppConfigContext";
 import InviteMembersModal from "@app/components/shared/InviteMembersModal";
@@ -55,6 +59,10 @@ export default function PeopleSection() {
     useState(false);
   const [passwordUser, setPasswordUser] = useState<User | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [licenseModalOpened, setLicenseModalOpened] = useState(false);
+  const [licenseUser, setLicenseUser] = useState<User | null>(null);
+  const [licenseTier, setLicenseTier] = useState<LicenseTier>("PRO");
+  const [licenseDuration, setLicenseDuration] = useState<string>("30");
   const [processing, setProcessing] = useState(false);
   const [mailEnabled, setMailEnabled] = useState(false);
   const [lockedUsers, setLockedUsers] = useState<string[]>([]);
@@ -91,6 +99,51 @@ export default function PeopleSection() {
 
   const isCurrentUser = (user: User) => currentUser?.username === user.username;
   const isLockedUser = (user: User) => lockedUsers.includes(user.username);
+
+  const openLicenseModal = (user: User) => {
+    setLicenseUser(user);
+    setLicenseTier("PRO");
+    setLicenseDuration("30");
+    setLicenseModalOpened(true);
+  };
+
+  const handleAssignLicense = async () => {
+    if (!licenseUser) return;
+    try {
+      setProcessing(true);
+      const duration =
+        licenseTier === "FREE" ? undefined : parseInt(licenseDuration, 10);
+      await subscriptionService.assignLicense(
+        licenseUser.username,
+        licenseTier,
+        Number.isNaN(duration as number) ? undefined : duration,
+      );
+      alert({
+        alertType: "success",
+        title: t(
+          "workspace.people.license.assignSuccess",
+          "Subscription updated",
+        ),
+      });
+      setLicenseModalOpened(false);
+      setLicenseUser(null);
+      await fetchData();
+    } catch (error: unknown) {
+      console.error("[PeopleSection] Failed to assign license:", error);
+      const errorMessage = isAxiosError(error)
+        ? error.response?.data?.message ||
+          error.response?.data?.error ||
+          error.message
+        : (error instanceof Error ? error.message : undefined) ||
+          t(
+            "workspace.people.license.assignError",
+            "Failed to update subscription",
+          );
+      alert({ alertType: "error", title: errorMessage });
+    } finally {
+      setProcessing(false);
+    }
+  };
 
   // Form state for edit user modal
   const [editForm, setEditForm] = useState({
@@ -795,6 +848,24 @@ export default function PeopleSection() {
                             <Menu.Item
                               leftSection={
                                 <LocalIcon
+                                  icon="star-rounded"
+                                  width="1rem"
+                                  height="1rem"
+                                />
+                              }
+                              onClick={() => openLicenseModal(user)}
+                              disabled={!loginEnabled}
+                            >
+                              {t(
+                                "workspace.people.license.action",
+                                "Manage subscription",
+                              )}
+                            </Menu.Item>
+                          )}
+                          {!isCurrentUser(user) && (
+                            <Menu.Item
+                              leftSection={
+                                <LocalIcon
                                   icon="lock"
                                   width="1rem"
                                   height="1rem"
@@ -1028,6 +1099,94 @@ export default function PeopleSection() {
               mt="md"
             >
               {t("workspace.people.editMember.submit")}
+            </Button>
+          </Stack>
+        </Box>
+      </Modal>
+
+      <Modal
+        opened={licenseModalOpened}
+        onClose={() => setLicenseModalOpened(false)}
+        size="md"
+        zIndex={Z_INDEX_OVER_CONFIG_MODAL}
+        centered
+        padding="xl"
+        withCloseButton={false}
+      >
+        <Box pos="relative">
+          <CloseButton
+            onClick={() => setLicenseModalOpened(false)}
+            size="lg"
+            style={{ position: "absolute", top: -8, right: -8, zIndex: 1 }}
+          />
+          <Stack gap="lg" pt="md">
+            <Stack gap="md" align="center">
+              <LocalIcon
+                icon="star-rounded"
+                width="3rem"
+                height="3rem"
+                style={{ color: "var(--mantine-color-gray-6)" }}
+              />
+              <Text size="xl" fw={600} ta="center">
+                {t("workspace.people.license.title", "Manage subscription")}
+              </Text>
+              <Text size="sm" c="dimmed" ta="center">
+                {t("workspace.people.license.assigningTo", "Assigning to")}{" "}
+                <strong>{licenseUser?.username}</strong>
+              </Text>
+            </Stack>
+            <Select
+              label={t("workspace.people.license.tier", "Plan")}
+              data={[
+                { value: "FREE", label: t("plan.free.name", "Free") },
+                { value: "PRO", label: t("plan.pro.name", "Pro") },
+                {
+                  value: "ENTERPRISE",
+                  label: t("plan.enterprise.name", "Enterprise"),
+                },
+              ]}
+              value={licenseTier}
+              onChange={(value) =>
+                setLicenseTier((value as LicenseTier) || "PRO")
+              }
+              comboboxProps={{
+                withinPortal: true,
+                zIndex: Z_INDEX_OVER_CONFIG_MODAL,
+              }}
+            />
+            {licenseTier !== "FREE" && (
+              <Select
+                label={t("workspace.people.license.duration", "Duration")}
+                data={[
+                  {
+                    value: "30",
+                    label: t("workspace.people.license.month", "1 month"),
+                  },
+                  {
+                    value: "365",
+                    label: t("workspace.people.license.year", "1 year"),
+                  },
+                  {
+                    value: "0",
+                    label: t("workspace.people.license.lifetime", "No expiry"),
+                  },
+                ]}
+                value={licenseDuration}
+                onChange={(value) => setLicenseDuration(value || "30")}
+                comboboxProps={{
+                  withinPortal: true,
+                  zIndex: Z_INDEX_OVER_CONFIG_MODAL,
+                }}
+              />
+            )}
+            <Button
+              onClick={handleAssignLicense}
+              loading={processing}
+              fullWidth
+              size="md"
+              mt="md"
+            >
+              {t("workspace.people.license.submit", "Save subscription")}
             </Button>
           </Stack>
         </Box>

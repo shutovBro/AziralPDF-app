@@ -201,6 +201,7 @@ title = "Two-factor authentication"
 
 [account.subscription]
 description = "Your current AziralPDF plan."
+expiresOn = "Active until {{date}}."
 title = "Subscription"
 
 [add-page-numbers]
@@ -8980,14 +8981,25 @@ link = "Link"
 username = "Username"
 
 [workspace.people.license]
+action = "Manage subscription"
+assignError = "Failed to update subscription"
+assigningTo = "Assigning to"
+assignSuccess = "Subscription updated"
 availableSlots = "Available Slots"
 currentUsage = "Currently using {{current}} of {{max}} user licences"
+duration = "Duration"
 fromLicense = "from license"
 grandfathered = "Grandfathered"
 grandfatheredShort = "{{count}} grandfathered"
+lifetime = "No expiry"
+month = "1 month"
 noSlotsAvailable = "No slots available"
 slotsAvailable = "{{count}} user slot(s) available"
+submit = "Save subscription"
+tier = "Plan"
+title = "Manage subscription"
 users = "users"
+year = "1 year"
 
 [workspace.people.mfa]
 adminDisableError = "Failed to disable MFA for user"

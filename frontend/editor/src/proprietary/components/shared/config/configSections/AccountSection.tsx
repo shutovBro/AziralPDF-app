@@ -16,8 +16,11 @@ import { useTranslation } from "react-i18next";
 import LocalIcon from "@app/components/shared/LocalIcon";
 import { alert as showToast } from "@app/components/toast";
 import { useAuth } from "@app/auth/UseSession";
-import { useAppConfig } from "@app/contexts/AppConfigContext";
 import { getPlanBadge } from "@app/utils/planTierUtils";
+import {
+  subscriptionService,
+  UserLicense,
+} from "@app/services/subscriptionService";
 import { accountService } from "@app/services/accountService";
 import { Z_INDEX_OVER_CONFIG_MODAL } from "@app/styles/zIndex";
 import { QRCodeSVG } from "qrcode.react";
@@ -28,11 +31,13 @@ import { MfaSetupResponse } from "@app/responses/Mfa/MfaResponse";
 const AccountSection: React.FC = () => {
   const { t } = useTranslation();
   const { user, signOut } = useAuth();
-  const { config } = useAppConfig();
-  const planBadge = useMemo(
-    () => getPlanBadge(config?.license),
-    [config?.license],
-  );
+  const [license, setLicense] = useState<UserLicense | null>(null);
+  const planBadge = useMemo(() => getPlanBadge(license?.tier), [license?.tier]);
+  const licenseExpiry = useMemo(() => {
+    if (!license?.expiresAt) return null;
+    const date = new Date(license.expiresAt);
+    return Number.isNaN(date.getTime()) ? null : date.toLocaleDateString();
+  }, [license?.expiresAt]);
   const accountLogout = useAccountLogout();
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [usernameModalOpen, setUsernameModalOpen] = useState(false);
@@ -174,6 +179,17 @@ const AccountSection: React.FC = () => {
       }
     };
     void fetchAccountData();
+  }, []);
+
+  useEffect(() => {
+    const fetchLicense = async () => {
+      try {
+        setLicense(await subscriptionService.getMyLicense());
+      } catch {
+        console.warn("Failed to fetch subscription");
+      }
+    };
+    void fetchLicense();
   }, []);
 
   const handleStartMfaSetup = useCallback(async () => {
@@ -428,10 +444,15 @@ const AccountSection: React.FC = () => {
                 {t("account.subscription.title", "Subscription")}
               </Text>
               <Text size="sm" c="dimmed">
-                {t(
-                  "account.subscription.description",
-                  "Your current AziralPDF plan.",
-                )}
+                {licenseExpiry
+                  ? t("account.subscription.expiresOn", {
+                      date: licenseExpiry,
+                      defaultValue: "Active until {{date}}.",
+                    })
+                  : t(
+                      "account.subscription.description",
+                      "Your current AziralPDF plan.",
+                    )}
               </Text>
             </Stack>
             <Badge color={planBadge.color} size="lg" variant="light">

@@ -86,6 +86,15 @@ public class User implements UserDetails, Serializable {
     @Column(name = "email", unique = true)
     private String email;
 
+    // AziralPDF own per-user subscription tier (independent of the upstream Stirling license).
+    @Enumerated(EnumType.STRING)
+    @Column(name = "license_tier")
+    private LicenseTier licenseTier = LicenseTier.FREE;
+
+    // Null = no expiry (FREE, or a lifetime grant). A past value downgrades to FREE.
+    @Column(name = "license_expires_at")
+    private LocalDateTime licenseExpiresAt;
+
     // SaaS-only: Supabase user UUID. Null in OSS / proprietary deployments.
     @Column(name = "supabase_id", unique = true)
     private UUID supabaseId;
@@ -166,6 +175,21 @@ public class User implements UserDetails, Serializable {
 
     public boolean hasPassword() {
         return this.password != null && !this.password.isEmpty();
+    }
+
+    /**
+     * The tier actually in effect right now: the stored tier unless it has expired, in which case
+     * the user falls back to {@link LicenseTier#FREE}.
+     */
+    public LicenseTier getEffectiveLicenseTier() {
+        LicenseTier tier = licenseTier == null ? LicenseTier.FREE : licenseTier;
+        if (tier == LicenseTier.FREE) {
+            return LicenseTier.FREE;
+        }
+        if (licenseExpiresAt != null && licenseExpiresAt.isBefore(LocalDateTime.now())) {
+            return LicenseTier.FREE;
+        }
+        return tier;
     }
 
     public boolean isOauthGrandfathered() {

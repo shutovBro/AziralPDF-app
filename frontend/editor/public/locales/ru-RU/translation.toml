@@ -200,6 +200,7 @@ title = "Двухфакторная аутентификация"
 
 [account.subscription]
 description = "Ваш текущий тариф AziralPDF."
+expiresOn = "Действует до {{date}}."
 title = "Подписка"
 
 [add-page-numbers]
@@ -8647,14 +8648,25 @@ link = "Ссылка"
 username = "Имя пользователя"
 
 [workspace.people.license]
+action = "Управление подпиской"
+assignError = "Не удалось обновить подписку"
+assigningTo = "Назначение для"
+assignSuccess = "Подписка обновлена"
 availableSlots = "Доступные места"
 currentUsage = "Используется {{current}} из {{max}} пользовательских лицензий"
+duration = "Срок"
 fromLicense = "по лицензии"
 grandfathered = "На прежних условиях"
 grandfatheredShort = "{{count}} на прежних условиях"
+lifetime = "Без срока"
+month = "1 месяц"
 noSlotsAvailable = "Нет доступных мест"
 slotsAvailable = "{{count}} доступных мест для пользователей"
+submit = "Сохранить подписку"
+tier = "Тариф"
+title = "Управление подпиской"
 users = "пользователи"
+year = "1 год"
 
 [workspace.people.mfa]
 adminDisableError = "Не удалось отключить MFA для пользователя"
