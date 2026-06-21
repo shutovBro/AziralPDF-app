@@ -70,24 +70,14 @@ public class LicenseKeyChecker {
     }
 
     private void evaluateLicense() {
-        if (!applicationProperties.getPremium().isEnabled()) {
-            premiumEnabledResult = License.NORMAL;
-        } else {
-            String licenseKey = getLicenseKeyContent(applicationProperties.getPremium().getKey());
-            if (licenseKey != null) {
-                premiumEnabledResult = licenseService.verifyLicense(licenseKey);
-                if (License.ENTERPRISE == premiumEnabledResult) {
-                    log.info("License key is Enterprise.");
-                } else if (License.SERVER == premiumEnabledResult) {
-                    log.info("License key is Server.");
-                } else {
-                    log.info("License key is invalid, defaulting to non pro license.");
-                }
-            } else {
-                log.error("Failed to obtain license key content.");
-                premiumEnabledResult = License.NORMAL;
-            }
-        }
+        // AziralPDF is our own product, not gated by the upstream Stirling license.
+        // All premium/enterprise features ship unlocked, so we force the master
+        // switch on and the highest tier here — the single seat every gate reads
+        // from (UI feature flags, runningEE bean, @PremiumEndpoint /
+        // @EnterpriseEndpoint aspects, requireProOrEnterprise). No external
+        // license verification call is made.
+        applicationProperties.getPremium().setEnabled(true);
+        premiumEnabledResult = License.ENTERPRISE;
     }
 
     private void synchronizeLicenseSettings() {
