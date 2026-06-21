@@ -1370,6 +1370,48 @@ export const buildUpdatedDocument = (
   return updated;
 };
 
+const IMAGE_GEOMETRY_EPSILON = 0.5;
+
+/**
+ * Detects whether the page's images were structurally changed by the editor (added, removed, or
+ * moved/resized) relative to the originals. Such changes cannot be represented by patching the
+ * preserved content stream, so the page must be flagged for a full model-based regeneration.
+ */
+const imagesStructurallyChanged = (
+  images: PdfJsonImageElement[],
+  baseline: PdfJsonImageElement[],
+): boolean => {
+  if (images.length !== baseline.length) {
+    return true;
+  }
+  const baselineByKey = new Map<string, PdfJsonImageElement>();
+  baseline.forEach((image) => {
+    const key = image.id ?? image.objectName ?? "";
+    baselineByKey.set(key, image);
+  });
+  const near = (a?: number | null, b?: number | null): boolean => {
+    const first = typeof a === "number" && Number.isFinite(a) ? a : 0;
+    const second = typeof b === "number" && Number.isFinite(b) ? b : 0;
+    return Math.abs(first - second) <= IMAGE_GEOMETRY_EPSILON;
+  };
+  for (const image of images) {
+    const key = image.id ?? image.objectName ?? "";
+    const base = baselineByKey.get(key);
+    if (!base) {
+      return true;
+    }
+    if (
+      !near(image.left, base.left) ||
+      !near(image.bottom, base.bottom) ||
+      !near(image.width, base.width) ||
+      !near(image.height, base.height)
+    ) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const restoreGlyphElements = (
   source: PdfJsonDocument,
   groupsByPage: TextGroup[][],
@@ -1383,12 +1425,15 @@ export const restoreGlyphElements = (
   updated.pages = pages.map((page, pageIndex) => {
     const groups = groupsByPage[pageIndex] ?? [];
     const images = imagesByPage[pageIndex] ?? [];
-    const _baselineImages = originalImagesByPage[pageIndex] ?? [];
+    const baselineImages = originalImagesByPage[pageIndex] ?? [];
+    const regenerateContent =
+      imagesStructurallyChanged(images, baselineImages) || undefined;
 
     if (!groups.length) {
       return {
         ...page,
         imageElements: images.map(cloneImageElement),
+        regenerateContent,
       };
     }
 
@@ -1440,6 +1485,7 @@ export const restoreGlyphElements = (
       textElements: rebuiltElements,
       imageElements: images.map(cloneImageElement),
       contentStreams: page.contentStreams ?? null,
+      regenerateContent,
     };
   });
 

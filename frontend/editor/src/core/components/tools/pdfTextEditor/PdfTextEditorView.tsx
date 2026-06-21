@@ -34,6 +34,9 @@ import MergeTypeIcon from "@mui/icons-material/MergeType";
 import CallSplitIcon from "@mui/icons-material/CallSplit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import UploadFileIcon from "@mui/icons-material/UploadFileOutlined";
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
+import CropSquareIcon from "@mui/icons-material/CropSquare";
+import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { Rnd } from "react-rnd";
 import { useNavigationGuard } from "@app/contexts/NavigationContext";
 
@@ -339,6 +342,9 @@ const analyzePageContentType = (
   return isParagraphPage;
 };
 
+// Minimum drag size (in CSS pixels) before a redaction rectangle is committed.
+const MIN_REDACTION_CSS = 4;
+
 const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
   const { t } = useTranslation();
   const { activeFiles } = useFileContext();
@@ -354,6 +360,18 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
   const draggingImageRef = useRef<string | null>(null);
   const rndRefs = useRef<Map<string, any>>(new Map());
   const pendingDragUpdateRef = useRef<number | null>(null);
+
+  // Stage 2 editor palette: tool mode + redaction drawing state
+  const [editorMode, setEditorMode] = useState<"select" | "redact">("select");
+  const [redactionColor, setRedactionColor] = useState<string>("#ffffff");
+  const [redactionDraft, setRedactionDraft] = useState<{
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  } | null>(null);
+  const redactionStartRef = useRef<{ x: number; y: number } | null>(null);
+  const addImageInputRef = useRef<HTMLInputElement | null>(null);
   const [fontFamilies, setFontFamilies] = useState<Map<string, string>>(
     new Map(),
   );
@@ -424,6 +442,9 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     onGroupDelete,
     onImageTransform,
     onImageReset,
+    onImageDelete,
+    onAddImage,
+    onAddRedaction,
     onReset: _onReset,
     onGeneratePdf: _onGeneratePdf,
     onSaveToWorkbench,
@@ -1625,6 +1646,76 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     [onImageTransform, pageHeight, pageWidth, scale, selectedPage],
   );
 
+  const handleRedactionPointerDown = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const rect = event.currentTarget.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      redactionStartRef.current = { x, y };
+      setRedactionDraft({ left: x, top: y, width: 0, height: 0 });
+    },
+    [],
+  );
+
+  const handleRedactionPointerMove = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      const start = redactionStartRef.current;
+      if (!start) {
+        return;
+      }
+      const rect = event.currentTarget.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      setRedactionDraft({
+        left: Math.min(start.x, x),
+        top: Math.min(start.y, y),
+        width: Math.abs(x - start.x),
+        height: Math.abs(y - start.y),
+      });
+    },
+    [],
+  );
+
+  const handleRedactionPointerUp = useCallback(() => {
+    const draft = redactionDraft;
+    redactionStartRef.current = null;
+    setRedactionDraft(null);
+    if (!draft || draft.width < MIN_REDACTION_CSS || draft.height < MIN_REDACTION_CSS) {
+      return;
+    }
+    const left = draft.left / scale;
+    const width = draft.width / scale;
+    const height = draft.height / scale;
+    const bottom = pageHeight - (draft.top + draft.height) / scale;
+    onAddRedaction(selectedPage, {
+      left,
+      bottom,
+      width,
+      height,
+      color: redactionColor,
+    });
+  }, [
+    onAddRedaction,
+    pageHeight,
+    redactionColor,
+    redactionDraft,
+    scale,
+    selectedPage,
+  ]);
+
+  const handleAddImageChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      event.target.value = "";
+      if (file) {
+        void onAddImage(selectedPage, file);
+      }
+    },
+    [onAddImage, selectedPage],
+  );
+
   return (
     <Stack
       gap="xl"
@@ -1790,12 +1881,108 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
             icon={<InfoOutlinedIcon fontSize="small" />}
           >
             <Text size="xs">
-              {t(
-                "pdfTextEditor.hint.line",
-                "Click text to edit · drag to move · resize from the corner · ✗ to delete · Ctrl/Cmd-click to select several",
-              )}
+              {editorMode === "redact"
+                ? t(
+                    "pdfTextEditor.hint.redact",
+                    "Drag across the page to cover an area (logo, watermark, sensitive text). Switch back to Select to edit text and images.",
+                  )
+                : t(
+                    "pdfTextEditor.hint.line",
+                    "Click text to edit · drag to move · resize from the corner · ✗ to delete · Ctrl/Cmd-click to select several",
+                  )}
             </Text>
           </Alert>
+
+          <Group justify="space-between" align="center" wrap="nowrap">
+            <Group gap="xs" wrap="nowrap">
+              <Text size="xs" c="dimmed">
+                {t("pdfTextEditor.palette.tools", "Tools")}
+              </Text>
+              <Button.Group>
+                <Tooltip
+                  label={t("pdfTextEditor.palette.select", "Select & edit")}
+                >
+                  <Button
+                    size="compact-sm"
+                    variant={editorMode === "select" ? "filled" : "default"}
+                    onClick={() => setEditorMode("select")}
+                    leftSection={<NearMeOutlinedIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t("pdfTextEditor.palette.select", "Select & edit")}
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  label={t(
+                    "pdfTextEditor.palette.redact",
+                    "Cover an area (redact)",
+                  )}
+                >
+                  <Button
+                    size="compact-sm"
+                    variant={editorMode === "redact" ? "filled" : "default"}
+                    onClick={() => setEditorMode("redact")}
+                    leftSection={<CropSquareIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t("pdfTextEditor.palette.redact", "Cover area")}
+                  </Button>
+                </Tooltip>
+              </Button.Group>
+              <Tooltip
+                label={t("pdfTextEditor.palette.addImage", "Add an image")}
+              >
+                <Button
+                  size="compact-sm"
+                  variant="default"
+                  leftSection={<ImageOutlinedIcon sx={{ fontSize: 16 }} />}
+                  onClick={() => addImageInputRef.current?.click()}
+                >
+                  {t("pdfTextEditor.palette.addImage", "Add image")}
+                </Button>
+              </Tooltip>
+            </Group>
+            {editorMode === "redact" && (
+              <Group gap={6} wrap="nowrap">
+                <Text size="xs" c="dimmed">
+                  {t("pdfTextEditor.palette.color", "Colour")}
+                </Text>
+                {["#ffffff", "#000000"].map((swatch) => (
+                  <Tooltip
+                    key={swatch}
+                    label={
+                      swatch === "#ffffff"
+                        ? t("pdfTextEditor.palette.white", "White")
+                        : t("pdfTextEditor.palette.black", "Black")
+                    }
+                  >
+                    <Box
+                      role="button"
+                      aria-label={swatch}
+                      onClick={() => setRedactionColor(swatch)}
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: 6,
+                        cursor: "pointer",
+                        backgroundColor: swatch,
+                        border:
+                          redactionColor === swatch
+                            ? "2px solid var(--mantine-color-blue-5)"
+                            : "1px solid var(--mantine-color-gray-4)",
+                      }}
+                    />
+                  </Tooltip>
+                ))}
+              </Group>
+            )}
+          </Group>
+
+          <input
+            ref={addImageInputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleAddImageChange}
+          />
 
           <Modal
             opened={showWelcomeBanner}
@@ -2106,6 +2293,36 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                         }}
                       />
                     )}
+                    {editorMode === "redact" && (
+                      <Box
+                        onMouseDown={handleRedactionPointerDown}
+                        onMouseMove={handleRedactionPointerMove}
+                        onMouseUp={handleRedactionPointerUp}
+                        onMouseLeave={handleRedactionPointerUp}
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          zIndex: 4_000_000,
+                          cursor: "crosshair",
+                        }}
+                      >
+                        {redactionDraft && (
+                          <Box
+                            style={{
+                              position: "absolute",
+                              left: `${redactionDraft.left}px`,
+                              top: `${redactionDraft.top}px`,
+                              width: `${redactionDraft.width}px`,
+                              height: `${redactionDraft.height}px`,
+                              backgroundColor: redactionColor,
+                              opacity: 0.55,
+                              border: "1px dashed var(--mantine-color-blue-5)",
+                              pointerEvents: "none",
+                            }}
+                          />
+                        )}
+                      </Box>
+                    )}
                     {selectionToolbarPosition && (
                       <Group
                         gap={6}
@@ -2227,6 +2444,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                       const imageId =
                         image.id ?? `page-${selectedPage}-image-${imageIndex}`;
                       const isActive = activeImageId === imageId;
+                      const isRedaction = imageId.startsWith("aziral-redaction-");
                       const src = `data:image/${image.imageFormat ?? "png"};base64,${image.imageData}`;
                       const baseZIndex =
                         (image.zOrder ?? -1_000_000) + 1_050_000;
@@ -2348,11 +2566,49 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                               style={{
                                 width: "100%",
                                 height: "100%",
-                                objectFit: "contain",
+                                objectFit: isRedaction ? "fill" : "contain",
                                 pointerEvents: "none",
                                 userSelect: "none",
                               }}
                             />
+                            {isActive && (
+                              <Tooltip
+                                label={t(
+                                  "pdfTextEditor.image.delete",
+                                  "Delete image",
+                                )}
+                                withinPortal
+                              >
+                                <ActionIcon
+                                  size="sm"
+                                  color="red"
+                                  variant="filled"
+                                  radius="xl"
+                                  aria-label={t(
+                                    "pdfTextEditor.image.delete",
+                                    "Delete image",
+                                  )}
+                                  style={{
+                                    position: "absolute",
+                                    top: -10,
+                                    right: -10,
+                                    zIndex: 5,
+                                  }}
+                                  onMouseDown={(event) =>
+                                    event.stopPropagation()
+                                  }
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    setActiveImageId((current) =>
+                                      current === imageId ? null : current,
+                                    );
+                                    onImageDelete(selectedPage, imageId);
+                                  }}
+                                >
+                                  <CloseIcon sx={{ fontSize: 14 }} />
+                                </ActionIcon>
+                              </Tooltip>
+                            )}
                           </Box>
                         </Rnd>
                       );

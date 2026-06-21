@@ -768,6 +768,12 @@ public class PdfJsonConversionService {
                 if (hasImages && preservedStreams.isEmpty()) {
                     shouldRegenerate = true;
                 }
+                // Editor signals structural image changes (add/remove/move) that the preserved
+                // stream cannot represent. Regenerate from the model; extractVectorGraphics keeps
+                // vector content while text and images are redrawn at their model positions.
+                if (Boolean.TRUE.equals(pageModel.getRegenerateContent())) {
+                    shouldRegenerate = true;
+                }
 
                 if (!(hasText || hasImages)) {
                     pageIndex++;
@@ -779,7 +785,8 @@ public class PdfJsonConversionService {
                     AppendMode appendMode = AppendMode.OVERWRITE;
                     if (!preservedStreams.isEmpty()) {
                         PDStream vectorStream =
-                                extractVectorGraphics(document, preservedStreams, imageElements);
+                                extractVectorGraphics(
+                                        document, page, preservedStreams, imageElements);
                         if (vectorStream != null) {
                             page.setContents(Collections.singletonList(vectorStream));
                             appendMode = AppendMode.APPEND;
@@ -3075,6 +3082,7 @@ public class PdfJsonConversionService {
 
     private PDStream extractVectorGraphics(
             PDDocument document,
+            PDPage page,
             List<PDStream> preservedStreams,
             List<PdfJsonImageElement> imageElements)
             throws IOException {
@@ -3082,7 +3090,25 @@ public class PdfJsonConversionService {
             return null;
         }
 
+        // Strip every original image draw from the vector layer so the page reflects the model:
+        // images still present are redrawn at their model positions, removed images simply vanish,
+        // and added images are drawn on top. Form (vector) XObjects are intentionally preserved.
         Set<String> imageObjectNames = new HashSet<>();
+        PDResources pageResources = page != null ? page.getResources() : null;
+        if (pageResources != null) {
+            for (COSName name : pageResources.getXObjectNames()) {
+                try {
+                    if (pageResources.getXObject(name) instanceof PDImageXObject) {
+                        imageObjectNames.add(name.getName());
+                    }
+                } catch (IOException ex) {
+                    log.debug(
+                            "Failed to inspect XObject '{}' during vector extraction: {}",
+                            name.getName(),
+                            ex.getMessage());
+                }
+            }
+        }
         if (imageElements != null) {
             for (PdfJsonImageElement element : imageElements) {
                 if (element == null) {
@@ -6771,7 +6797,7 @@ public class PdfJsonConversionService {
 
         if (regenerateMode == RegenerateMode.REGENERATE_WITH_VECTOR_OVERLAY) {
             PDStream vectorStream =
-                    extractVectorGraphics(document, preservedStreams, imageElements);
+                    extractVectorGraphics(document, page, preservedStreams, imageElements);
             if (vectorStream != null) {
                 page.setContents(Collections.singletonList(vectorStream));
                 appendMode = AppendMode.APPEND;

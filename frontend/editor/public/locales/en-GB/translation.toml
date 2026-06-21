@@ -5781,6 +5781,10 @@ singleLine = "Single Line"
 
 [pdfTextEditor.hint]
 line = "Click text to edit · drag to move · resize from the corner · ✗ to delete · Ctrl/Cmd-click to select several"
+redact = "Drag across the page to cover an area (logo, watermark, sensitive text). Switch back to Select to edit text and images."
+
+[pdfTextEditor.image]
+delete = "Delete image"
 
 [pdfTextEditor.manual]
 expandWidth = "Expand to page edge"
@@ -5821,6 +5825,15 @@ descriptionInline = "Tip: Hold Ctrl (Cmd) or Shift to multi-select text boxes. A
 [pdfTextEditor.pageType]
 paragraph = "Paragraph page"
 sparse = "Sparse text"
+
+[pdfTextEditor.palette]
+addImage = "Add image"
+black = "Black"
+color = "Colour"
+redact = "Cover area"
+select = "Select & edit"
+tools = "Tools"
+white = "White"
 
 [pdfTextEditor.tooltip.alpha]
 text = "This alpha viewer is still evolving-certain fonts, colours, transparency effects, and layout details may shift slightly. Please double-check the generated PDF before sharing."

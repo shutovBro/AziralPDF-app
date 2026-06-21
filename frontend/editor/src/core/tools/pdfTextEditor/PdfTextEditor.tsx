@@ -32,6 +32,8 @@ import {
   PdfTextEditorViewData,
   BoundingBox,
   ConversionProgress,
+  DEFAULT_PAGE_WIDTH,
+  DEFAULT_PAGE_HEIGHT,
 } from "@app/tools/pdfTextEditor/pdfTextEditorTypes";
 import {
   deepCloneDocument,
@@ -1194,6 +1196,161 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
     });
   }, []);
 
+  const handleImageDelete = useCallback((pageIndex: number, imageId: string) => {
+    setImagesByPage((previous) => {
+      const current = previous[pageIndex] ?? [];
+      const updatedPage = current.filter(
+        (image) => (image.id ?? "") !== imageId,
+      );
+      if (updatedPage.length === current.length) {
+        return previous;
+      }
+      const nextImages = previous.map((images, idx) =>
+        idx === pageIndex ? updatedPage : images,
+      );
+      if (imagesByPageRef.current.length <= pageIndex) {
+        imagesByPageRef.current.length = pageIndex + 1;
+      }
+      imagesByPageRef.current[pageIndex] = updatedPage.map(cloneImageElement);
+      return nextImages;
+    });
+  }, []);
+
+  const appendImageElement = useCallback(
+    (pageIndex: number, element: PdfJsonImageElement) => {
+      setImagesByPage((previous) => {
+        const current = previous[pageIndex] ?? [];
+        const updatedPage = [...current, element];
+        const nextImages = previous.map((images, idx) =>
+          idx === pageIndex ? updatedPage : images,
+        );
+        if (imagesByPageRef.current.length <= pageIndex) {
+          imagesByPageRef.current.length = pageIndex + 1;
+        }
+        imagesByPageRef.current[pageIndex] = updatedPage.map(cloneImageElement);
+        return nextImages;
+      });
+    },
+    [],
+  );
+
+  const handleAddRedaction = useCallback(
+    (
+      pageIndex: number,
+      rect: {
+        left: number;
+        bottom: number;
+        width: number;
+        height: number;
+        color: string;
+      },
+    ) => {
+      const width = Math.max(rect.width, 0.01);
+      const height = Math.max(rect.height, 0.01);
+      const canvas = window.document.createElement("canvas");
+      canvas.width = 1;
+      canvas.height = 1;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        return;
+      }
+      ctx.fillStyle = rect.color;
+      ctx.fillRect(0, 0, 1, 1);
+      const dataUrl = canvas.toDataURL("image/png");
+      const base64 = dataUrl.split(",")[1] ?? "";
+      const element: PdfJsonImageElement = {
+        id: `aziral-redaction-${Date.now()}-${Math.round(Math.random() * 1e6)}`,
+        objectName: null,
+        inlineImage: false,
+        nativeWidth: 1,
+        nativeHeight: 1,
+        x: rect.left,
+        y: rect.bottom,
+        left: rect.left,
+        bottom: rect.bottom,
+        right: rect.left + width,
+        top: rect.bottom + height,
+        width,
+        height,
+        transform: null,
+        zOrder: 1_000_000,
+        imageData: base64,
+        imageFormat: "png",
+      };
+      appendImageElement(pageIndex, element);
+    },
+    [appendImageElement],
+  );
+
+  const handleAddImage = useCallback(
+    async (pageIndex: number, file: File) => {
+      const page = loadedDocument?.pages?.[pageIndex];
+      const pageWidth = valueOr(page?.width, DEFAULT_PAGE_WIDTH);
+      const pageHeight = valueOr(page?.height, DEFAULT_PAGE_HEIGHT);
+
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result ?? ""));
+        reader.onerror = () => reject(reader.error ?? new Error("read failed"));
+        reader.readAsDataURL(file);
+      });
+      const commaIndex = dataUrl.indexOf(",");
+      const base64 = commaIndex >= 0 ? dataUrl.slice(commaIndex + 1) : "";
+      if (!base64) {
+        return;
+      }
+      const mimeMatch = /^data:image\/([a-zA-Z0-9.+-]+);/.exec(dataUrl);
+      const imageFormat = (mimeMatch?.[1] ?? "png").toLowerCase();
+
+      const natural = await new Promise<{ width: number; height: number }>(
+        (resolve) => {
+          const img = new Image();
+          img.onload = () =>
+            resolve({ width: img.naturalWidth, height: img.naturalHeight });
+          img.onerror = () => resolve({ width: 0, height: 0 });
+          img.src = dataUrl;
+        },
+      );
+      const nativeWidth = natural.width > 0 ? natural.width : 200;
+      const nativeHeight = natural.height > 0 ? natural.height : 200;
+
+      // Fit within half the page while preserving aspect ratio.
+      const maxWidth = pageWidth * 0.5;
+      const maxHeight = pageHeight * 0.5;
+      const fitScale = Math.min(
+        maxWidth / nativeWidth,
+        maxHeight / nativeHeight,
+        1,
+      );
+      const width = Math.max(nativeWidth * fitScale, 1);
+      const height = Math.max(nativeHeight * fitScale, 1);
+      const left = Math.max((pageWidth - width) / 2, 0);
+      const bottom = Math.max((pageHeight - height) / 2, 0);
+
+      const element: PdfJsonImageElement = {
+        id: `aziral-image-${Date.now()}-${Math.round(Math.random() * 1e6)}`,
+        objectName: null,
+        inlineImage: false,
+        nativeWidth,
+        nativeHeight,
+        x: left,
+        y: bottom,
+        left,
+        bottom,
+        right: left + width,
+        top: bottom + height,
+        width,
+        height,
+        transform: null,
+        zOrder: 1_000_000,
+        imageData: base64,
+        imageFormat,
+      };
+      appendImageElement(pageIndex, element);
+    },
+    [appendImageElement, loadedDocument],
+  );
+
   const handleResetEdits = useCallback(() => {
     if (!loadedDocument) {
       return;
@@ -1877,6 +2034,9 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       onGroupDelete: handleGroupDelete,
       onImageTransform: handleImageTransform,
       onImageReset: handleImageReset,
+      onImageDelete: handleImageDelete,
+      onAddImage: handleAddImage,
+      onAddRedaction: handleAddRedaction,
       onReset: handleResetEdits,
       onDownloadJson: handleDownloadJson,
       onGeneratePdf: handleGeneratePdf,
@@ -1908,6 +2068,9 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       handleGroupTextChange,
       handleGroupDelete,
       handleImageReset,
+      handleImageDelete,
+      handleAddImage,
+      handleAddRedaction,
       handleResetEdits,
       handleSelectPage,
       hasChanges,

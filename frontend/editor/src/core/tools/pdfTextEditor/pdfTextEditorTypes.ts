@@ -105,6 +105,7 @@ export interface PdfJsonPage {
   imageElements?: PdfJsonImageElement[] | null;
   resources?: unknown;
   contentStreams?: PdfJsonStream[] | null;
+  regenerateContent?: boolean | null;
 }
 
 export interface PdfJsonMetadata {
@@ -219,6 +220,18 @@ export interface PdfTextEditorViewData {
     },
   ) => void;
   onImageReset: (pageIndex: number, imageId: string) => void;
+  onImageDelete: (pageIndex: number, imageId: string) => void;
+  onAddImage: (pageIndex: number, file: File) => Promise<void>;
+  onAddRedaction: (
+    pageIndex: number,
+    rect: {
+      left: number;
+      bottom: number;
+      width: number;
+      height: number;
+      color: string;
+    },
+  ) => void;
   onReset: () => void;
   onDownloadJson: () => void;
   onGeneratePdf: () => void;

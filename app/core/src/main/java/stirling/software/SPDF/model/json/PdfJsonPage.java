@@ -31,4 +31,11 @@ public class PdfJsonPage {
 
     /** Raw content streams associated with the page, preserved for lossless round-tripping. */
     @Builder.Default private List<PdfJsonStream> contentStreams = new ArrayList<>();
+
+    /**
+     * When true, the editor has structurally changed images on this page (added, removed, or moved)
+     * so the preserved content stream can no longer be patched in place. Forces the JSON&rarr;PDF
+     * rebuild to regenerate this page's content from the model while keeping vector graphics.
+     */
+    private Boolean regenerateContent;
 }
