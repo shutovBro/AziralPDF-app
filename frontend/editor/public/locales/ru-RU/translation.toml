@@ -4296,9 +4296,9 @@ tags = "организовать,переставить,переупорядоч
 title = "Организация"
 
 [home.pdfTextEditor]
-desc = "Просмотр и редактирование экспортов AziralPDF в JSON с групповым редактированием текста и регенерацией PDF"
-tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
-title = "Редактор текста в PDF"
+desc = "Редактирование текста и изображений внутри PDF: править, двигать, удалять"
+tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor,редактор pdf,двигать,удалить,переместить"
+title = "Редактор PDF"
 
 [home.pdfToSinglePage]
 desc = "Объединяет все страницы PDF в одну большую страницу"
@@ -5438,7 +5438,7 @@ imageLabel = "Размещённое изображение"
 noTextOnPage = "На этой странице не найден редактируемый текст."
 pagePreviewAlt = "Миниатюра страницы"
 pageSummary = "Стр. {{number}} из {{total}}"
-title = "Редактор JSON PDF"
+title = "Редактор PDF"
 viewLabel = "Редактор PDF"
 
 [pdfTextEditor.actions]
@@ -5491,6 +5491,9 @@ webFormat = "Веб-формат"
 auto = "Авто"
 paragraph = "Абзац"
 singleLine = "Одна строка"
+
+[pdfTextEditor.hint]
+line = "Клик по тексту — редактировать · перетащить — двигать · угол — размер · ✗ — удалить · Ctrl/Cmd-клик — выделить несколько"
 
 [pdfTextEditor.manual]
 expandWidth = "Расширить до края страницы"
@@ -5571,7 +5574,7 @@ notIdealFor = "Не подходит для:"
 notIdealFor1 = "PDF со специальным форматированием, например маркированные списки, таблицы или многоколоночные макеты"
 notIdealFor2 = "Журналов, брошюр или документов со сложным дизайном"
 notIdealFor3 = "Руководств со сложной версткой"
-title = "Добро пожаловать в редактор текста PDF (ранний доступ)"
+title = "Добро пожаловать в Редактор PDF (ранний доступ)"
 
 [PDFToCSV]
 header = "PDF в CSV"

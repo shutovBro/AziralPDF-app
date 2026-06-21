@@ -136,7 +136,7 @@ const PdfTextEditorSidebar = ({ data }: PdfTextEditorSidebarProps) => {
               <Flex align="center" justify="space-between">
                 <Flex align="center" gap="xs">
                   <Text fw={600} size="sm">
-                    {t("pdfTextEditor.title", "PDF Text Editor")}
+                    {t("pdfTextEditor.title", "PDF Editor")}
                   </Text>
                   <Badge size="xs" variant="light" color="orange">
                     {t("toolPanel.alpha", "Alpha")}

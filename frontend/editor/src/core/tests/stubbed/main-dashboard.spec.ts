@@ -51,7 +51,7 @@ test.describe("2. Main Dashboard / Home Page", () => {
       page,
     }) => {
       const recommendedTools = [
-        /PDF Text Editor/i,
+        /PDF Editor/i,
         /Merge/i,
         /Compare/i,
         /Compress/i,

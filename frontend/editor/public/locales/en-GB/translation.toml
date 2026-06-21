@@ -4583,8 +4583,8 @@ title = "Organise"
 
 [home.pdfTextEditor]
 desc = "Edit existing text and images inside PDFs"
-tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
-title = "PDF Text Editor"
+tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor,pdf editor,move,delete,drag"
+title = "PDF Editor"
 
 [home.pdfToSinglePage]
 desc = "Merges all PDF pages into one large single page"
@@ -5725,7 +5725,7 @@ imageLabel = "Placed image"
 noTextOnPage = "No editable text was detected on this page."
 pagePreviewAlt = "Page preview"
 pageSummary = "Page {{number}} of {{total}}"
-title = "PDF Text Editor"
+title = "PDF Editor"
 viewLabel = "PDF Editor"
 
 [pdfTextEditor.actions]
@@ -5778,6 +5778,9 @@ webFormat = "Web Format"
 auto = "Auto"
 paragraph = "Paragraph"
 singleLine = "Single Line"
+
+[pdfTextEditor.hint]
+line = "Click text to edit · drag to move · resize from the corner · ✗ to delete · Ctrl/Cmd-click to select several"
 
 [pdfTextEditor.manual]
 expandWidth = "Expand to page edge"
@@ -5858,7 +5861,7 @@ notIdealFor = "Not Ideal For:"
 notIdealFor1 = "PDFs with special formatting like bullet points, tables, or multi-column layouts"
 notIdealFor2 = "Magazines, brochures, or heavily designed documents"
 notIdealFor3 = "Instruction manuals with complex layouts"
-title = "Welcome to PDF Text Editor (Early Access)"
+title = "Welcome to the PDF Editor (Early Access)"
 
 [PDFToCSV]
 header = "PDF to CSV"

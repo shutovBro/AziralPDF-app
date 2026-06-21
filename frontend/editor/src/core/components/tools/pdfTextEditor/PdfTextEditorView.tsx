@@ -1521,7 +1521,9 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
             ? "1px solid var(--mantine-color-violet-5)"
             : isChanged
               ? "1px solid var(--mantine-color-yellow-5)"
-              : "none",
+              : // Faint dashed border so editable boxes are always discoverable,
+                // even over dark page backgrounds.
+                "1px dashed var(--mantine-color-blue-3)",
         outlineOffset: "-1px",
         borderRadius: 6,
         backgroundColor: isActive
@@ -1566,7 +1568,6 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
             pointerEvents: "auto",
           }}
           onMouseDown={(event) => {
-            console.log(`❌ MOUSEDOWN on X button for group ${groupId}`);
             event.stopPropagation();
             event.preventDefault();
 
@@ -1577,21 +1578,15 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
 
             if (currentText.length === 0) {
               // Already empty - remove the textbox entirely
-              console.log(`   Text already empty, removing textbox`);
               onGroupDelete(pageIndex, groupId);
               setActiveGroupId(null);
               setEditingGroupId(null);
             } else {
               // Has text - clear it but keep the textbox
-              console.log(`   Clearing text (textbox remains)`);
               onGroupEdit(pageIndex, groupId, "");
             }
-            console.log(`   Operation completed`);
           }}
           onClick={(event) => {
-            console.log(
-              `❌ X button ONCLICK fired for group ${groupId} on page ${pageIndex}`,
-            );
             event.stopPropagation();
             event.preventDefault();
           }}
@@ -1787,6 +1782,21 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
             )}
           </Group>
 
+          <Alert
+            variant="light"
+            color="blue"
+            radius="md"
+            py={6}
+            icon={<InfoOutlinedIcon fontSize="small" />}
+          >
+            <Text size="xs">
+              {t(
+                "pdfTextEditor.hint.line",
+                "Click text to edit · drag to move · resize from the corner · ✗ to delete · Ctrl/Cmd-click to select several",
+              )}
+            </Text>
+          </Alert>
+
           <Modal
             opened={showWelcomeBanner}
             onClose={handleDismissWelcomeBanner}
@@ -1796,7 +1806,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                 <Text fw={600}>
                   {t(
                     "pdfTextEditor.welcomeBanner.title",
-                    "Welcome to PDF Text Editor (Early Access)",
+                    "Welcome to the PDF Editor (Early Access)",
                   )}
                 </Text>
               </Group>
