@@ -1160,6 +1160,70 @@ export const createMergedElement = (group: TextGroup): PdfJsonTextElement => {
   return merged;
 };
 
+// --- Add-text (Stage 2b) ---------------------------------------------------
+
+// Added text references the engine's built-in fallback font (NotoSans-Regular,
+// id "fallback-noto-sans"), which covers Latin + Cyrillic and is always loaded
+// into the JSON->PDF font map under the global (-1) key. No font injection is
+// needed; the draw path resolves it via the -1 fallback key. MUST match
+// PdfJsonFallbackFontService.FALLBACK_FONT_ID on the backend.
+export const ADDED_TEXT_FONT_ID = "fallback-noto-sans";
+
+// NotoSans metrics (approximate, em-relative) for placing the editable box.
+const ADDED_TEXT_ASCENT_RATIO = 0.74;
+const ADDED_TEXT_DESCENT_RATIO = 0.25;
+export const DEFAULT_ADD_TEXT_FONT_SIZE = 16;
+const DEFAULT_ADD_TEXT_WIDTH_FACTOR = 12;
+
+/**
+ * Builds an editable text group for a freshly inserted text box. The carried
+ * element has no textMatrix, so the backend draws it with Matrix(1,0,0,1,x,y)
+ * at the given font size (see applyTextMatrix / resolveFontMatrixSize).
+ */
+export const createAddedTextGroup = (
+  pageIndex: number,
+  idSuffix: string,
+  pdfX: number,
+  baselineY: number,
+  fontSize: number = DEFAULT_ADD_TEXT_FONT_SIZE,
+): TextGroup => {
+  const template: PdfJsonTextElement = {
+    text: "",
+    fontId: ADDED_TEXT_FONT_ID,
+    fontSize,
+    fontMatrixSize: fontSize,
+    x: pdfX,
+    y: baselineY,
+    fillColor: { colorSpace: "DeviceRGB", components: [0, 0, 0] },
+    renderingMode: 0,
+  };
+  const width = Math.max(fontSize * DEFAULT_ADD_TEXT_WIDTH_FACTOR, 80);
+  const bounds: BoundingBox = {
+    left: pdfX,
+    right: pdfX + width,
+    top: baselineY + fontSize * ADDED_TEXT_ASCENT_RATIO,
+    bottom: baselineY - fontSize * ADDED_TEXT_DESCENT_RATIO,
+  };
+  return {
+    id: `${pageIndex}-added-${idSuffix}`,
+    pageIndex,
+    fontId: ADDED_TEXT_FONT_ID,
+    fontSize,
+    fontMatrixSize: fontSize,
+    color: "#000000",
+    fontWeight: null,
+    rotation: null,
+    anchor: null,
+    baselineLength: width,
+    baseline: baselineY,
+    elements: [cloneTextElement(template)],
+    originalElements: [cloneTextElement(template)],
+    text: "",
+    originalText: "",
+    bounds,
+  };
+};
+
 const distributeTextAcrossElements = (
   text: string | undefined,
   elements: PdfJsonTextElement[],
@@ -1426,14 +1490,18 @@ export const restoreGlyphElements = (
     const groups = groupsByPage[pageIndex] ?? [];
     const images = imagesByPage[pageIndex] ?? [];
     const baselineImages = originalImagesByPage[pageIndex] ?? [];
-    const regenerateContent =
-      imagesStructurallyChanged(images, baselineImages) || undefined;
+    const imagesChanged = imagesStructurallyChanged(images, baselineImages);
+    // Inserted text cannot be patched into the preserved stream by token
+    // rewriting, so any added-text group forces a model regeneration too.
+    const hasAddedText = groups.some(
+      (group) => group.fontId === ADDED_TEXT_FONT_ID,
+    );
 
     if (!groups.length) {
       return {
         ...page,
         imageElements: images.map(cloneImageElement),
-        regenerateContent,
+        regenerateContent: imagesChanged || undefined,
       };
     }
 
@@ -1485,7 +1553,7 @@ export const restoreGlyphElements = (
       textElements: rebuiltElements,
       imageElements: images.map(cloneImageElement),
       contentStreams: page.contentStreams ?? null,
-      regenerateContent,
+      regenerateContent: imagesChanged || hasAddedText || undefined,
     };
   });
 

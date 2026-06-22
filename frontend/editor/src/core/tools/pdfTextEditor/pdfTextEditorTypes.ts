@@ -232,6 +232,7 @@ export interface PdfTextEditorViewData {
       color: string;
     },
   ) => void;
+  onAddText: (pageIndex: number, pdfX: number, baselineY: number) => string;
   onReset: () => void;
   onDownloadJson: () => void;
   onGeneratePdf: () => void;

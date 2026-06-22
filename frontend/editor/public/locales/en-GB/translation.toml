@@ -5782,6 +5782,7 @@ singleLine = "Single Line"
 [pdfTextEditor.hint]
 line = "Click text to edit · drag to move · resize from the corner · ✗ to delete · Ctrl/Cmd-click to select several"
 redact = "Drag across the page to cover an area (logo, watermark, sensitive text). Switch back to Select to edit text and images."
+text = "Click anywhere on the page to drop a new text box, then type. Use the corner handle to widen it."
 
 [pdfTextEditor.image]
 delete = "Delete image"
@@ -5828,6 +5829,7 @@ sparse = "Sparse text"
 
 [pdfTextEditor.palette]
 addImage = "Add image"
+addText = "Add text"
 black = "Black"
 color = "Colour"
 redact = "Cover area"

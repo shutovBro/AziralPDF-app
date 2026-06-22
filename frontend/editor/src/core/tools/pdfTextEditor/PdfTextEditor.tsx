@@ -43,6 +43,7 @@ import {
   extractDocumentImages,
   cloneImageElement,
   cloneTextElement,
+  createAddedTextGroup,
   valueOr,
 } from "@app/tools/pdfTextEditor/pdfTextEditorUtils";
 import PdfTextEditorView from "@app/components/tools/pdfTextEditor/PdfTextEditorView";
@@ -1351,6 +1352,27 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
     [appendImageElement, loadedDocument],
   );
 
+  const handleAddText = useCallback(
+    (pageIndex: number, pdfX: number, baselineY: number): string => {
+      const group = createAddedTextGroup(
+        pageIndex,
+        `${Date.now()}-${Math.round(Math.random() * 1e6)}`,
+        pdfX,
+        baselineY,
+      );
+      setGroupsByPage((previous) => {
+        const next = [...previous];
+        while (next.length <= pageIndex) {
+          next.push([]);
+        }
+        next[pageIndex] = [...(next[pageIndex] ?? []), group];
+        return next;
+      });
+      return group.id;
+    },
+    [],
+  );
+
   const handleResetEdits = useCallback(() => {
     if (!loadedDocument) {
       return;
@@ -2037,6 +2059,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       onImageDelete: handleImageDelete,
       onAddImage: handleAddImage,
       onAddRedaction: handleAddRedaction,
+      onAddText: handleAddText,
       onReset: handleResetEdits,
       onDownloadJson: handleDownloadJson,
       onGeneratePdf: handleGeneratePdf,
@@ -2071,6 +2094,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       handleImageDelete,
       handleAddImage,
       handleAddRedaction,
+      handleAddText,
       handleResetEdits,
       handleSelectPage,
       hasChanges,

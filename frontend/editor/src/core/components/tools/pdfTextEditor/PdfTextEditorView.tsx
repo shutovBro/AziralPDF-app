@@ -37,6 +37,7 @@ import UploadFileIcon from "@mui/icons-material/UploadFileOutlined";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
 import { Rnd } from "react-rnd";
 import { useNavigationGuard } from "@app/contexts/NavigationContext";
 
@@ -50,6 +51,7 @@ import {
 import {
   getImageBounds,
   pageDimensions,
+  DEFAULT_ADD_TEXT_FONT_SIZE,
 } from "@app/tools/pdfTextEditor/pdfTextEditorUtils";
 
 const MAX_RENDER_WIDTH = 820;
@@ -362,7 +364,9 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
   const pendingDragUpdateRef = useRef<number | null>(null);
 
   // Stage 2 editor palette: tool mode + redaction drawing state
-  const [editorMode, setEditorMode] = useState<"select" | "redact">("select");
+  const [editorMode, setEditorMode] = useState<"select" | "redact" | "text">(
+    "select",
+  );
   const [redactionColor, setRedactionColor] = useState<string>("#ffffff");
   const [redactionDraft, setRedactionDraft] = useState<{
     left: number;
@@ -445,6 +449,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     onImageDelete,
     onAddImage,
     onAddRedaction,
+    onAddText,
     onReset: _onReset,
     onGeneratePdf: _onGeneratePdf,
     onSaveToWorkbench,
@@ -1716,6 +1721,27 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     [onAddImage, selectedPage],
   );
 
+  const handleTextPlacePointerDown = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const rect = event.currentTarget.getBoundingClientRect();
+      const px = event.clientX - rect.left;
+      const py = event.clientY - rect.top;
+      const pdfX = px / scale;
+      const pdfTopY = pageHeight - py / scale;
+      // Place the click at the top of the glyphs: drop the baseline by ~ascent.
+      const baselineY = pdfTopY - DEFAULT_ADD_TEXT_FONT_SIZE * 0.72;
+      const newId = onAddText(selectedPage, pdfX, baselineY);
+      setEditorMode("select");
+      setActiveImageId(null);
+      setSelectedGroupIds(new Set());
+      setActiveGroupId(newId);
+      setEditingGroupId(newId);
+    },
+    [onAddText, pageHeight, scale, selectedPage],
+  );
+
   return (
     <Stack
       gap="xl"
@@ -1886,10 +1912,15 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                     "pdfTextEditor.hint.redact",
                     "Drag across the page to cover an area (logo, watermark, sensitive text). Switch back to Select to edit text and images.",
                   )
-                : t(
-                    "pdfTextEditor.hint.line",
-                    "Click text to edit · drag to move · resize from the corner · ✗ to delete · Ctrl/Cmd-click to select several",
-                  )}
+                : editorMode === "text"
+                  ? t(
+                      "pdfTextEditor.hint.text",
+                      "Click anywhere on the page to drop a new text box, then type. Use the corner handle to widen it.",
+                    )
+                  : t(
+                      "pdfTextEditor.hint.line",
+                      "Click text to edit · drag to move · resize from the corner · ✗ to delete · Ctrl/Cmd-click to select several",
+                    )}
             </Text>
           </Alert>
 
@@ -1924,6 +1955,18 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                     leftSection={<CropSquareIcon sx={{ fontSize: 16 }} />}
                   >
                     {t("pdfTextEditor.palette.redact", "Cover area")}
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  label={t("pdfTextEditor.palette.addText", "Add text")}
+                >
+                  <Button
+                    size="compact-sm"
+                    variant={editorMode === "text" ? "filled" : "default"}
+                    onClick={() => setEditorMode("text")}
+                    leftSection={<TextFieldsIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t("pdfTextEditor.palette.addText", "Add text")}
                   </Button>
                 </Tooltip>
               </Button.Group>
@@ -2322,6 +2365,17 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                           />
                         )}
                       </Box>
+                    )}
+                    {editorMode === "text" && (
+                      <Box
+                        onMouseDown={handleTextPlacePointerDown}
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          zIndex: 4_000_000,
+                          cursor: "text",
+                        }}
+                      />
                     )}
                     {selectionToolbarPosition && (
                       <Group
