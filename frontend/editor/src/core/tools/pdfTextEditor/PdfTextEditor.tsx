@@ -28,6 +28,7 @@ import {
   PdfJsonFont,
   PdfJsonImageElement,
   PdfJsonPage,
+  PdfJsonTextElement,
   TextGroup,
   PdfTextEditorViewData,
   BoundingBox,
@@ -1373,6 +1374,64 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
     [],
   );
 
+  const handleGroupMove = useCallback(
+    (pageIndex: number, groupId: string, dxPdf: number, dyPdf: number) => {
+      if (
+        (Math.abs(dxPdf) < 1e-6 && Math.abs(dyPdf) < 1e-6) ||
+        !Number.isFinite(dxPdf) ||
+        !Number.isFinite(dyPdf)
+      ) {
+        return;
+      }
+      const translateElement = (
+        element: PdfJsonTextElement,
+      ): PdfJsonTextElement => {
+        const next = cloneTextElement(element);
+        next.x = valueOr(element.x, 0) + dxPdf;
+        next.y = valueOr(element.y, 0) + dyPdf;
+        if (element.textMatrix && element.textMatrix.length === 6) {
+          const matrix = [...element.textMatrix];
+          matrix[4] = matrix[4] + dxPdf;
+          matrix[5] = matrix[5] + dyPdf;
+          next.textMatrix = matrix;
+        }
+        return next;
+      };
+      setGroupsByPage((previous) =>
+        previous.map((groups, idx) => {
+          if (idx !== pageIndex) {
+            return groups;
+          }
+          return groups.map((group) => {
+            if (group.id !== groupId) {
+              return group;
+            }
+            return {
+              ...group,
+              moved: true,
+              baseline:
+                group.baseline !== null && group.baseline !== undefined
+                  ? group.baseline + dyPdf
+                  : group.baseline,
+              anchor: group.anchor
+                ? { x: group.anchor.x + dxPdf, y: group.anchor.y + dyPdf }
+                : group.anchor,
+              bounds: {
+                left: group.bounds.left + dxPdf,
+                right: group.bounds.right + dxPdf,
+                top: group.bounds.top + dyPdf,
+                bottom: group.bounds.bottom + dyPdf,
+              },
+              elements: group.elements.map(translateElement),
+              originalElements: group.originalElements.map(translateElement),
+            };
+          });
+        }),
+      );
+    },
+    [],
+  );
+
   const handleResetEdits = useCallback(() => {
     if (!loadedDocument) {
       return;
@@ -2060,6 +2119,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       onAddImage: handleAddImage,
       onAddRedaction: handleAddRedaction,
       onAddText: handleAddText,
+      onGroupMove: handleGroupMove,
       onReset: handleResetEdits,
       onDownloadJson: handleDownloadJson,
       onGeneratePdf: handleGeneratePdf,
@@ -2095,6 +2155,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       handleAddImage,
       handleAddRedaction,
       handleAddText,
+      handleGroupMove,
       handleResetEdits,
       handleSelectPage,
       hasChanges,

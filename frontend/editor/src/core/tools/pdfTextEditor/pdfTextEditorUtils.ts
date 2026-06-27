@@ -1496,6 +1496,8 @@ export const restoreGlyphElements = (
     const hasAddedText = groups.some(
       (group) => group.fontId === ADDED_TEXT_FONT_ID,
     );
+    // Repositioned text cannot be patched in place either -> force regeneration.
+    const hasMovedText = groups.some((group) => group.moved === true);
 
     if (!groups.length) {
       return {
@@ -1553,7 +1555,8 @@ export const restoreGlyphElements = (
       textElements: rebuiltElements,
       imageElements: images.map(cloneImageElement),
       contentStreams: page.contentStreams ?? null,
-      regenerateContent: imagesChanged || hasAddedText || undefined,
+      regenerateContent:
+        imagesChanged || hasAddedText || hasMovedText || undefined,
     };
   });
 

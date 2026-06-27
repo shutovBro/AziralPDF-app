@@ -172,6 +172,8 @@ export interface TextGroup {
   originalText: string;
   bounds: BoundingBox;
   childLineGroups?: TextGroup[] | null;
+  /** True when the user has repositioned this group; forces a model rebuild. */
+  moved?: boolean;
 }
 
 export const DEFAULT_PAGE_WIDTH = 612;
@@ -233,6 +235,12 @@ export interface PdfTextEditorViewData {
     },
   ) => void;
   onAddText: (pageIndex: number, pdfX: number, baselineY: number) => string;
+  onGroupMove: (
+    pageIndex: number,
+    groupId: string,
+    dxPdf: number,
+    dyPdf: number,
+  ) => void;
   onReset: () => void;
   onDownloadJson: () => void;
   onGeneratePdf: () => void;

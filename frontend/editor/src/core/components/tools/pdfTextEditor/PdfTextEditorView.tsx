@@ -38,6 +38,7 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
+import OpenWithIcon from "@mui/icons-material/OpenWith";
 import { Rnd } from "react-rnd";
 import { useNavigationGuard } from "@app/contexts/NavigationContext";
 
@@ -376,6 +377,16 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
   } | null>(null);
   const redactionStartRef = useRef<{ x: number; y: number } | null>(null);
   const addImageInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Text-group drag-to-move (live CSS-pixel offset while dragging the handle).
+  const movingRef = useRef<{
+    groupId: string;
+    startX: number;
+    startY: number;
+  } | null>(null);
+  const [moveDraft, setMoveDraft] = useState<
+    Map<string, { dx: number; dy: number }>
+  >(new Map());
   const [fontFamilies, setFontFamilies] = useState<Map<string, string>>(
     new Map(),
   );
@@ -450,6 +461,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     onAddImage,
     onAddRedaction,
     onAddText,
+    onGroupMove,
     onReset: _onReset,
     onGeneratePdf: _onGeneratePdf,
     onSaveToWorkbench,
@@ -1523,6 +1535,55 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     [pageWidth, scale],
   );
 
+  const handleMoveStart = useCallback(
+    (event: React.MouseEvent, groupId: string) => {
+      event.stopPropagation();
+      event.preventDefault();
+      const startX = event.clientX;
+      const startY = event.clientY;
+      movingRef.current = { groupId, startX, startY };
+      setActiveGroupId(groupId);
+      const handleMouseMove = (moveEvent: MouseEvent) => {
+        const context = movingRef.current;
+        if (!context) {
+          return;
+        }
+        moveEvent.preventDefault();
+        const dx = moveEvent.clientX - context.startX;
+        const dy = moveEvent.clientY - context.startY;
+        setMoveDraft((prev) => {
+          const next = new Map(prev);
+          next.set(context.groupId, { dx, dy });
+          return next;
+        });
+      };
+      const handleMouseUp = (upEvent: MouseEvent) => {
+        const context = movingRef.current;
+        movingRef.current = null;
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+        if (!context) {
+          return;
+        }
+        setMoveDraft((prev) => {
+          const next = new Map(prev);
+          next.delete(context.groupId);
+          return next;
+        });
+        const dx = upEvent.clientX - context.startX;
+        const dy = upEvent.clientY - context.startY;
+        if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {
+          return;
+        }
+        // Screen y grows downward; PDF y grows upward -> negate dy.
+        onGroupMove(selectedPage, context.groupId, dx / scale, -dy / scale);
+      };
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+    },
+    [onGroupMove, scale, selectedPage],
+  );
+
   const renderGroupContainer = (
     groupId: string,
     pageIndex: number,
@@ -1619,6 +1680,35 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
         >
           <CloseIcon style={{ fontSize: 12 }} />
         </ActionIcon>
+      )}
+      {activeGroupId === groupId && (
+        <Tooltip
+          label={t("pdfTextEditor.manual.move", "Drag to move")}
+          withinPortal
+        >
+          <ActionIcon
+            size="xs"
+            variant="filled"
+            color="blue"
+            radius="xl"
+            aria-label={t("pdfTextEditor.manual.move", "Drag to move")}
+            style={{
+              position: "absolute",
+              top: -8,
+              left: -8,
+              zIndex: 9999,
+              cursor: "move",
+              pointerEvents: "auto",
+            }}
+            onMouseDown={(event) => handleMoveStart(event, groupId)}
+            onClick={(event) => {
+              event.stopPropagation();
+              event.preventDefault();
+            }}
+          >
+            <OpenWithIcon style={{ fontSize: 12 }} />
+          </ActionIcon>
+        </Tooltip>
       )}
     </Box>
   );
@@ -2862,6 +2952,13 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                         // We need to add this to the container width to compensate, so the inner content
                         // has the full PDF-defined width available for text
                         const WRAPPER_HORIZONTAL_PADDING = 4;
+
+                        // Live drag-to-move offset (CSS px) while the move handle is held.
+                        const moveOffset = moveDraft.get(group.id);
+                        if (moveOffset) {
+                          containerLeft += moveOffset.dx;
+                          containerTop += moveOffset.dy;
+                        }
 
                         const containerStyle: React.CSSProperties = {
                           position: "absolute",
