@@ -2592,7 +2592,13 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                       const src = `data:image/${image.imageFormat ?? "png"};base64,${image.imageData}`;
                       const baseZIndex =
                         (image.zOrder ?? -1_000_000) + 1_050_000;
-                      const zIndex = isActive
+                      // Boost above the text layer only while the image is
+                      // actually being dragged/resized — NOT on mere hover.
+                      // Hover-boosting let a hovered full-bleed background
+                      // image cover foreground images sharing the page.
+                      const isDraggingImage =
+                        draggingImageRef.current === imageId;
+                      const zIndex = isDraggingImage
                         ? baseZIndex + 1_000_000
                         : baseZIndex;
 
@@ -2922,6 +2928,22 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
 
                         // Extract styling from group
                         const textColor = group.color || "#111827";
+                        // When the backend could not extract a fill colour we
+                        // fall back to a dark default that is invisible on a
+                        // dark page. Paint a light chip directly behind the
+                        // glyphs (same idea the edit field already uses) so the
+                        // overlay text stays readable on ANY background. This is
+                        // an editor-only viewing aid — export uses the original
+                        // colour, never this.
+                        const unknownColor = !group.color;
+                        const legibilityChip: React.CSSProperties = unknownColor
+                          ? {
+                              backgroundColor: "rgba(255,255,255,0.92)",
+                              borderRadius: 2,
+                              boxDecorationBreak: "clone",
+                              WebkitBoxDecorationBreak: "clone",
+                            }
+                          : {};
                         const fontWeight =
                           group.fontWeight ||
                           getFontWeight(effectiveFontId, group.pageIndex);
@@ -3190,6 +3212,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                                       : "none",
                                     transformOrigin: "left center",
                                     whiteSpace,
+                                    ...legibilityChip,
                                   }}
                                 >
                                   {group.text || "\u00A0"}
