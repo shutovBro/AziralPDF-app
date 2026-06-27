@@ -1975,6 +1975,12 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
           page.cleanup();
           return;
         }
+        // Paint the implicit white "paper" first. PDF.js renders onto a
+        // transparent canvas, so content using transparency or blend modes
+        // composites against nothing and looks dark/dull. A white base makes
+        // the preview match how the page is actually displayed on paper.
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
         await page.render({ canvas, canvasContext: context, viewport }).promise;
 
         try {
