@@ -2672,28 +2672,31 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                       const src = `data:image/${image.imageFormat ?? "png"};base64,${image.imageData}`;
                       const baseZIndex =
                         (image.zOrder ?? -1_000_000) + 1_050_000;
-                      // A full-bleed ORIGINAL page image (covers ~the whole
-                      // page) is the background — pin it to the very bottom so
-                      // it can never cover foreground artwork, regardless of
-                      // whatever (or no) z-order the backend assigned. Redaction
-                      // and user-added layers (aziral-*) are never treated as
-                      // background.
+                      // A full-bleed ORIGINAL image is the page background. It
+                      // stays BAKED into the page preview (requestPagePreview
+                      // does not erase it), so we must NOT also render it as a
+                      // movable overlay — that overlay is what kept "replacing"
+                      // the background. Skip it entirely: the background then
+                      // looks exactly like the source PDF and is never swapped.
+                      // (Redaction / user-added aziral-* layers are never
+                      // treated as background.) Export is unaffected — it
+                      // rebuilds from the model, which still holds the image.
                       const pageCoverage =
                         (width * height) /
                         Math.max(pageWidth * pageHeight, 1);
                       const isBackgroundImage =
                         !imageId.startsWith("aziral-") && pageCoverage >= 0.9;
+                      if (isBackgroundImage) {
+                        return null;
+                      }
                       // Boost above the text layer only while the image is
                       // actually being dragged/resized — NOT on mere hover.
-                      // Hover-boosting let a hovered full-bleed background
-                      // image cover foreground images sharing the page.
+                      // Hover-boosting let a hovered image cover others.
                       const isDraggingImage =
                         draggingImageRef.current === imageId;
                       const zIndex = isDraggingImage
                         ? baseZIndex + 1_000_000
-                        : isBackgroundImage
-                          ? 1
-                          : baseZIndex;
+                        : baseZIndex;
 
                       return (
                         <Rnd

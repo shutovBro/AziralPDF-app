@@ -2190,6 +2190,18 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
               const canvasY = canvas.height - top * scale;
               const canvasWidth = width * scale;
               const canvasHeight = height * scale;
+              // Keep a full-bleed ORIGINAL background image BAKED into the
+              // preview (don't erase it) so the page looks exactly like the
+              // source PDF and is never swapped for a re-rendered overlay. The
+              // View skips rendering an overlay for the same image.
+              const coverage =
+                (canvasWidth * canvasHeight) /
+                Math.max(canvas.width * canvas.height, 1);
+              const isBackground =
+                !(image.id ?? "").startsWith("aziral-") && coverage >= 0.9;
+              if (isBackground) {
+                continue;
+              }
               context.fillRect(canvasX, canvasY, canvasWidth, canvasHeight);
             }
             context.restore();
