@@ -1174,6 +1174,30 @@ const ADDED_TEXT_ASCENT_RATIO = 0.74;
 const ADDED_TEXT_DESCENT_RATIO = 0.25;
 export const DEFAULT_ADD_TEXT_FONT_SIZE = 16;
 const DEFAULT_ADD_TEXT_WIDTH_FACTOR = 12;
+export const ADD_TEXT_MIN_FONT_SIZE = 6;
+export const ADD_TEXT_MAX_FONT_SIZE = 120;
+export const DEFAULT_ADD_TEXT_COLOR = "#000000";
+
+/**
+ * Parses a CSS hex colour ("#rgb" or "#rrggbb") into DeviceRGB components in the
+ * 0..1 range expected by the PDF model. Falls back to black on bad input.
+ */
+export const hexToRgbComponents = (hex: string): number[] => {
+  const normalized = (hex ?? "").trim().replace(/^#/, "");
+  let r = 0;
+  let g = 0;
+  let b = 0;
+  if (/^[0-9a-fA-F]{3}$/.test(normalized)) {
+    r = parseInt(normalized[0] + normalized[0], 16);
+    g = parseInt(normalized[1] + normalized[1], 16);
+    b = parseInt(normalized[2] + normalized[2], 16);
+  } else if (/^[0-9a-fA-F]{6}$/.test(normalized)) {
+    r = parseInt(normalized.slice(0, 2), 16);
+    g = parseInt(normalized.slice(2, 4), 16);
+    b = parseInt(normalized.slice(4, 6), 16);
+  }
+  return [r / 255, g / 255, b / 255];
+};
 
 /**
  * Builds an editable text group for a freshly inserted text box. The carried
@@ -1186,7 +1210,12 @@ export const createAddedTextGroup = (
   pdfX: number,
   baselineY: number,
   fontSize: number = DEFAULT_ADD_TEXT_FONT_SIZE,
+  color: string = DEFAULT_ADD_TEXT_COLOR,
 ): TextGroup => {
+  const fillColor = {
+    colorSpace: "DeviceRGB",
+    components: hexToRgbComponents(color),
+  };
   const template: PdfJsonTextElement = {
     text: "",
     fontId: ADDED_TEXT_FONT_ID,
@@ -1194,7 +1223,7 @@ export const createAddedTextGroup = (
     fontMatrixSize: fontSize,
     x: pdfX,
     y: baselineY,
-    fillColor: { colorSpace: "DeviceRGB", components: [0, 0, 0] },
+    fillColor,
     renderingMode: 0,
   };
   const width = Math.max(fontSize * DEFAULT_ADD_TEXT_WIDTH_FACTOR, 80);
@@ -1210,7 +1239,7 @@ export const createAddedTextGroup = (
     fontId: ADDED_TEXT_FONT_ID,
     fontSize,
     fontMatrixSize: fontSize,
-    color: "#000000",
+    color,
     fontWeight: null,
     rotation: null,
     anchor: null,
@@ -1220,6 +1249,58 @@ export const createAddedTextGroup = (
     originalElements: [cloneTextElement(template)],
     text: "",
     originalText: "",
+    bounds,
+  };
+};
+
+/**
+ * Returns a new added-text group with the given font size and/or colour applied
+ * to the group and every carried element. Vertical bounds are recomputed from
+ * the baseline so the editable box tracks the new size; the horizontal extent
+ * (any user width resize) is preserved. Only meaningful for added-text groups
+ * (fontId === ADDED_TEXT_FONT_ID), which always rebuild via the regenerate path.
+ */
+export const applyAddedTextStyle = (
+  group: TextGroup,
+  style: { fontSize?: number; color?: string },
+): TextGroup => {
+  const nextFontSize =
+    style.fontSize !== undefined && Number.isFinite(style.fontSize)
+      ? Math.max(
+          ADD_TEXT_MIN_FONT_SIZE,
+          Math.min(ADD_TEXT_MAX_FONT_SIZE, style.fontSize),
+        )
+      : (group.fontMatrixSize ?? group.fontSize ?? DEFAULT_ADD_TEXT_FONT_SIZE);
+  const nextColor = style.color ?? group.color ?? DEFAULT_ADD_TEXT_COLOR;
+  const nextFill = {
+    colorSpace: "DeviceRGB",
+    components: hexToRgbComponents(nextColor),
+  };
+
+  const restyleElement = (
+    element: PdfJsonTextElement,
+  ): PdfJsonTextElement => {
+    const next = cloneTextElement(element);
+    next.fontSize = nextFontSize;
+    next.fontMatrixSize = nextFontSize;
+    next.fillColor = { ...nextFill, components: [...nextFill.components] };
+    return next;
+  };
+
+  const baselineY = group.baseline ?? group.bounds.bottom;
+  const bounds: BoundingBox = {
+    left: group.bounds.left,
+    right: group.bounds.right,
+    top: baselineY + nextFontSize * ADDED_TEXT_ASCENT_RATIO,
+    bottom: baselineY - nextFontSize * ADDED_TEXT_DESCENT_RATIO,
+  };
+
+  return {
+    ...group,
+    fontSize: nextFontSize,
+    fontMatrixSize: nextFontSize,
+    color: nextColor,
+    elements: group.elements.map(restyleElement),
     bounds,
   };
 };

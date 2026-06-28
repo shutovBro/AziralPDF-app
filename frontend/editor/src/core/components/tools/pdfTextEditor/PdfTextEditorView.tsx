@@ -13,10 +13,12 @@ import {
   Box,
   Button,
   Card,
+  ColorInput,
   Divider,
   Group,
   Menu,
   Modal,
+  NumberInput,
   Pagination,
   Progress,
   ScrollArea,
@@ -55,6 +57,10 @@ import {
   getImageBounds,
   pageDimensions,
   DEFAULT_ADD_TEXT_FONT_SIZE,
+  DEFAULT_ADD_TEXT_COLOR,
+  ADD_TEXT_MIN_FONT_SIZE,
+  ADD_TEXT_MAX_FONT_SIZE,
+  ADDED_TEXT_FONT_ID,
 } from "@app/tools/pdfTextEditor/pdfTextEditorUtils";
 
 const MAX_RENDER_WIDTH = 820;
@@ -371,6 +377,13 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     "select",
   );
   const [redactionColor, setRedactionColor] = useState<string>("#ffffff");
+  // Stage 3: default size/colour for newly added text boxes
+  const [addTextFontSize, setAddTextFontSize] = useState<number>(
+    DEFAULT_ADD_TEXT_FONT_SIZE,
+  );
+  const [addTextColor, setAddTextColor] = useState<string>(
+    DEFAULT_ADD_TEXT_COLOR,
+  );
   const [redactionDraft, setRedactionDraft] = useState<{
     left: number;
     top: number;
@@ -463,6 +476,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     onAddImage,
     onAddRedaction,
     onAddText,
+    onAddTextStyle,
     onGroupMove,
     onUndo,
     onRedo,
@@ -1868,15 +1882,82 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
       const pdfX = px / scale;
       const pdfTopY = pageHeight - py / scale;
       // Place the click at the top of the glyphs: drop the baseline by ~ascent.
-      const baselineY = pdfTopY - DEFAULT_ADD_TEXT_FONT_SIZE * 0.72;
-      const newId = onAddText(selectedPage, pdfX, baselineY);
+      const baselineY = pdfTopY - addTextFontSize * 0.72;
+      const newId = onAddText(
+        selectedPage,
+        pdfX,
+        baselineY,
+        addTextFontSize,
+        addTextColor,
+      );
       setEditorMode("select");
       setActiveImageId(null);
       setSelectedGroupIds(new Set());
       setActiveGroupId(newId);
       setEditingGroupId(newId);
     },
-    [onAddText, pageHeight, scale, selectedPage],
+    [
+      addTextColor,
+      addTextFontSize,
+      onAddText,
+      pageHeight,
+      scale,
+      selectedPage,
+    ],
+  );
+
+  // The currently selected added-text box (if any) on the current page. Size /
+  // colour controls edit it live; otherwise they set defaults for the next box.
+  const activeAddedGroup = useMemo(
+    () =>
+      activeGroupId
+        ? (pageGroups.find(
+            (group) =>
+              group.id === activeGroupId &&
+              group.fontId === ADDED_TEXT_FONT_ID,
+          ) ?? null)
+        : null,
+    [activeGroupId, pageGroups],
+  );
+
+  const showTextStyleControls = editorMode === "text" || Boolean(activeAddedGroup);
+
+  const addTextFontSizeValue = activeAddedGroup
+    ? (activeAddedGroup.fontMatrixSize ??
+      activeAddedGroup.fontSize ??
+      addTextFontSize)
+    : addTextFontSize;
+  const addTextColorValue = activeAddedGroup
+    ? (activeAddedGroup.color ?? addTextColor)
+    : addTextColor;
+
+  const handleAddTextFontSizeChange = useCallback(
+    (value: number | string) => {
+      const numeric =
+        typeof value === "number" ? value : parseFloat(value);
+      if (!Number.isFinite(numeric)) {
+        return;
+      }
+      const size = Math.max(
+        ADD_TEXT_MIN_FONT_SIZE,
+        Math.min(ADD_TEXT_MAX_FONT_SIZE, numeric),
+      );
+      setAddTextFontSize(size);
+      if (activeAddedGroup) {
+        onAddTextStyle(selectedPage, activeAddedGroup.id, { fontSize: size });
+      }
+    },
+    [activeAddedGroup, onAddTextStyle, selectedPage],
+  );
+
+  const handleAddTextColorChange = useCallback(
+    (value: string) => {
+      setAddTextColor(value);
+      if (activeAddedGroup) {
+        onAddTextStyle(selectedPage, activeAddedGroup.id, { color: value });
+      }
+    },
+    [activeAddedGroup, onAddTextStyle, selectedPage],
   );
 
   return (
@@ -2185,6 +2266,44 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                     />
                   </Tooltip>
                 ))}
+              </Group>
+            )}
+            {showTextStyleControls && (
+              <Group gap={8} wrap="nowrap">
+                <Text size="xs" c="dimmed">
+                  {activeAddedGroup
+                    ? t("pdfTextEditor.palette.textStyleActive", "Selected text")
+                    : t("pdfTextEditor.palette.textStyleNew", "New text")}
+                </Text>
+                <NumberInput
+                  size="xs"
+                  w={92}
+                  min={ADD_TEXT_MIN_FONT_SIZE}
+                  max={ADD_TEXT_MAX_FONT_SIZE}
+                  step={1}
+                  value={Math.round(addTextFontSizeValue)}
+                  onChange={handleAddTextFontSizeChange}
+                  aria-label={t("pdfTextEditor.palette.fontSize", "Font size")}
+                  suffix=" pt"
+                />
+                <ColorInput
+                  size="xs"
+                  w={132}
+                  format="hex"
+                  withEyeDropper={false}
+                  value={addTextColorValue}
+                  onChange={handleAddTextColorChange}
+                  aria-label={t("pdfTextEditor.palette.fontColor", "Text colour")}
+                  swatches={[
+                    "#000000",
+                    "#ffffff",
+                    "#e03131",
+                    "#1971c2",
+                    "#2f9e44",
+                    "#f08c00",
+                    "#6741d9",
+                  ]}
+                />
               </Group>
             )}
           </Group>

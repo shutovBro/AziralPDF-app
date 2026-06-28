@@ -234,7 +234,18 @@ export interface PdfTextEditorViewData {
       color: string;
     },
   ) => void;
-  onAddText: (pageIndex: number, pdfX: number, baselineY: number) => string;
+  onAddText: (
+    pageIndex: number,
+    pdfX: number,
+    baselineY: number,
+    fontSize?: number,
+    color?: string,
+  ) => string;
+  onAddTextStyle: (
+    pageIndex: number,
+    groupId: string,
+    style: { fontSize?: number; color?: string },
+  ) => void;
   onGroupMove: (
     pageIndex: number,
     groupId: string,

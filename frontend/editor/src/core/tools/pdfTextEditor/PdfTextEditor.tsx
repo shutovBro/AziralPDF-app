@@ -45,6 +45,7 @@ import {
   cloneImageElement,
   cloneTextElement,
   createAddedTextGroup,
+  applyAddedTextStyle,
   valueOr,
 } from "@app/tools/pdfTextEditor/pdfTextEditorUtils";
 import PdfTextEditorView from "@app/components/tools/pdfTextEditor/PdfTextEditorView";
@@ -1486,13 +1487,21 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
   );
 
   const handleAddText = useCallback(
-    (pageIndex: number, pdfX: number, baselineY: number): string => {
+    (
+      pageIndex: number,
+      pdfX: number,
+      baselineY: number,
+      fontSize?: number,
+      color?: string,
+    ): string => {
       captureUndo();
       const group = createAddedTextGroup(
         pageIndex,
         `${Date.now()}-${Math.round(Math.random() * 1e6)}`,
         pdfX,
         baselineY,
+        fontSize,
+        color,
       );
       setGroupsByPage((previous) => {
         const next = [...previous];
@@ -1503,6 +1512,40 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         return next;
       });
       return group.id;
+    },
+    [captureUndo],
+  );
+
+  const handleAddTextStyle = useCallback(
+    (
+      pageIndex: number,
+      groupId: string,
+      style: { fontSize?: number; color?: string },
+    ) => {
+      if (style.fontSize === undefined && style.color === undefined) {
+        return;
+      }
+      captureUndo(`textStyle:${pageIndex}:${groupId}`);
+      setGroupsByPage((previous) => {
+        const page = previous[pageIndex];
+        if (!page) {
+          return previous;
+        }
+        let mutated = false;
+        const nextPage = page.map((group) => {
+          if (group.id !== groupId) {
+            return group;
+          }
+          mutated = true;
+          return applyAddedTextStyle(group, style);
+        });
+        if (!mutated) {
+          return previous;
+        }
+        const next = [...previous];
+        next[pageIndex] = nextPage;
+        return next;
+      });
     },
     [captureUndo],
   );
@@ -2271,6 +2314,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       onAddImage: handleAddImage,
       onAddRedaction: handleAddRedaction,
       onAddText: handleAddText,
+      onAddTextStyle: handleAddTextStyle,
       onGroupMove: handleGroupMove,
       onReset: handleResetEdits,
       onUndo: handleUndo,
@@ -2311,6 +2355,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       handleAddImage,
       handleAddRedaction,
       handleAddText,
+      handleAddTextStyle,
       handleGroupMove,
       handleResetEdits,
       handleUndo,
