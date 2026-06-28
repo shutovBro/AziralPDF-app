@@ -214,12 +214,6 @@ const EmbedPdfViewerContent = ({
   // viewer history plugin via its subscribe() channel.
   const [historyCanUndo, setHistoryCanUndo] = useState(false);
   const [historyCanRedo, setHistoryCanRedo] = useState(false);
-  const handleHistoryUndo = useCallback(() => {
-    historyApiRef.current?.undo?.();
-  }, [historyApiRef]);
-  const handleHistoryRedo = useCallback(() => {
-    historyApiRef.current?.redo?.();
-  }, [historyApiRef]);
 
   // Scroll position preservation system
   // We continuously track the last known good scroll position, so we always have it available
@@ -235,7 +229,26 @@ const EmbedPdfViewerContent = ({
   const formApplyInProgressRef = useRef(false);
 
   // Get redaction context
-  const { redactionsApplied, setRedactionsApplied } = useRedaction();
+  const { redactionsApplied, setRedactionsApplied, redactionApiRef, pendingCount } =
+    useRedaction();
+
+  // Redaction-aware undo/redo. Pending redactions are REDACT annotations the
+  // redaction plugin deliberately keeps OUT of the annotation history (it
+  // purges them), so the plain history undo never removes them. Step them back
+  // first via the redaction plugin, then fall back to annotation history.
+  const handleHistoryUndo = useCallback(() => {
+    if ((pendingCount ?? 0) > 0 && redactionApiRef.current?.undoLastPending) {
+      if (redactionApiRef.current.undoLastPending()) {
+        return;
+      }
+    }
+    historyApiRef.current?.undo?.();
+  }, [pendingCount, redactionApiRef, historyApiRef]);
+  const handleHistoryRedo = useCallback(() => {
+    historyApiRef.current?.redo?.();
+  }, [historyApiRef]);
+  // The undo button must light up for pending redactions too, not just history.
+  const viewerCanUndo = historyCanUndo || (pendingCount ?? 0) > 0;
 
   // Ref for redaction pending tracker API
   const redactionTrackerRef = useRef<RedactionPendingTrackerAPI>(null);
@@ -507,19 +520,19 @@ const EmbedPdfViewerContent = ({
 
           case "z":
           case "Z":
-            // Ctrl+Z: Undo; Ctrl+Shift+Z: Redo
+            // Ctrl+Z: Undo; Ctrl+Shift+Z: Redo (redaction-aware)
             event.preventDefault();
             if (event.shiftKey) {
-              historyApiRef.current?.redo?.();
+              handleHistoryRedo();
             } else {
-              historyApiRef.current?.undo?.();
+              handleHistoryUndo();
             }
             return;
           case "y":
           case "Y":
             // Ctrl+Y: Redo
             event.preventDefault();
-            historyApiRef.current?.redo?.();
+            handleHistoryRedo();
             return;
         }
         return;
@@ -566,6 +579,8 @@ const EmbedPdfViewerContent = ({
     exportActions,
     rotationActions,
     historyApiRef,
+    handleHistoryUndo,
+    handleHistoryRedo,
     viewerApplyChanges,
     cyclePdfRenderMode,
     viewerKeyCommand,
@@ -1100,7 +1115,7 @@ const EmbedPdfViewerContent = ({
   useViewerWorkbenchBarButtons(isRulerActive, setIsRulerActive, {
     onUndo: handleHistoryUndo,
     onRedo: handleHistoryRedo,
-    canUndo: historyCanUndo,
+    canUndo: viewerCanUndo,
     canRedo: historyCanRedo,
   });
 

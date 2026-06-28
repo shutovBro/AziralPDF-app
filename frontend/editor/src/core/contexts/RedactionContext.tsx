@@ -23,6 +23,8 @@ export interface RedactionAPI {
   commitAllPending: () => void;
   getActiveType: () => RedactionMode | null;
   getPendingCount: () => number;
+  /** Remove the most recently added pending redaction. Returns true if one was removed. */
+  undoLastPending: () => boolean;
 }
 
 /**
