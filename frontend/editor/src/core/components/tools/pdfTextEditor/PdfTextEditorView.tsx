@@ -1178,14 +1178,21 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     [editingGroupId, pageGroups],
   );
 
-  const orderedImages = useMemo(
-    () =>
-      [...pageImages].sort(
-        (first, second) =>
-          (first?.zOrder ?? -1_000_000) - (second?.zOrder ?? -1_000_000),
-      ),
-    [pageImages],
-  );
+  const orderedImages = useMemo(() => {
+    const areaOf = (image: (typeof pageImages)[number]) => {
+      const b = getImageBounds(image);
+      return Math.max(b.right - b.left, 0) * Math.max(b.top - b.bottom, 0);
+    };
+    return [...pageImages].sort((first, second) => {
+      const z =
+        (first?.zOrder ?? -1_000_000) - (second?.zOrder ?? -1_000_000);
+      if (z !== 0) return z;
+      // Tie-break by area DESCENDING so a larger (often full-bleed background)
+      // image is painted first and sits BELOW smaller foreground images when
+      // the backend gives no/equal z-order.
+      return areaOf(second) - areaOf(first);
+    });
+  }, [pageImages]);
   const scale = useMemo(() => {
     const calculatedScale = Math.min(MAX_RENDER_WIDTH / pageWidth, 2.5);
     console.log(`🔍 [PdfTextEditor] Scale Calculation:`, {
@@ -2592,6 +2599,17 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                       const src = `data:image/${image.imageFormat ?? "png"};base64,${image.imageData}`;
                       const baseZIndex =
                         (image.zOrder ?? -1_000_000) + 1_050_000;
+                      // A full-bleed ORIGINAL page image (covers ~the whole
+                      // page) is the background — pin it to the very bottom so
+                      // it can never cover foreground artwork, regardless of
+                      // whatever (or no) z-order the backend assigned. Redaction
+                      // and user-added layers (aziral-*) are never treated as
+                      // background.
+                      const pageCoverage =
+                        (width * height) /
+                        Math.max(pageWidth * pageHeight, 1);
+                      const isBackgroundImage =
+                        !imageId.startsWith("aziral-") && pageCoverage >= 0.9;
                       // Boost above the text layer only while the image is
                       // actually being dragged/resized — NOT on mere hover.
                       // Hover-boosting let a hovered full-bleed background
@@ -2600,7 +2618,9 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                         draggingImageRef.current === imageId;
                       const zIndex = isDraggingImage
                         ? baseZIndex + 1_000_000
-                        : baseZIndex;
+                        : isBackgroundImage
+                          ? 1
+                          : baseZIndex;
 
                       return (
                         <Rnd
