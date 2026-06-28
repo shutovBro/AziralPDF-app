@@ -210,6 +210,17 @@ const EmbedPdfViewerContent = ({
   // annotation history changes, and cleared after we successfully apply changes.
   const hasAnnotationChangesRef = useRef(false);
 
+  // Live undo/redo availability for the toolbar buttons, kept in sync with the
+  // viewer history plugin via its subscribe() channel.
+  const [historyCanUndo, setHistoryCanUndo] = useState(false);
+  const [historyCanRedo, setHistoryCanRedo] = useState(false);
+  const handleHistoryUndo = useCallback(() => {
+    historyApiRef.current?.undo?.();
+  }, [historyApiRef]);
+  const handleHistoryRedo = useCallback(() => {
+    historyApiRef.current?.redo?.();
+  }, [historyApiRef]);
+
   // Scroll position preservation system
   // We continuously track the last known good scroll position, so we always have it available
   const lastKnownScrollPageRef = useRef<number>(1);
@@ -571,6 +582,9 @@ const EmbedPdfViewerContent = ({
 
     const updateHasChanges = () => {
       const canUndo = historyApi.canUndo?.() ?? false;
+      const canRedo = historyApi.canRedo?.() ?? false;
+      setHistoryCanUndo(canUndo);
+      setHistoryCanRedo(canRedo);
       if (!hasAnnotationChangesRef.current && canUndo) {
         hasAnnotationChangesRef.current = true;
         setHasUnsavedChanges(true);
@@ -1083,7 +1097,12 @@ const EmbedPdfViewerContent = ({
   }, [effectiveFile]);
 
   // Register workbench bar buttons for the viewer
-  useViewerWorkbenchBarButtons(isRulerActive, setIsRulerActive);
+  useViewerWorkbenchBarButtons(isRulerActive, setIsRulerActive, {
+    onUndo: handleHistoryUndo,
+    onRedo: handleHistoryRedo,
+    canUndo: historyCanUndo,
+    canRedo: historyCanRedo,
+  });
 
   // Auto-fetch form fields when a PDF is loaded in the viewer.
   // In normal viewer mode, this uses PDFium WASM (frontend-only).

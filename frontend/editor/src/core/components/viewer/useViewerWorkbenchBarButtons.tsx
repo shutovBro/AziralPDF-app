@@ -21,6 +21,8 @@ import {
 import { BASE_PATH, withBasePath } from "@app/constants/app";
 import { useRedaction, useRedactionMode } from "@app/contexts/RedactionContext";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
+import UndoIcon from "@mui/icons-material/Undo";
+import RedoIcon from "@mui/icons-material/Redo";
 import StraightenIcon from "@mui/icons-material/Straighten";
 import LayersIcon from "@mui/icons-material/Layers";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
@@ -30,6 +32,12 @@ import { useViewerReadAloud } from "@app/components/viewer/useViewerReadAloud";
 export function useViewerWorkbenchBarButtons(
   isRulerActive?: boolean,
   setIsRulerActive?: (v: boolean) => void,
+  history?: {
+    onUndo: () => void;
+    onRedo: () => void;
+    canUndo: boolean;
+    canRedo: boolean;
+  },
 ) {
   const { t, i18n } = useTranslation();
   const viewer = useViewer();
@@ -113,6 +121,8 @@ export function useViewerWorkbenchBarButtons(
   );
   const rotateLeftLabel = t("workbenchBar.rotateLeft", "Rotate Left");
   const rotateRightLabel = t("workbenchBar.rotateRight", "Rotate Right");
+  const undoLabel = t("workbenchBar.undo", "Undo (Ctrl/Cmd+Z)");
+  const redoLabel = t("workbenchBar.redo", "Redo (Ctrl/Cmd+Shift+Z)");
   const sidebarLabel = t("workbenchBar.toggleSidebar", "Toggle Sidebar");
   const bookmarkLabel = t("workbenchBar.toggleBookmarks", "Toggle Bookmarks");
   const attachmentLabel = t(
@@ -151,6 +161,30 @@ export function useViewerWorkbenchBarButtons(
 
   const viewerButtons = useMemo<WorkbenchBarButtonWithAction[]>(() => {
     const buttons: WorkbenchBarButtonWithAction[] = [
+      ...(history
+        ? [
+            {
+              id: "viewer-undo",
+              icon: <UndoIcon sx={{ fontSize: "1.25rem" }} />,
+              tooltip: undoLabel,
+              ariaLabel: undoLabel,
+              section: "top" as const,
+              order: 4,
+              disabled: !history.canUndo,
+              onClick: () => history.onUndo(),
+            },
+            {
+              id: "viewer-redo",
+              icon: <RedoIcon sx={{ fontSize: "1.25rem" }} />,
+              tooltip: redoLabel,
+              ariaLabel: redoLabel,
+              section: "top" as const,
+              order: 6,
+              disabled: !history.canRedo,
+              onClick: () => history.onRedo(),
+            },
+          ]
+        : []),
       {
         id: "viewer-search",
         tooltip: searchLabel,
@@ -555,6 +589,12 @@ export function useViewerWorkbenchBarButtons(
     applyRedactionsLabel,
     rotateLeftLabel,
     rotateRightLabel,
+    undoLabel,
+    redoLabel,
+    history?.canUndo,
+    history?.canRedo,
+    history?.onUndo,
+    history?.onRedo,
     sidebarLabel,
     bookmarkLabel,
     attachmentLabel,
