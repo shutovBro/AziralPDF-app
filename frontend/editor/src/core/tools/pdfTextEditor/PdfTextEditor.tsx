@@ -343,6 +343,109 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
     };
   }, []);
 
+  // --- Undo / redo history --------------------------------------------------
+  // The editable document is two arrays: groupsByPage (text) + imagesByPage
+  // (images). Snapshot both before every user edit so edits can be stepped
+  // backwards/forwards. The editor is a per-layer overlay model, so a deep
+  // clone of these two arrays fully captures the editable state.
+  const historyGroupsRef = useRef<TextGroup[][]>([]);
+  const historyImagesRef = useRef<PdfJsonImageElement[][]>([]);
+  const undoStackRef = useRef<
+    { groups: TextGroup[][]; images: PdfJsonImageElement[][] }[]
+  >([]);
+  const redoStackRef = useRef<
+    { groups: TextGroup[][]; images: PdfJsonImageElement[][] }[]
+  >([]);
+  const lastUndoTagRef = useRef<string | null>(null);
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
+
+  useEffect(() => {
+    historyGroupsRef.current = groupsByPage;
+  }, [groupsByPage]);
+  useEffect(() => {
+    historyImagesRef.current = imagesByPage;
+  }, [imagesByPage]);
+
+  // Every editor mutation creates new group/image objects (never mutates in
+  // place), so a shallow per-page array copy is enough to freeze a snapshot —
+  // no need to deep-clone large base64 image payloads on every step.
+  const snapshotEditorState = useCallback(
+    () => ({
+      groups: historyGroupsRef.current.map((page) => [...page]),
+      images: historyImagesRef.current.map((page) => [...page]),
+    }),
+    [],
+  );
+
+  // Record the CURRENT state on the undo stack. Call BEFORE applying an edit.
+  // `tag` coalesces a burst of same-target edits (typing in one box, dragging
+  // one element) into a single undo step. Cap the stack at 60 steps.
+  const captureUndo = useCallback(
+    (tag?: string) => {
+      if (tag && tag === lastUndoTagRef.current) {
+        return;
+      }
+      lastUndoTagRef.current = tag ?? null;
+      undoStackRef.current.push(snapshotEditorState());
+      if (undoStackRef.current.length > 60) {
+        undoStackRef.current.shift();
+      }
+      redoStackRef.current = [];
+      setCanUndo(true);
+      setCanRedo(false);
+    },
+    [snapshotEditorState],
+  );
+
+  const resetHistory = useCallback(() => {
+    undoStackRef.current = [];
+    redoStackRef.current = [];
+    lastUndoTagRef.current = null;
+    setCanUndo(false);
+    setCanRedo(false);
+  }, []);
+
+  const applyEditorSnapshot = useCallback(
+    (snapshot: { groups: TextGroup[][]; images: PdfJsonImageElement[][] }) => {
+      const groups = snapshot.groups.map((page) => [...page]);
+      const images = snapshot.images.map((page) => [...page]);
+      historyGroupsRef.current = groups;
+      historyImagesRef.current = images;
+      // imagesByPageRef feeds payload building, so keep it a deep clone.
+      imagesByPageRef.current = images.map((page) =>
+        page.map(cloneImageElement),
+      );
+      setGroupsByPage(groups);
+      setImagesByPage(images);
+    },
+    [],
+  );
+
+  const handleUndo = useCallback(() => {
+    if (undoStackRef.current.length === 0) {
+      return;
+    }
+    const previousState = undoStackRef.current.pop()!;
+    redoStackRef.current.push(snapshotEditorState());
+    lastUndoTagRef.current = null;
+    applyEditorSnapshot(previousState);
+    setCanUndo(undoStackRef.current.length > 0);
+    setCanRedo(true);
+  }, [applyEditorSnapshot, snapshotEditorState]);
+
+  const handleRedo = useCallback(() => {
+    if (redoStackRef.current.length === 0) {
+      return;
+    }
+    const nextState = redoStackRef.current.pop()!;
+    undoStackRef.current.push(snapshotEditorState());
+    lastUndoTagRef.current = null;
+    applyEditorSnapshot(nextState);
+    setCanRedo(redoStackRef.current.length > 0);
+    setCanUndo(true);
+  }, [applyEditorSnapshot, snapshotEditorState]);
+
   const isCacheUnavailableError = useCallback((error: any): boolean => {
     const status = error?.response?.status;
     // Treat any 410 as cache unavailable, since responseType: 'blob' makes
@@ -413,6 +516,8 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       document: PdfJsonDocument | null,
       mode: "auto" | "paragraph" | "singleLine",
     ) => {
+      // A fresh document (or a full reset) invalidates the edit history.
+      resetHistory();
       if (!document) {
         setGroupsByPage([]);
         setImagesByPage([]);
@@ -453,7 +558,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       loadingImagePagesRef.current = new Set();
       setSelectedPage(0);
     },
-    [],
+    [resetHistory],
   );
 
   const clearPdfPreview = useCallback(() => {
@@ -975,6 +1080,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
 
   const handleGroupTextChange = useCallback(
     (pageIndex: number, groupId: string, value: string) => {
+      captureUndo(`text:${pageIndex}:${groupId}`);
       setGroupsByPage((previous) =>
         previous.map((groups, idx) =>
           idx !== pageIndex
@@ -985,12 +1091,13 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         ),
       );
     },
-    [],
+    [captureUndo],
   );
 
   const handleGroupDelete = useCallback(
     (pageIndex: number, groupId: string) => {
       console.log(`🗑️ Deleting group ${groupId} from page ${pageIndex}`);
+      captureUndo();
       setGroupsByPage((previous) => {
         const updated = previous.map((groups, idx) => {
           if (idx !== pageIndex) return groups;
@@ -1003,7 +1110,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         return updated;
       });
     },
-    [],
+    [captureUndo],
   );
 
   const handleMergeGroups = useCallback(
@@ -1011,6 +1118,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       if (groupIds.length < 2) {
         return false;
       }
+      captureUndo();
       let updated = false;
       setGroupsByPage((previous) =>
         previous.map((groups, idx) => {
@@ -1045,11 +1153,12 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       );
       return updated;
     },
-    [],
+    [captureUndo],
   );
 
   const handleUngroupGroup = useCallback(
     (pageIndex: number, groupId: string): boolean => {
+      captureUndo();
       let updated = false;
       setGroupsByPage((previous) =>
         previous.map((groups, idx) => {
@@ -1076,7 +1185,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       );
       return updated;
     },
-    [],
+    [captureUndo],
   );
 
   const handleImageTransform = useCallback(
@@ -1091,6 +1200,20 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         transform: number[];
       },
     ) => {
+      // Skip history capture for a no-op transform (e.g. a click that fires
+      // dragStop without actually moving), so undo steps stay meaningful.
+      const currentImage = (historyImagesRef.current[pageIndex] ?? []).find(
+        (image) => (image.id ?? "") === imageId,
+      );
+      const willChange =
+        !currentImage ||
+        Math.abs(valueOr(currentImage.left, 0) - next.left) >= 1e-4 ||
+        Math.abs(valueOr(currentImage.bottom, 0) - next.bottom) >= 1e-4 ||
+        Math.abs(valueOr(currentImage.width, 0) - next.width) >= 1e-4 ||
+        Math.abs(valueOr(currentImage.height, 0) - next.height) >= 1e-4;
+      if (willChange) {
+        captureUndo(`image:${pageIndex}:${imageId}`);
+      }
       setImagesByPage((previous) => {
         const current = previous[pageIndex] ?? [];
         let changed = false;
@@ -1162,17 +1285,19 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         return nextImages;
       });
     },
-    [],
+    [captureUndo],
   );
 
-  const handleImageReset = useCallback((pageIndex: number, imageId: string) => {
-    const baseline = originalImagesRef.current[pageIndex]?.find(
-      (image) => (image.id ?? "") === imageId,
-    );
-    if (!baseline) {
-      return;
-    }
-    setImagesByPage((previous) => {
+  const handleImageReset = useCallback(
+    (pageIndex: number, imageId: string) => {
+      const baseline = originalImagesRef.current[pageIndex]?.find(
+        (image) => (image.id ?? "") === imageId,
+      );
+      if (!baseline) {
+        return;
+      }
+      captureUndo();
+      setImagesByPage((previous) => {
       const current = previous[pageIndex] ?? [];
       let changed = false;
       const updatedPage = current.map((image) => {
@@ -1196,14 +1321,18 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       imagesByPageRef.current[pageIndex] = updatedPage.map(cloneImageElement);
       return nextImages;
     });
-  }, []);
+    },
+    [captureUndo],
+  );
 
-  const handleImageDelete = useCallback((pageIndex: number, imageId: string) => {
-    setImagesByPage((previous) => {
-      const current = previous[pageIndex] ?? [];
-      const updatedPage = current.filter(
-        (image) => (image.id ?? "") !== imageId,
-      );
+  const handleImageDelete = useCallback(
+    (pageIndex: number, imageId: string) => {
+      captureUndo();
+      setImagesByPage((previous) => {
+        const current = previous[pageIndex] ?? [];
+        const updatedPage = current.filter(
+          (image) => (image.id ?? "") !== imageId,
+        );
       if (updatedPage.length === current.length) {
         return previous;
       }
@@ -1216,10 +1345,13 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       imagesByPageRef.current[pageIndex] = updatedPage.map(cloneImageElement);
       return nextImages;
     });
-  }, []);
+    },
+    [captureUndo],
+  );
 
   const appendImageElement = useCallback(
     (pageIndex: number, element: PdfJsonImageElement) => {
+      captureUndo();
       setImagesByPage((previous) => {
         const current = previous[pageIndex] ?? [];
         const updatedPage = [...current, element];
@@ -1233,7 +1365,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         return nextImages;
       });
     },
-    [],
+    [captureUndo],
   );
 
   const handleAddRedaction = useCallback(
@@ -1355,6 +1487,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
 
   const handleAddText = useCallback(
     (pageIndex: number, pdfX: number, baselineY: number): string => {
+      captureUndo();
       const group = createAddedTextGroup(
         pageIndex,
         `${Date.now()}-${Math.round(Math.random() * 1e6)}`,
@@ -1371,7 +1504,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       });
       return group.id;
     },
-    [],
+    [captureUndo],
   );
 
   const handleGroupMove = useCallback(
@@ -1383,6 +1516,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       ) {
         return;
       }
+      captureUndo(`move:${pageIndex}:${groupId}`);
       const translateElement = (
         element: PdfJsonTextElement,
       ): PdfJsonTextElement => {
@@ -1429,7 +1563,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         }),
       );
     },
-    [],
+    [captureUndo],
   );
 
   const handleResetEdits = useCallback(() => {
@@ -2127,6 +2261,10 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       onAddText: handleAddText,
       onGroupMove: handleGroupMove,
       onReset: handleResetEdits,
+      onUndo: handleUndo,
+      onRedo: handleRedo,
+      canUndo,
+      canRedo,
       onDownloadJson: handleDownloadJson,
       onGeneratePdf: handleGeneratePdf,
       onGeneratePdfForNavigation: async () => {
@@ -2163,6 +2301,10 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       handleAddText,
       handleGroupMove,
       handleResetEdits,
+      handleUndo,
+      handleRedo,
+      canUndo,
+      canRedo,
       handleSelectPage,
       hasChanges,
       hasDocument,

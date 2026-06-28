@@ -39,6 +39,8 @@ import CropSquareIcon from "@mui/icons-material/CropSquare";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
 import OpenWithIcon from "@mui/icons-material/OpenWith";
+import UndoIcon from "@mui/icons-material/Undo";
+import RedoIcon from "@mui/icons-material/Redo";
 import { Rnd } from "react-rnd";
 import { useNavigationGuard } from "@app/contexts/NavigationContext";
 
@@ -462,6 +464,10 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     onAddRedaction,
     onAddText,
     onGroupMove,
+    onUndo,
+    onRedo,
+    canUndo,
+    canRedo,
     onReset: _onReset,
     onGeneratePdf: _onGeneratePdf,
     onSaveToWorkbench,
@@ -471,6 +477,40 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     onUngroupGroup,
     onLoadFile,
   } = data;
+
+  // Keyboard shortcuts: Ctrl/Cmd+Z = undo, Ctrl/Cmd+Shift+Z or Ctrl/Cmd+Y =
+  // redo. While typing in a text field, defer to the browser's native
+  // text-undo instead of stepping the whole document back.
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (!event.metaKey && !event.ctrlKey) {
+        return;
+      }
+      const key = event.key.toLowerCase();
+      const isUndo = key === "z" && !event.shiftKey;
+      const isRedo = (key === "z" && event.shiftKey) || key === "y";
+      if (!isUndo && !isRedo) {
+        return;
+      }
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.isContentEditable ||
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA")
+      ) {
+        return;
+      }
+      event.preventDefault();
+      if (isUndo) {
+        onUndo();
+      } else {
+        onRedo();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onUndo, onRedo]);
 
   // Define derived variables immediately after props destructuring, before any hooks
   const pages = pdfDocument?.pages ?? [];
@@ -2023,6 +2063,39 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
 
           <Group justify="space-between" align="center" wrap="nowrap">
             <Group gap="xs" wrap="nowrap">
+              <Button.Group>
+                <Tooltip
+                  label={t("pdfTextEditor.history.undo", "Undo (Ctrl/Cmd+Z)")}
+                >
+                  <Button
+                    size="compact-sm"
+                    variant="default"
+                    disabled={!canUndo}
+                    onClick={onUndo}
+                    aria-label={t("pdfTextEditor.history.undo", "Undo")}
+                    leftSection={<UndoIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t("pdfTextEditor.history.undoShort", "Undo")}
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  label={t(
+                    "pdfTextEditor.history.redo",
+                    "Redo (Ctrl/Cmd+Shift+Z)",
+                  )}
+                >
+                  <Button
+                    size="compact-sm"
+                    variant="default"
+                    disabled={!canRedo}
+                    onClick={onRedo}
+                    aria-label={t("pdfTextEditor.history.redo", "Redo")}
+                    leftSection={<RedoIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t("pdfTextEditor.history.redoShort", "Redo")}
+                  </Button>
+                </Tooltip>
+              </Button.Group>
               <Text size="xs" c="dimmed">
                 {t("pdfTextEditor.palette.tools", "Tools")}
               </Text>

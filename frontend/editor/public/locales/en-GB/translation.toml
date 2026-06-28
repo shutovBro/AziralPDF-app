@@ -5784,6 +5784,12 @@ line = "Click text to edit · drag to move · resize from the corner · ✗ to d
 redact = "Drag across the page to cover an area (logo, watermark, sensitive text). Switch back to Select to edit text and images."
 text = "Click anywhere on the page to drop a new text box, then type. Use the corner handle to widen it."
 
+[pdfTextEditor.history]
+redo = "Redo (Ctrl/Cmd+Shift+Z)"
+redoShort = "Redo"
+undo = "Undo (Ctrl/Cmd+Z)"
+undoShort = "Undo"
+
 [pdfTextEditor.image]
 delete = "Delete image"
 

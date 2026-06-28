@@ -242,6 +242,10 @@ export interface PdfTextEditorViewData {
     dyPdf: number,
   ) => void;
   onReset: () => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
   onDownloadJson: () => void;
   onGeneratePdf: () => void;
   onGeneratePdfForNavigation: () => Promise<void>;
