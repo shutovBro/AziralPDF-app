@@ -240,11 +240,13 @@ export interface PdfTextEditorViewData {
     baselineY: number,
     fontSize?: number,
     color?: string,
+    bold?: boolean,
+    italic?: boolean,
   ) => string;
   onAddTextStyle: (
     pageIndex: number,
     groupId: string,
-    style: { fontSize?: number; color?: string },
+    style: { fontSize?: number; color?: string; bold?: boolean; italic?: boolean },
   ) => void;
   onGroupMove: (
     pageIndex: number,

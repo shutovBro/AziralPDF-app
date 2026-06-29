@@ -40,6 +40,8 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import OpenWithIcon from "@mui/icons-material/OpenWith";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
@@ -60,7 +62,8 @@ import {
   DEFAULT_ADD_TEXT_COLOR,
   ADD_TEXT_MIN_FONT_SIZE,
   ADD_TEXT_MAX_FONT_SIZE,
-  ADDED_TEXT_FONT_ID,
+  isAddedTextFontId,
+  addedTextFontStyleFlags,
 } from "@app/tools/pdfTextEditor/pdfTextEditorUtils";
 
 const MAX_RENDER_WIDTH = 820;
@@ -384,6 +387,8 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
   const [addTextColor, setAddTextColor] = useState<string>(
     DEFAULT_ADD_TEXT_COLOR,
   );
+  const [addTextBold, setAddTextBold] = useState<boolean>(false);
+  const [addTextItalic, setAddTextItalic] = useState<boolean>(false);
   const [redactionDraft, setRedactionDraft] = useState<{
     left: number;
     top: number;
@@ -1889,6 +1894,8 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
         baselineY,
         addTextFontSize,
         addTextColor,
+        addTextBold,
+        addTextItalic,
       );
       setEditorMode("select");
       setActiveImageId(null);
@@ -1897,8 +1904,10 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
       setEditingGroupId(newId);
     },
     [
+      addTextBold,
       addTextColor,
       addTextFontSize,
+      addTextItalic,
       onAddText,
       pageHeight,
       scale,
@@ -1913,8 +1922,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
       activeGroupId
         ? (pageGroups.find(
             (group) =>
-              group.id === activeGroupId &&
-              group.fontId === ADDED_TEXT_FONT_ID,
+              group.id === activeGroupId && isAddedTextFontId(group.fontId),
           ) ?? null)
         : null,
     [activeGroupId, pageGroups],
@@ -1930,6 +1938,15 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
   const addTextColorValue = activeAddedGroup
     ? (activeAddedGroup.color ?? addTextColor)
     : addTextColor;
+  const activeStyleFlags = activeAddedGroup
+    ? addedTextFontStyleFlags(activeAddedGroup.fontId)
+    : null;
+  const addTextBoldValue = activeStyleFlags
+    ? activeStyleFlags.bold
+    : addTextBold;
+  const addTextItalicValue = activeStyleFlags
+    ? activeStyleFlags.italic
+    : addTextItalic;
 
   const handleAddTextFontSizeChange = useCallback(
     (value: number | string) => {
@@ -1959,6 +1976,22 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     },
     [activeAddedGroup, onAddTextStyle, selectedPage],
   );
+
+  const handleAddTextBoldToggle = useCallback(() => {
+    const next = !addTextBoldValue;
+    setAddTextBold(next);
+    if (activeAddedGroup) {
+      onAddTextStyle(selectedPage, activeAddedGroup.id, { bold: next });
+    }
+  }, [activeAddedGroup, addTextBoldValue, onAddTextStyle, selectedPage]);
+
+  const handleAddTextItalicToggle = useCallback(() => {
+    const next = !addTextItalicValue;
+    setAddTextItalic(next);
+    if (activeAddedGroup) {
+      onAddTextStyle(selectedPage, activeAddedGroup.id, { italic: next });
+    }
+  }, [activeAddedGroup, addTextItalicValue, onAddTextStyle, selectedPage]);
 
   return (
     <Stack
@@ -2304,6 +2337,30 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                     "#6741d9",
                   ]}
                 />
+                <Button.Group>
+                  <Tooltip label={t("pdfTextEditor.palette.bold", "Bold")}>
+                    <Button
+                      size="compact-sm"
+                      variant={addTextBoldValue ? "filled" : "default"}
+                      onClick={handleAddTextBoldToggle}
+                      aria-label={t("pdfTextEditor.palette.bold", "Bold")}
+                      aria-pressed={addTextBoldValue}
+                    >
+                      <FormatBoldIcon sx={{ fontSize: 16 }} />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip label={t("pdfTextEditor.palette.italic", "Italic")}>
+                    <Button
+                      size="compact-sm"
+                      variant={addTextItalicValue ? "filled" : "default"}
+                      onClick={handleAddTextItalicToggle}
+                      aria-label={t("pdfTextEditor.palette.italic", "Italic")}
+                      aria-pressed={addTextItalicValue}
+                    >
+                      <FormatItalicIcon sx={{ fontSize: 16 }} />
+                    </Button>
+                  </Tooltip>
+                </Button.Group>
               </Group>
             )}
           </Group>
@@ -3162,6 +3219,14 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                         const fontWeight =
                           group.fontWeight ||
                           getFontWeight(effectiveFontId, group.pageIndex);
+                        // Added-text boxes can carry an italic Noto fallback;
+                        // mirror it in the editor preview (synthesised by the
+                        // browser on the fallback family — export uses the real
+                        // NotoSans italic glyphs).
+                        const fontStyle: React.CSSProperties["fontStyle"] =
+                          addedTextFontStyleFlags(group.fontId).italic
+                            ? "italic"
+                            : "normal";
 
                         // Determine text wrapping behavior based on whether text has been changed
                         const hasChanges = changed;
@@ -3364,6 +3429,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                                     fontSize: `${fontSizePx}px`,
                                     fontFamily,
                                     fontWeight,
+                                    fontStyle,
                                     lineHeight: lineHeightRatio,
                                     outline: "none",
                                     border: "none",
@@ -3408,6 +3474,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                                   fontSize: `${fontSizePx}px`,
                                   fontFamily,
                                   fontWeight,
+                                  fontStyle,
                                   lineHeight: lineHeightRatio,
                                   color: textColor,
                                   display: "block",

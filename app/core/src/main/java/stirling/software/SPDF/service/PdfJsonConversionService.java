@@ -3400,9 +3400,17 @@ public class PdfJsonConversionService {
         String baseFontId = element.getFontId();
         boolean fallbackApplied = primaryFont == null;
         if (baseFont == null) {
-            baseFont = ensureFallbackFont(document, fontMap, fontModels, FALLBACK_FONT_ID);
+            // Honour an explicitly requested built-in fallback id (e.g. the
+            // bold/italic NotoSans variants chosen for added text) instead of
+            // always collapsing to the regular fallback.
+            String requestedId = element.getFontId();
+            String fallbackId =
+                    fallbackFontService.isBuiltInFallbackId(requestedId)
+                            ? requestedId
+                            : FALLBACK_FONT_ID;
+            baseFont = ensureFallbackFont(document, fontMap, fontModels, fallbackId);
             if (baseFont != null) {
-                baseFontId = FALLBACK_FONT_ID;
+                baseFontId = fallbackId;
                 fallbackApplied = true;
             }
         }

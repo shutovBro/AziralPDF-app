@@ -1493,6 +1493,8 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       baselineY: number,
       fontSize?: number,
       color?: string,
+      bold?: boolean,
+      italic?: boolean,
     ): string => {
       captureUndo();
       const group = createAddedTextGroup(
@@ -1502,6 +1504,8 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         baselineY,
         fontSize,
         color,
+        bold,
+        italic,
       );
       setGroupsByPage((previous) => {
         const next = [...previous];
@@ -1520,9 +1524,19 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
     (
       pageIndex: number,
       groupId: string,
-      style: { fontSize?: number; color?: string },
+      style: {
+        fontSize?: number;
+        color?: string;
+        bold?: boolean;
+        italic?: boolean;
+      },
     ) => {
-      if (style.fontSize === undefined && style.color === undefined) {
+      if (
+        style.fontSize === undefined &&
+        style.color === undefined &&
+        style.bold === undefined &&
+        style.italic === undefined
+      ) {
         return;
       }
       captureUndo(`textStyle:${pageIndex}:${groupId}`);

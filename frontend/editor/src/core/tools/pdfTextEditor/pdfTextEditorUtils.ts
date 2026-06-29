@@ -1162,12 +1162,56 @@ export const createMergedElement = (group: TextGroup): PdfJsonTextElement => {
 
 // --- Add-text (Stage 2b) ---------------------------------------------------
 
-// Added text references the engine's built-in fallback font (NotoSans-Regular,
-// id "fallback-noto-sans"), which covers Latin + Cyrillic and is always loaded
-// into the JSON->PDF font map under the global (-1) key. No font injection is
-// needed; the draw path resolves it via the -1 fallback key. MUST match
-// PdfJsonFallbackFontService.FALLBACK_FONT_ID on the backend.
+// Added text references the engine's built-in fallback fonts (NotoSans family,
+// ids "fallback-noto-sans"[-bold|-italic|-bolditalic]), which cover Latin +
+// Cyrillic and are loaded on demand into the JSON->PDF font map. No font
+// injection is needed; the draw path resolves the referenced fallback id (see
+// buildFontRuns -> ensureFallbackFont). IDs MUST match the fallback ids
+// registered in PdfJsonFallbackFontService on the backend.
 export const ADDED_TEXT_FONT_ID = "fallback-noto-sans";
+export const ADDED_TEXT_FONT_ID_BOLD = "fallback-noto-sans-bold";
+export const ADDED_TEXT_FONT_ID_ITALIC = "fallback-noto-sans-italic";
+export const ADDED_TEXT_FONT_ID_BOLD_ITALIC = "fallback-noto-sans-bolditalic";
+
+const ADDED_TEXT_FONT_IDS: ReadonlySet<string> = new Set([
+  ADDED_TEXT_FONT_ID,
+  ADDED_TEXT_FONT_ID_BOLD,
+  ADDED_TEXT_FONT_ID_ITALIC,
+  ADDED_TEXT_FONT_ID_BOLD_ITALIC,
+]);
+
+/** True for any added-text fallback font id (regular/bold/italic/bold-italic). */
+export const isAddedTextFontId = (fontId?: string | null): boolean =>
+  fontId != null && ADDED_TEXT_FONT_IDS.has(fontId);
+
+/** Maps a bold/italic combination to the matching added-text fallback font id. */
+export const resolveAddedTextFontId = (
+  bold: boolean,
+  italic: boolean,
+): string => {
+  if (bold && italic) {
+    return ADDED_TEXT_FONT_ID_BOLD_ITALIC;
+  }
+  if (bold) {
+    return ADDED_TEXT_FONT_ID_BOLD;
+  }
+  if (italic) {
+    return ADDED_TEXT_FONT_ID_ITALIC;
+  }
+  return ADDED_TEXT_FONT_ID;
+};
+
+/** Derives the bold/italic flags carried by an added-text fallback font id. */
+export const addedTextFontStyleFlags = (
+  fontId?: string | null,
+): { bold: boolean; italic: boolean } => ({
+  bold:
+    fontId === ADDED_TEXT_FONT_ID_BOLD ||
+    fontId === ADDED_TEXT_FONT_ID_BOLD_ITALIC,
+  italic:
+    fontId === ADDED_TEXT_FONT_ID_ITALIC ||
+    fontId === ADDED_TEXT_FONT_ID_BOLD_ITALIC,
+});
 
 // NotoSans metrics (approximate, em-relative) for placing the editable box.
 const ADDED_TEXT_ASCENT_RATIO = 0.74;
@@ -1211,14 +1255,17 @@ export const createAddedTextGroup = (
   baselineY: number,
   fontSize: number = DEFAULT_ADD_TEXT_FONT_SIZE,
   color: string = DEFAULT_ADD_TEXT_COLOR,
+  bold: boolean = false,
+  italic: boolean = false,
 ): TextGroup => {
+  const fontId = resolveAddedTextFontId(bold, italic);
   const fillColor = {
     colorSpace: "DeviceRGB",
     components: hexToRgbComponents(color),
   };
   const template: PdfJsonTextElement = {
     text: "",
-    fontId: ADDED_TEXT_FONT_ID,
+    fontId,
     fontSize,
     fontMatrixSize: fontSize,
     x: pdfX,
@@ -1236,11 +1283,11 @@ export const createAddedTextGroup = (
   return {
     id: `${pageIndex}-added-${idSuffix}`,
     pageIndex,
-    fontId: ADDED_TEXT_FONT_ID,
+    fontId,
     fontSize,
     fontMatrixSize: fontSize,
     color,
-    fontWeight: null,
+    fontWeight: bold ? "bold" : null,
     rotation: null,
     anchor: null,
     baselineLength: width,
@@ -1254,15 +1301,17 @@ export const createAddedTextGroup = (
 };
 
 /**
- * Returns a new added-text group with the given font size and/or colour applied
- * to the group and every carried element. Vertical bounds are recomputed from
- * the baseline so the editable box tracks the new size; the horizontal extent
- * (any user width resize) is preserved. Only meaningful for added-text groups
- * (fontId === ADDED_TEXT_FONT_ID), which always rebuild via the regenerate path.
+ * Returns a new added-text group with the given font size, colour and/or
+ * weight/style applied to the group and every carried element. Vertical bounds
+ * are recomputed from the baseline so the editable box tracks the new size; the
+ * horizontal extent (any user width resize) is preserved. Bold/italic swap the
+ * referenced fallback font id (fallback-noto-sans[-bold|-italic|-bolditalic]).
+ * Only meaningful for added-text groups, which always rebuild via the
+ * regenerate path.
  */
 export const applyAddedTextStyle = (
   group: TextGroup,
-  style: { fontSize?: number; color?: string },
+  style: { fontSize?: number; color?: string; bold?: boolean; italic?: boolean },
 ): TextGroup => {
   const nextFontSize =
     style.fontSize !== undefined && Number.isFinite(style.fontSize)
@@ -1277,10 +1326,16 @@ export const applyAddedTextStyle = (
     components: hexToRgbComponents(nextColor),
   };
 
+  const currentFlags = addedTextFontStyleFlags(group.fontId);
+  const nextBold = style.bold ?? currentFlags.bold;
+  const nextItalic = style.italic ?? currentFlags.italic;
+  const nextFontId = resolveAddedTextFontId(nextBold, nextItalic);
+
   const restyleElement = (
     element: PdfJsonTextElement,
   ): PdfJsonTextElement => {
     const next = cloneTextElement(element);
+    next.fontId = nextFontId;
     next.fontSize = nextFontSize;
     next.fontMatrixSize = nextFontSize;
     next.fillColor = { ...nextFill, components: [...nextFill.components] };
@@ -1297,9 +1352,11 @@ export const applyAddedTextStyle = (
 
   return {
     ...group,
+    fontId: nextFontId,
     fontSize: nextFontSize,
     fontMatrixSize: nextFontSize,
     color: nextColor,
+    fontWeight: nextBold ? "bold" : null,
     elements: group.elements.map(restyleElement),
     bounds,
   };
@@ -1574,8 +1631,8 @@ export const restoreGlyphElements = (
     const imagesChanged = imagesStructurallyChanged(images, baselineImages);
     // Inserted text cannot be patched into the preserved stream by token
     // rewriting, so any added-text group forces a model regeneration too.
-    const hasAddedText = groups.some(
-      (group) => group.fontId === ADDED_TEXT_FONT_ID,
+    const hasAddedText = groups.some((group) =>
+      isAddedTextFontId(group.fontId),
     );
     // Repositioned text cannot be patched in place either -> force regeneration.
     const hasMovedText = groups.some((group) => group.moved === true);
