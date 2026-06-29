@@ -1601,6 +1601,36 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     [pageWidth, scale],
   );
 
+  // Corner-drag font scaling for added-text boxes: vertical drag grows/shrinks
+  // the font size, routed through onAddTextStyle (same coalescing undo tag as
+  // the size picker, so a whole drag is one undo step). Only added-text groups
+  // round-trip a size change via the regenerate path.
+  const handleFontScaleStart = useCallback(
+    (event: React.MouseEvent, group: TextGroup) => {
+      event.stopPropagation();
+      event.preventDefault();
+      const startY = event.clientY;
+      const startSize =
+        group.fontMatrixSize ?? group.fontSize ?? DEFAULT_ADD_TEXT_FONT_SIZE;
+      const handleMouseMove = (moveEvent: MouseEvent) => {
+        moveEvent.preventDefault();
+        const deltaPt = (moveEvent.clientY - startY) / scale;
+        const nextSize = Math.max(
+          ADD_TEXT_MIN_FONT_SIZE,
+          Math.min(ADD_TEXT_MAX_FONT_SIZE, startSize + deltaPt),
+        );
+        onAddTextStyle(group.pageIndex, group.id, { fontSize: nextSize });
+      };
+      const handleMouseUp = () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+      };
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+    },
+    [onAddTextStyle, scale],
+  );
+
   const handleMoveStart = useCallback(
     (event: React.MouseEvent, groupId: string) => {
       event.stopPropagation();
@@ -3320,6 +3350,40 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                           </Box>
                         ) : null;
 
+                        const fontScaleHandle =
+                          showResizeHandle && isAddedTextFontId(group.fontId) ? (
+                            <Box
+                              role="button"
+                              aria-label={t(
+                                "pdfTextEditor.manual.fontScaleHandle",
+                                "Drag to resize text",
+                              )}
+                              onMouseDown={(event) =>
+                                handleFontScaleStart(event, group)
+                              }
+                              style={{
+                                position: "absolute",
+                                bottom: -7,
+                                right: -7,
+                                width: 14,
+                                height: 14,
+                                cursor: "nwse-resize",
+                                borderRadius: 7,
+                                backgroundColor: "rgba(76, 110, 245, 0.5)",
+                                border: "1px solid rgba(76, 110, 245, 0.9)",
+                                userSelect: "none",
+                              }}
+                            />
+                          ) : null;
+
+                        const groupHandles =
+                          resizeHandle || fontScaleHandle ? (
+                            <>
+                              {resizeHandle}
+                              {fontScaleHandle}
+                            </>
+                          ) : null;
+
                         if (isEditing) {
                           return (
                             <Box key={group.id} style={containerStyle}>
@@ -3446,7 +3510,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                                 undefined,
                                 undefined,
                                 selectedGroupIds.has(group.id),
-                                resizeHandle,
+                                groupHandles,
                               )}
                             </Box>
                           );
@@ -3599,7 +3663,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                                 });
                               },
                               selectedGroupIds.has(group.id),
-                              resizeHandle,
+                              groupHandles,
                             )}
                           </Box>
                         );

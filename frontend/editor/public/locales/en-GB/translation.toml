@@ -5795,6 +5795,7 @@ delete = "Delete image"
 
 [pdfTextEditor.manual]
 expandWidth = "Expand to page edge"
+fontScaleHandle = "Drag to resize text"
 merge = "Merge selection"
 mergeTooltip = "Merge selected boxes"
 move = "Drag to move"
