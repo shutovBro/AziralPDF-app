@@ -1,6 +1,21 @@
 repositories {
-    maven { url = "https://build.shibboleth.net/maven/releases" }
-    maven { url = "https://repository.jboss.org/" }
+    // Scoped to OpenSAML/Shibboleth groups only; mavenCentral() (declared in the root
+    // subprojects{} block) is tried first so an outage on these mirrors can't block
+    // resolution of unrelated dependencies.
+    maven {
+        url = "https://build.shibboleth.net/maven/releases"
+        content {
+            includeGroupByRegex 'net\\.shibboleth(\\..*)?'
+            includeGroupByRegex 'org\\.opensaml(\\..*)?'
+        }
+    }
+    maven {
+        url = "https://repository.jboss.org/"
+        content {
+            includeGroupByRegex 'net\\.shibboleth(\\..*)?'
+            includeGroupByRegex 'org\\.opensaml(\\..*)?'
+        }
+    }
 }
 
 ext {

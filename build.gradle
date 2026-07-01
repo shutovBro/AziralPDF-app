@@ -185,9 +185,25 @@ subprojects {
                 allowInsecureProtocol = true
             }
         }
-        maven { url = "https://build.shibboleth.net/maven/releases" }
-        maven { url = "https://repository.jboss.org/" }
+        // mavenCentral first: build.shibboleth.net / repository.jboss.org are flaky mirrors
+        // that only host OpenSAML/Shibboleth artifacts. Ordering them last + scoping via
+        // content{} keeps unrelated deps (guava, lombok, logback, ...) off these mirrors
+        // entirely so a mirror outage can't block the build.
         mavenCentral()
+        maven {
+            url = "https://build.shibboleth.net/maven/releases"
+            content {
+                includeGroupByRegex 'net\\.shibboleth(\\..*)?'
+                includeGroupByRegex 'org\\.opensaml(\\..*)?'
+            }
+        }
+        maven {
+            url = "https://repository.jboss.org/"
+            content {
+                includeGroupByRegex 'net\\.shibboleth(\\..*)?'
+                includeGroupByRegex 'org\\.opensaml(\\..*)?'
+            }
+        }
     }
 
     configurations.configureEach {
@@ -583,8 +599,14 @@ repositories {
             allowInsecureProtocol = true
         }
     }
-    maven { url = "https://build.shibboleth.net/maven/releases" }
     mavenCentral()
+    maven {
+        url = "https://build.shibboleth.net/maven/releases"
+        content {
+            includeGroupByRegex 'net\\.shibboleth(\\..*)?'
+            includeGroupByRegex 'org\\.opensaml(\\..*)?'
+        }
+    }
 }
 
 dependencies {
