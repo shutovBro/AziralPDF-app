@@ -33,6 +33,13 @@ public class PdfJsonPage {
     @Builder.Default private List<PdfJsonStream> contentStreams = new ArrayList<>();
 
     /**
+     * Vector objects extracted for Stage 3 (d) select/delete editing. Nullable; only populated
+     * when the editor requested vector-path extraction. Entries with {@code deleted=true} and a
+     * valid token range are omitted from the regenerated vector layer.
+     */
+    private List<PdfJsonVectorPath> vectorPaths;
+
+    /**
      * When true, the editor has structurally changed images on this page (added, removed, or moved)
      * so the preserved content stream can no longer be patched in place. Forces the JSON&rarr;PDF
      * rebuild to regenerate this page's content from the model while keeping vector graphics.
