@@ -4,6 +4,7 @@ import {
   PdfJsonPage,
   PdfJsonTextElement,
   PdfJsonImageElement,
+  PdfJsonVectorPath,
   TextGroup,
   DEFAULT_PAGE_HEIGHT,
   DEFAULT_PAGE_WIDTH,
@@ -150,6 +151,10 @@ export const cloneImageElement = (
     : (element.transform ?? undefined),
 });
 
+export const cloneVectorPath = (
+  path: PdfJsonVectorPath,
+): PdfJsonVectorPath => ({ ...path });
+
 const getBaseline = (element: PdfJsonTextElement): number => {
   if (element.textMatrix && element.textMatrix.length === 6) {
     return valueOr(element.textMatrix[5]);
@@ -295,6 +300,14 @@ export const getImageBounds = (element: PdfJsonImageElement): BoundingBox => {
     bottom,
     top,
   };
+};
+
+export const getVectorPathBounds = (path: PdfJsonVectorPath): BoundingBox => {
+  const left = valueOr(path.left ?? path.x, 0);
+  const bottom = valueOr(path.bottom ?? path.y, 0);
+  const right = valueOr(path.right, left + valueOr(path.width, 0));
+  const top = valueOr(path.top, bottom + valueOr(path.height, 0));
+  return { left, right, bottom, top };
 };
 
 const getSpacingHint = (element: PdfJsonTextElement): number => {
@@ -1311,7 +1324,12 @@ export const createAddedTextGroup = (
  */
 export const applyAddedTextStyle = (
   group: TextGroup,
-  style: { fontSize?: number; color?: string; bold?: boolean; italic?: boolean },
+  style: {
+    fontSize?: number;
+    color?: string;
+    bold?: boolean;
+    italic?: boolean;
+  },
 ): TextGroup => {
   const nextFontSize =
     style.fontSize !== undefined && Number.isFinite(style.fontSize)
@@ -1331,9 +1349,7 @@ export const applyAddedTextStyle = (
   const nextItalic = style.italic ?? currentFlags.italic;
   const nextFontId = resolveAddedTextFontId(nextBold, nextItalic);
 
-  const restyleElement = (
-    element: PdfJsonTextElement,
-  ): PdfJsonTextElement => {
+  const restyleElement = (element: PdfJsonTextElement): PdfJsonTextElement => {
     const next = cloneTextElement(element);
     next.fontId = nextFontId;
     next.fontSize = nextFontSize;
@@ -1620,6 +1636,7 @@ export const restoreGlyphElements = (
   imagesByPage: PdfJsonImageElement[][],
   originalImagesByPage: PdfJsonImageElement[][],
   forceMergedGroups: boolean = false,
+  vectorPathsByPage: PdfJsonVectorPath[][] = [],
 ): PdfJsonDocument => {
   const updated = deepCloneDocument(source);
   const pages = updated.pages ?? [];
@@ -1636,12 +1653,21 @@ export const restoreGlyphElements = (
     );
     // Repositioned text cannot be patched in place either -> force regeneration.
     const hasMovedText = groups.some((group) => group.moved === true);
+    // Vector paths marked deleted (Stage 3 d) are only sent when present, so the
+    // backend model stays untouched for pages the user never opened in Objects mode.
+    const vectorPaths = vectorPathsByPage[pageIndex] ?? [];
+    const hasVectorDeletions = vectorPaths.some(
+      (path) => path.deleted === true,
+    );
 
     if (!groups.length) {
       return {
         ...page,
         imageElements: images.map(cloneImageElement),
         regenerateContent: imagesChanged || undefined,
+        vectorPaths: hasVectorDeletions
+          ? vectorPaths.map(cloneVectorPath)
+          : undefined,
       };
     }
 
@@ -1695,6 +1721,9 @@ export const restoreGlyphElements = (
       contentStreams: page.contentStreams ?? null,
       regenerateContent:
         imagesChanged || hasAddedText || hasMovedText || undefined,
+      vectorPaths: hasVectorDeletions
+        ? vectorPaths.map(cloneVectorPath)
+        : undefined,
     };
   });
 
@@ -1784,6 +1813,7 @@ export const getDirtyPages = (
   imagesByPage: PdfJsonImageElement[][],
   originalGroupsByPage: TextGroup[][],
   originalImagesByPage: PdfJsonImageElement[][],
+  vectorPathsByPage: PdfJsonVectorPath[][] = [],
 ): boolean[] => {
   return groupsByPage.map((groups, index) => {
     // Check if any text was modified
@@ -1798,7 +1828,11 @@ export const getDirtyPages = (
       originalImagesByPage[index] ?? [],
     );
 
-    const isDirty = textDirty || groupCountChanged || imageDirty;
+    const vectorDirty = (vectorPathsByPage[index] ?? []).some(
+      (path) => path.deleted === true,
+    );
+
+    const isDirty = textDirty || groupCountChanged || imageDirty || vectorDirty;
 
     if (groupCountChanged || textDirty) {
       console.log(`📄 Page ${index} dirty check:`, {

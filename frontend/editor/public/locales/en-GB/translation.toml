@@ -5844,6 +5844,10 @@ color = "Colour"
 fontColor = "Text colour"
 fontSize = "Font size"
 italic = "Italic"
+objects = "Objects"
+objectsHint = "Click an outlined object, then the ✗ to remove it."
+objectsLoading = "Scanning page for vector objects..."
+objectsTooltip = "Vector objects (experimental)"
 redact = "Cover area"
 select = "Select & edit"
 textStyleActive = "Selected text"
@@ -5865,6 +5869,9 @@ title = "Preview Variance"
 [pdfTextEditor.tooltip.textFocus]
 text = "This workspace focuses on editing text and repositioning embedded images. Complex page artwork, form widgets, and layered graphics are preserved for export but are not fully editable here."
 title = "Text and Image Focus"
+
+[pdfTextEditor.vectorObject]
+delete = "Delete object"
 
 [pdfTextEditor.welcomeBanner]
 bestFor = "Works Best With:"

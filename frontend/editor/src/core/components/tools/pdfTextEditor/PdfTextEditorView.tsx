@@ -45,6 +45,7 @@ import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import OpenWithIcon from "@mui/icons-material/OpenWith";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
+import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import { Rnd } from "react-rnd";
 import { useNavigationGuard } from "@app/contexts/NavigationContext";
 
@@ -57,6 +58,7 @@ import {
 } from "@app/tools/pdfTextEditor/pdfTextEditorTypes";
 import {
   getImageBounds,
+  getVectorPathBounds,
   pageDimensions,
   DEFAULT_ADD_TEXT_FONT_SIZE,
   DEFAULT_ADD_TEXT_COLOR,
@@ -365,6 +367,9 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
   const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
   const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
   const [activeImageId, setActiveImageId] = useState<string | null>(null);
+  const [activeVectorPathId, setActiveVectorPathId] = useState<string | null>(
+    null,
+  );
   const [selectedGroupIds, setSelectedGroupIds] = useState<Set<string>>(
     new Set(),
   );
@@ -376,9 +381,11 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
   const pendingDragUpdateRef = useRef<number | null>(null);
 
   // Stage 2 editor palette: tool mode + redaction drawing state
-  const [editorMode, setEditorMode] = useState<"select" | "redact" | "text">(
-    "select",
-  );
+  // "objects" (Stage 3 d) is a read-only-geometry preview mode: select/delete
+  // extracted vector objects, no drag/resize/create like the other modes.
+  const [editorMode, setEditorMode] = useState<
+    "select" | "redact" | "text" | "objects"
+  >("select");
   const [redactionColor, setRedactionColor] = useState<string>("#ffffff");
   // Stage 3: default size/colour for newly added text boxes
   const [addTextFontSize, setAddTextFontSize] = useState<number>(
@@ -456,6 +463,8 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     document: pdfDocument,
     groupsByPage,
     imagesByPage,
+    vectorPathsByPage,
+    vectorPathsLoadingPage,
     pagePreviews,
     selectedPage,
     dirtyPages,
@@ -479,6 +488,8 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     onImageReset,
     onImageDelete,
     onAddImage,
+    onRequestVectorPaths,
+    onVectorPathDelete,
     onAddRedaction,
     onAddText,
     onAddTextStyle,
@@ -531,11 +542,21 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     return () => window.removeEventListener("keydown", handler);
   }, [onUndo, onRedo]);
 
+  // Vector paths are fetched once for the whole document (see loadVectorPaths
+  // in the hook, which is idempotent) — this just guarantees the fetch has
+  // been kicked off whenever Objects mode is active, even after remount.
+  useEffect(() => {
+    if (editorMode === "objects") {
+      onRequestVectorPaths(selectedPage);
+    }
+  }, [editorMode, selectedPage, onRequestVectorPaths]);
+
   // Define derived variables immediately after props destructuring, before any hooks
   const pages = pdfDocument?.pages ?? [];
   const currentPage = pages[selectedPage] ?? null;
   const pageGroups = groupsByPage[selectedPage] ?? [];
   const pageImages = imagesByPage[selectedPage] ?? [];
+  const pageVectorPaths = vectorPathsByPage[selectedPage] ?? [];
   const pagePreview = pagePreviews.get(selectedPage);
   const { width: pageWidth, height: pageHeight } = pageDimensions(currentPage);
 
@@ -1243,8 +1264,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
       return Math.max(b.right - b.left, 0) * Math.max(b.top - b.bottom, 0);
     };
     return [...pageImages].sort((first, second) => {
-      const z =
-        (first?.zOrder ?? -1_000_000) - (second?.zOrder ?? -1_000_000);
+      const z = (first?.zOrder ?? -1_000_000) - (second?.zOrder ?? -1_000_000);
       if (z !== 0) return z;
       // Tie-break by area DESCENDING so a larger (often full-bleed background)
       // image is painted first and sits BELOW smaller foreground images when
@@ -1873,7 +1893,11 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     const draft = redactionDraft;
     redactionStartRef.current = null;
     setRedactionDraft(null);
-    if (!draft || draft.width < MIN_REDACTION_CSS || draft.height < MIN_REDACTION_CSS) {
+    if (
+      !draft ||
+      draft.width < MIN_REDACTION_CSS ||
+      draft.height < MIN_REDACTION_CSS
+    ) {
       return;
     }
     const left = draft.left / scale;
@@ -1958,7 +1982,8 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     [activeGroupId, pageGroups],
   );
 
-  const showTextStyleControls = editorMode === "text" || Boolean(activeAddedGroup);
+  const showTextStyleControls =
+    editorMode === "text" || Boolean(activeAddedGroup);
 
   const addTextFontSizeValue = activeAddedGroup
     ? (activeAddedGroup.fontMatrixSize ??
@@ -1980,8 +2005,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
 
   const handleAddTextFontSizeChange = useCallback(
     (value: number | string) => {
-      const numeric =
-        typeof value === "number" ? value : parseFloat(value);
+      const numeric = typeof value === "number" ? value : parseFloat(value);
       if (!Number.isFinite(numeric)) {
         return;
       }
@@ -2271,9 +2295,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                     {t("pdfTextEditor.palette.redact", "Cover area")}
                   </Button>
                 </Tooltip>
-                <Tooltip
-                  label={t("pdfTextEditor.palette.addText", "Add text")}
-                >
+                <Tooltip label={t("pdfTextEditor.palette.addText", "Add text")}>
                   <Button
                     size="compact-sm"
                     variant={editorMode === "text" ? "filled" : "default"}
@@ -2281,6 +2303,24 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                     leftSection={<TextFieldsIcon sx={{ fontSize: 16 }} />}
                   >
                     {t("pdfTextEditor.palette.addText", "Add text")}
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  label={t(
+                    "pdfTextEditor.palette.objectsTooltip",
+                    "Vector objects (experimental)",
+                  )}
+                >
+                  <Button
+                    size="compact-sm"
+                    variant={editorMode === "objects" ? "filled" : "default"}
+                    onClick={() => {
+                      setEditorMode("objects");
+                      onRequestVectorPaths(selectedPage);
+                    }}
+                    leftSection={<TimelineOutlinedIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t("pdfTextEditor.palette.objects", "Objects")}
                   </Button>
                 </Tooltip>
               </Button.Group>
@@ -2331,11 +2371,27 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                 ))}
               </Group>
             )}
+            {editorMode === "objects" && (
+              <Text size="xs" c="dimmed">
+                {vectorPathsLoadingPage !== null
+                  ? t(
+                      "pdfTextEditor.palette.objectsLoading",
+                      "Scanning page for vector objects...",
+                    )
+                  : t(
+                      "pdfTextEditor.palette.objectsHint",
+                      "Click an outlined object, then the ✗ to remove it.",
+                    )}
+              </Text>
+            )}
             {showTextStyleControls && (
               <Group gap={8} wrap="nowrap">
                 <Text size="xs" c="dimmed">
                   {activeAddedGroup
-                    ? t("pdfTextEditor.palette.textStyleActive", "Selected text")
+                    ? t(
+                        "pdfTextEditor.palette.textStyleActive",
+                        "Selected text",
+                      )
                     : t("pdfTextEditor.palette.textStyleNew", "New text")}
                 </Text>
                 <NumberInput
@@ -2356,7 +2412,10 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                   withEyeDropper={false}
                   value={addTextColorValue}
                   onChange={handleAddTextColorChange}
-                  aria-label={t("pdfTextEditor.palette.fontColor", "Text colour")}
+                  aria-label={t(
+                    "pdfTextEditor.palette.fontColor",
+                    "Text colour",
+                  )}
                   swatches={[
                     "#000000",
                     "#ffffff",
@@ -2874,7 +2933,8 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                       const imageId =
                         image.id ?? `page-${selectedPage}-image-${imageIndex}`;
                       const isActive = activeImageId === imageId;
-                      const isRedaction = imageId.startsWith("aziral-redaction-");
+                      const isRedaction =
+                        imageId.startsWith("aziral-redaction-");
                       const src = `data:image/${image.imageFormat ?? "png"};base64,${image.imageData}`;
                       const baseZIndex =
                         (image.zOrder ?? -1_000_000) + 1_050_000;
@@ -2888,8 +2948,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                       // treated as background.) Export is unaffected — it
                       // rebuilds from the model, which still holds the image.
                       const pageCoverage =
-                        (width * height) /
-                        Math.max(pageWidth * pageHeight, 1);
+                        (width * height) / Math.max(pageWidth * pageHeight, 1);
                       const isBackgroundImage =
                         !imageId.startsWith("aziral-") && pageCoverage >= 0.9;
                       if (isBackgroundImage) {
@@ -3065,6 +3124,90 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                         </Rnd>
                       );
                     })}
+                    {editorMode === "objects" &&
+                      pageVectorPaths.map((path, pathIndex) => {
+                        if (path.deleted === true) {
+                          return null;
+                        }
+                        const bounds = getVectorPathBounds(path);
+                        const width = Math.max(bounds.right - bounds.left, 1);
+                        const height = Math.max(bounds.top - bounds.bottom, 1);
+                        const cssWidth = Math.max(width * scale, 2);
+                        const cssHeight = Math.max(height * scale, 2);
+                        const cssLeft = bounds.left * scale;
+                        const cssTop = (pageHeight - bounds.top) * scale;
+                        const pathId =
+                          path.id ?? `page-${selectedPage}-vector-${pathIndex}`;
+                        const isActive = activeVectorPathId === pathId;
+
+                        return (
+                          <Box
+                            key={`vector-${pathId}`}
+                            onMouseEnter={() => setActiveVectorPathId(pathId)}
+                            onMouseLeave={() => {
+                              setActiveVectorPathId((current) =>
+                                current === pathId ? null : current,
+                              );
+                            }}
+                            onClick={() => setActiveVectorPathId(pathId)}
+                            style={{
+                              position: "absolute",
+                              left: cssLeft,
+                              top: cssTop,
+                              width: cssWidth,
+                              height: cssHeight,
+                              cursor: "pointer",
+                              outline: isActive
+                                ? "2px solid rgba(59, 130, 246, 0.9)"
+                                : "1px dashed rgba(234, 88, 12, 0.6)",
+                              outlineOffset: "-1px",
+                              borderRadius: 2,
+                              backgroundColor: isActive
+                                ? "rgba(59, 130, 246, 0.08)"
+                                : "transparent",
+                              transition: "outline 120ms ease",
+                              zIndex: 1_090_000 + pathIndex,
+                            }}
+                          >
+                            {isActive && (
+                              <Tooltip
+                                label={t(
+                                  "pdfTextEditor.vectorObject.delete",
+                                  "Delete object",
+                                )}
+                                withinPortal
+                              >
+                                <ActionIcon
+                                  size="sm"
+                                  color="red"
+                                  variant="filled"
+                                  radius="xl"
+                                  aria-label={t(
+                                    "pdfTextEditor.vectorObject.delete",
+                                    "Delete object",
+                                  )}
+                                  style={{
+                                    position: "absolute",
+                                    top: -10,
+                                    right: -10,
+                                    zIndex: 5,
+                                  }}
+                                  onMouseDown={(event) =>
+                                    event.stopPropagation()
+                                  }
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    setActiveVectorPathId(null);
+                                    onVectorPathDelete(selectedPage, pathId);
+                                  }}
+                                >
+                                  <CloseIcon sx={{ fontSize: 14 }} />
+                                </ActionIcon>
+                              </Tooltip>
+                            )}
+                          </Box>
+                        );
+                      })}
                     {visibleGroups.length === 0 &&
                     orderedImages.length === 0 ? (
                       <Group
@@ -3351,7 +3494,8 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                         ) : null;
 
                         const fontScaleHandle =
-                          showResizeHandle && isAddedTextFontId(group.fontId) ? (
+                          showResizeHandle &&
+                          isAddedTextFontId(group.fontId) ? (
                             <Box
                               role="button"
                               aria-label={t(

@@ -40,6 +40,7 @@ export const CONVERSION_ENDPOINTS = {
   "pdf-epub": "/api/v1/convert/pdf/epub",
   "pdf-text-editor": "/api/v1/convert/pdf/text-editor",
   "text-editor-pdf": "/api/v1/convert/text-editor/pdf",
+  "pdf-vector-paths": "/api/v1/convert/pdf/vector-paths",
 } as const;
 
 export const ENDPOINT_NAMES = {
