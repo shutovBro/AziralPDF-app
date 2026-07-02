@@ -2073,6 +2073,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         imagesByPage,
         originalGroupsRef.current,
         originalImagesRef.current,
+        vectorPathsByPage,
       );
       const dirtyPageIndices = currentDirtyPages
         .map((isDirty, index) => (isDirty ? index : -1))
@@ -2268,6 +2269,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
     onError,
     selectors,
     t,
+    vectorPathsByPage,
   ]);
 
   const requestPagePreview = useCallback(
