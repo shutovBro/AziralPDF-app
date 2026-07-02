@@ -39,6 +39,14 @@ public class PdfVectorPathService {
     // End-path (clip/no-op): consumes the constructed path without painting it.
     private static final String END_PATH = "n";
 
+    // Safety cap on vector objects returned per page. Vector-heavy pages (CAD
+    // exports, dense line-art) can carry tens of thousands of painting ops;
+    // without a cap the JSON payload and the frontend's per-object DOM overlay
+    // would both grow unbounded. Token ranges are assigned before truncating
+    // (see assignTokenRanges), so the objects that ARE returned remain fully
+    // deletable - only the display/selection set is limited, not correctness.
+    private static final int MAX_PATHS_PER_PAGE = 3000;
+
     private final CustomPDFDocumentFactory pdfDocumentFactory;
     private final ObjectMapper objectMapper;
 
@@ -55,6 +63,16 @@ public class PdfVectorPathService {
                             new PdfVectorPathExtractor(page, pageNumber);
                     List<PdfJsonVectorPath> pagePaths = extractor.extract();
                     assignTokenRanges(page, pagePaths);
+                    if (pagePaths.size() > MAX_PATHS_PER_PAGE) {
+                        log.warn(
+                                "Page {} has {} vector objects, exceeding the {} display cap;"
+                                        + " truncating (token ranges already assigned, so the"
+                                        + " returned objects remain deletable)",
+                                pageNumber,
+                                pagePaths.size(),
+                                MAX_PATHS_PER_PAGE);
+                        pagePaths = pagePaths.subList(0, MAX_PATHS_PER_PAGE);
+                    }
                     all.addAll(pagePaths);
                 } catch (IOException | RuntimeException ex) {
                     log.warn(
