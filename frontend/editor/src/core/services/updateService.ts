@@ -39,6 +39,16 @@ export interface MachineInfo {
   licenseType: string;
 }
 
+/**
+ * AziralPDF: the upstream Stirling update feed is disabled. Updates are
+ * operator-managed (server image rebuilds), and the feed would advertise
+ * upstream Stirling releases and link to their release notes inside a
+ * rebranded product. Both check methods short-circuit to null, which every
+ * consumer (startup popup, Settings → General, desktop popup) already treats
+ * as "no update available".
+ */
+const UPDATE_FEED_ENABLED = false;
+
 export class UpdateService {
   private readonly baseUrl =
     "https://supabase.stirling.com/functions/v1/updates";
@@ -111,6 +121,8 @@ export class UpdateService {
     currentVersion: string,
     machineInfo: MachineInfo,
   ): Promise<UpdateSummary | null> {
+    if (!UPDATE_FEED_ENABLED) return null;
+
     // Map Java License enum to API types
     let type = "normal";
     if (machineInfo.licenseType === "SERVER") {
@@ -149,6 +161,8 @@ export class UpdateService {
     currentVersion: string,
     machineInfo: MachineInfo,
   ): Promise<FullUpdateInfo | null> {
+    if (!UPDATE_FEED_ENABLED) return null;
+
     // Map Java License enum to API types
     let type = "normal";
     if (machineInfo.licenseType === "SERVER") {

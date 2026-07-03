@@ -311,8 +311,10 @@ tasks.register('copyFrontendAssets', Copy) {
     dependsOn npmBuild
     dependsOn cleanFrontendAssets
     from(frontendEditorDistDir) {
-        // Exclude files that conflict with backend static resources
-        exclude 'robots.txt'  // Backend already has this
+        // Exclude files that conflict with backend static resources.
+        // robots.txt is NOT excluded: the backend has none (the old comment
+        // claiming otherwise was stale), so the frontend copy in public/ is
+        // the only source — excluding it served a 500 on /robots.txt.
         exclude 'favicon.ico' // Backend already has this
     }
     into resourcesStaticDir
