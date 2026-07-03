@@ -125,7 +125,8 @@ function RedactionAPIBridgeInner({ documentId }: { documentId: string }) {
       undoLastPending: () => {
         const provides = redactionProvides as any;
         if (!provides?.removePending) return false;
-        let target = pendingOrderRef.current[pendingOrderRef.current.length - 1];
+        let target =
+          pendingOrderRef.current[pendingOrderRef.current.length - 1];
         if (!target) {
           // Fallback for pending redactions added before this listener attached:
           // derive the most recent one from current state (highest page last).

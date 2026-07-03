@@ -98,7 +98,8 @@ public class LicenseController {
     }
 
     private Map<String, Object> toLicenseMap(User user) {
-        LicenseTier stored = user.getLicenseTier() == null ? LicenseTier.FREE : user.getLicenseTier();
+        LicenseTier stored =
+                user.getLicenseTier() == null ? LicenseTier.FREE : user.getLicenseTier();
         Map<String, Object> body = new HashMap<>();
         body.put("tier", user.getEffectiveLicenseTier().name());
         body.put("storedTier", stored.name());

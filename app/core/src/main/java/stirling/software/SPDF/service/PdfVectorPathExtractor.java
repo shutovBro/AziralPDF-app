@@ -15,21 +15,19 @@ import lombok.extern.slf4j.Slf4j;
 import stirling.software.SPDF.model.json.PdfJsonVectorPath;
 
 /**
- * Read-only pass that groups content-stream path-painting operations into
- * discrete vector objects with a PDF-space bounding box. Foundation for Stage 3
- * (d) vector-object select/delete; intentionally NOT wired into the conversion
- * pipeline yet.
+ * Read-only pass that groups content-stream path-painting operations into discrete vector objects
+ * with a PDF-space bounding box. Foundation for Stage 3 (d) vector-object select/delete;
+ * intentionally NOT wired into the conversion pipeline yet.
  *
- * <p>The path-construction callbacks (moveTo/lineTo/curveTo/appendRectangle)
- * receive coordinates already transformed by the engine. For a bare {@link
- * PDFGraphicsStreamEngine} (no render scaling) that space equals PDF user space
- * (points, bottom-left origin), matching the image extractor inside {@code
- * PdfJsonConversionService}. VERIFY against the active PDFBox version before
- * relying on exact coordinates (see design doc M2 open questions).
+ * <p>The path-construction callbacks (moveTo/lineTo/curveTo/appendRectangle) receive coordinates
+ * already transformed by the engine. For a bare {@link PDFGraphicsStreamEngine} (no render scaling)
+ * that space equals PDF user space (points, bottom-left origin), matching the image extractor
+ * inside {@code PdfJsonConversionService}. VERIFY against the active PDFBox version before relying
+ * on exact coordinates (see design doc M2 open questions).
  *
- * <p>v1 limitations: one bounding box per painting op (a complex logo built from
- * many subpaths under one fill becomes one box); no colour extraction yet;
- * clipping paths (endPath) are not emitted as deletable objects.
+ * <p>v1 limitations: one bounding box per painting op (a complex logo built from many subpaths
+ * under one fill becomes one box); no colour extraction yet; clipping paths (endPath) are not
+ * emitted as deletable objects.
  */
 @Slf4j
 public class PdfVectorPathExtractor extends PDFGraphicsStreamEngine {
@@ -67,8 +65,7 @@ public class PdfVectorPathExtractor extends PDFGraphicsStreamEngine {
     }
 
     @Override
-    public void appendRectangle(Point2D p0, Point2D p1, Point2D p2, Point2D p3)
-            throws IOException {
+    public void appendRectangle(Point2D p0, Point2D p1, Point2D p2, Point2D p3) throws IOException {
         accumulate(p0.getX(), p0.getY());
         accumulate(p1.getX(), p1.getY());
         accumulate(p2.getX(), p2.getY());

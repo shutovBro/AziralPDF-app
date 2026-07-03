@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   check-files:
-    if: github.event_name == 'pull_request_target'
+    if: github.event_name == 'pull_request_target' && secrets.GH_APP_ID != ''
     runs-on: ubuntu-latest
     permissions:
       issues: write # Allow posting comments on issues/PRs

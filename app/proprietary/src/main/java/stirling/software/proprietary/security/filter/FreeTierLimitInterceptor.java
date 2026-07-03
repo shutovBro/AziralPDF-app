@@ -62,8 +62,7 @@ public class FreeTierLimitInterceptor implements HandlerInterceptor {
 
         String username = authentication.getName();
         Optional<User> userOpt = userRepository.findByUsernameIgnoreCase(username);
-        if (userOpt.isEmpty()
-                || userOpt.get().getEffectiveLicenseTier() != LicenseTier.FREE) {
+        if (userOpt.isEmpty() || userOpt.get().getEffectiveLicenseTier() != LicenseTier.FREE) {
             return true; // unknown user handled elsewhere; paid tiers are unlimited
         }
 

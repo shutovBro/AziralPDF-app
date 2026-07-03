@@ -20,11 +20,15 @@ vi.mock("../shared/useToolOperation", async () => {
 });
 
 // Mock the translation hook
-vi.mock("react-i18next", () => ({
-  useTranslation: () => ({
-    t: vi.fn((_key: string, fallback: string) => fallback),
-  }),
-}));
+vi.mock("react-i18next", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-i18next")>();
+  return {
+    ...actual,
+    useTranslation: () => ({
+      t: vi.fn((_key: string, fallback: string) => fallback),
+    }),
+  };
+});
 
 // Mock the error handler utility
 vi.mock("../../../utils/toolErrorHandler", () => ({

@@ -364,9 +364,9 @@ public class PdfJsonFallbackFontService {
     }
 
     /**
-     * Returns true when the id refers to a known built-in fallback font (the default NotoSans or any
-     * registered family/weight variant). Lets callers honour an explicitly requested fallback id
-     * (e.g. a bold/italic variant chosen for added text) instead of collapsing to the regular
+     * Returns true when the id refers to a known built-in fallback font (the default NotoSans or
+     * any registered family/weight variant). Lets callers honour an explicitly requested fallback
+     * id (e.g. a bold/italic variant chosen for added text) instead of collapsing to the regular
      * fallback.
      */
     public boolean isBuiltInFallbackId(String fallbackId) {

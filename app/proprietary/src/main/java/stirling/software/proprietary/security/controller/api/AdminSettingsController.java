@@ -608,9 +608,9 @@ public class AdminSettingsController {
     /**
      * True when an external process supervisor will bring the application back up after it exits —
      * Docker's restart policy, systemd, Kubernetes, etc. In that case a clean exit is the most
-     * reliable restart, since a self-spawned helper is killed when PID 1 dies. Controlled explicitly
-     * via the AZIRAL_RESTART_VIA_EXIT environment variable; otherwise inferred from the Docker
-     * container marker file.
+     * reliable restart, since a self-spawned helper is killed when PID 1 dies. Controlled
+     * explicitly via the AZIRAL_RESTART_VIA_EXIT environment variable; otherwise inferred from the
+     * Docker container marker file.
      */
     private boolean externalSupervisorWillRestart() {
         String flag = System.getenv("AZIRAL_RESTART_VIA_EXIT");

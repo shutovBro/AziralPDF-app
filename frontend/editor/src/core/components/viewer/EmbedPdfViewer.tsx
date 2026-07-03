@@ -229,8 +229,12 @@ const EmbedPdfViewerContent = ({
   const formApplyInProgressRef = useRef(false);
 
   // Get redaction context
-  const { redactionsApplied, setRedactionsApplied, redactionApiRef, pendingCount } =
-    useRedaction();
+  const {
+    redactionsApplied,
+    setRedactionsApplied,
+    redactionApiRef,
+    pendingCount,
+  } = useRedaction();
 
   // Redaction-aware undo/redo. Pending redactions are REDACT annotations the
   // redaction plugin deliberately keeps OUT of the annotation history (it

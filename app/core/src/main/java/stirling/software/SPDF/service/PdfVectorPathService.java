@@ -16,17 +16,16 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import tools.jackson.databind.ObjectMapper;
-
 import stirling.software.SPDF.model.json.PdfJsonVectorPath;
 import stirling.software.common.service.CustomPDFDocumentFactory;
 
+import tools.jackson.databind.ObjectMapper;
+
 /**
  * Opt-in diagnostic service for Stage 3 (d) vector-object support: runs {@link
- * PdfVectorPathExtractor} over every page and serialises the extracted vector
- * objects as JSON. Read-only and isolated from the main {@code
- * PdfJsonConversionService} pipeline so it cannot affect the live editor while
- * the coordinate model is being validated.
+ * PdfVectorPathExtractor} over every page and serialises the extracted vector objects as JSON.
+ * Read-only and isolated from the main {@code PdfJsonConversionService} pipeline so it cannot
+ * affect the live editor while the coordinate model is being validated.
  */
 @Slf4j
 @Service
@@ -59,8 +58,7 @@ public class PdfVectorPathService {
                 int pageNumber = pageIndex + 1;
                 PDPage page = document.getPage(pageIndex);
                 try {
-                    PdfVectorPathExtractor extractor =
-                            new PdfVectorPathExtractor(page, pageNumber);
+                    PdfVectorPathExtractor extractor = new PdfVectorPathExtractor(page, pageNumber);
                     List<PdfJsonVectorPath> pagePaths = extractor.extract();
                     assignTokenRanges(page, pagePaths);
                     if (pagePaths.size() > MAX_PATHS_PER_PAGE) {
@@ -91,9 +89,9 @@ public class PdfVectorPathService {
      * painting operator in stream order; a parallel token walk counts the same painting operators
      * (skipping {@code n}/clip), so the Nth painting op's token range maps to the Nth path. The
      * range spans from the token after the previous path boundary to the painting operator
-     * (inclusive), which covers this path's construction operands + operator. Form-XObject draws and
-     * empty paints can desync the counts; a mismatch is logged and ranges are left unset rather than
-     * mis-assigned.
+     * (inclusive), which covers this path's construction operands + operator. Form-XObject draws
+     * and empty paints can desync the counts; a mismatch is logged and ranges are left unset rather
+     * than mis-assigned.
      */
     private void assignTokenRanges(PDPage page, List<PdfJsonVectorPath> paths) {
         if (paths.isEmpty()) {

@@ -12,6 +12,7 @@ permissions:
 jobs:
   labeler:
     runs-on: ubuntu-latest
+    if: ${{ secrets.GH_APP_ID != '' }}
     permissions:
       pull-requests: write
     steps:
