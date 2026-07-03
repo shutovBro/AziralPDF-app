@@ -1,4 +1,4 @@
-//! Stirling-PDF Windows Thumbnail Handler
+//! AziralPDF Windows Thumbnail Handler
 //!
 //! A lightweight COM DLL that implements IThumbnailProvider for PDF files.
 //! Uses the built-in Windows.Data.Pdf WinRT API to render page 1 as a thumbnail.
@@ -35,7 +35,7 @@ use windows::Data::Pdf::PdfDocument;
 use windows::Storage::Streams::{DataWriter, InMemoryRandomAccessStream, IRandomAccessStream};
 
 // CLSID for this thumbnail handler -- must match WiX registry entries
-const CLSID_STIRLING_THUMBNAIL: GUID = GUID::from_u128(0x2d2fbe3a_9a88_4308_a52e_7ef63ca7cf48);
+const CLSID_AZIRALPDF_THUMBNAIL: GUID = GUID::from_u128(0xf47c4f53_c8b0_414f_abfa_b9ea8978749c);
 
 static DLL_REF_COUNT: AtomicU32 = AtomicU32::new(0);
 
@@ -360,7 +360,7 @@ unsafe extern "system" fn DllGetClassObject(
     }
     *ppv = std::ptr::null_mut();
 
-    if *rclsid != CLSID_STIRLING_THUMBNAIL {
+    if *rclsid != CLSID_AZIRALPDF_THUMBNAIL {
         return CLASS_E_CLASSNOTAVAILABLE;
     }
 

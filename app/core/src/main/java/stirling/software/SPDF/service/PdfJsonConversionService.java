@@ -114,6 +114,7 @@ import stirling.software.SPDF.model.json.PdfJsonPageDimension;
 import stirling.software.SPDF.model.json.PdfJsonStream;
 import stirling.software.SPDF.model.json.PdfJsonTextColor;
 import stirling.software.SPDF.model.json.PdfJsonTextElement;
+import stirling.software.SPDF.model.json.PdfJsonVectorPath;
 import stirling.software.SPDF.service.pdfjson.PdfJsonFontService;
 import stirling.software.SPDF.service.pdfjson.type3.Type3ConversionRequest;
 import stirling.software.SPDF.service.pdfjson.type3.Type3FontConversionService;
@@ -730,6 +731,7 @@ public class PdfJsonConversionService {
 
                 boolean hasText = !elements.isEmpty();
                 boolean hasImages = !imageElements.isEmpty();
+                boolean hasVectorDeletions = hasVectorDeletions(pageModel.getVectorPaths());
                 boolean rewriteSucceeded = true;
 
                 if (hasText) {
@@ -768,8 +770,19 @@ public class PdfJsonConversionService {
                 if (hasImages && preservedStreams.isEmpty()) {
                     shouldRegenerate = true;
                 }
+                // Editor signals structural image changes (add/remove/move) that the preserved
+                // stream cannot represent. Regenerate from the model; extractVectorGraphics keeps
+                // vector content while text and images are redrawn at their model positions.
+                if (Boolean.TRUE.equals(pageModel.getRegenerateContent())) {
+                    shouldRegenerate = true;
+                }
+                // Pending vector-object deletions (Stage 3 d) require rebuilding the vector layer
+                // via extractVectorGraphics even when text/images are untouched.
+                if (hasVectorDeletions) {
+                    shouldRegenerate = true;
+                }
 
-                if (!(hasText || hasImages)) {
+                if (!(hasText || hasImages || hasVectorDeletions)) {
                     pageIndex++;
                     continue;
                 }
@@ -779,7 +792,12 @@ public class PdfJsonConversionService {
                     AppendMode appendMode = AppendMode.OVERWRITE;
                     if (!preservedStreams.isEmpty()) {
                         PDStream vectorStream =
-                                extractVectorGraphics(document, preservedStreams, imageElements);
+                                extractVectorGraphics(
+                                        document,
+                                        page,
+                                        preservedStreams,
+                                        imageElements,
+                                        pageModel.getVectorPaths());
                         if (vectorStream != null) {
                             page.setContents(Collections.singletonList(vectorStream));
                             appendMode = AppendMode.APPEND;
@@ -3075,14 +3093,34 @@ public class PdfJsonConversionService {
 
     private PDStream extractVectorGraphics(
             PDDocument document,
+            PDPage page,
             List<PDStream> preservedStreams,
-            List<PdfJsonImageElement> imageElements)
+            List<PdfJsonImageElement> imageElements,
+            List<PdfJsonVectorPath> vectorPaths)
             throws IOException {
         if (preservedStreams == null || preservedStreams.isEmpty()) {
             return null;
         }
 
+        // Strip every original image draw from the vector layer so the page reflects the model:
+        // images still present are redrawn at their model positions, removed images simply vanish,
+        // and added images are drawn on top. Form (vector) XObjects are intentionally preserved.
         Set<String> imageObjectNames = new HashSet<>();
+        PDResources pageResources = page != null ? page.getResources() : null;
+        if (pageResources != null) {
+            for (COSName name : pageResources.getXObjectNames()) {
+                try {
+                    if (pageResources.getXObject(name) instanceof PDImageXObject) {
+                        imageObjectNames.add(name.getName());
+                    }
+                } catch (IOException ex) {
+                    log.debug(
+                            "Failed to inspect XObject '{}' during vector extraction: {}",
+                            name.getName(),
+                            ex.getMessage());
+                }
+            }
+        }
         if (imageElements != null) {
             for (PdfJsonImageElement element : imageElements) {
                 if (element == null) {
@@ -3095,7 +3133,9 @@ public class PdfJsonConversionService {
             }
         }
 
+        List<int[]> deletedVectorRanges = collectDeletedVectorRanges(vectorPaths);
         List<Object> filteredTokens = new ArrayList<>();
+        int[] globalTokenIndex = {0};
         for (PDStream stream : preservedStreams) {
             if (stream == null) {
                 continue;
@@ -3103,7 +3143,12 @@ public class PdfJsonConversionService {
             try {
                 PDFStreamParser parser = new PDFStreamParser(stream.toByteArray());
                 List<Object> tokens = parser.parse();
-                collectVectorTokens(tokens, filteredTokens, imageObjectNames);
+                collectVectorTokens(
+                        tokens,
+                        filteredTokens,
+                        imageObjectNames,
+                        deletedVectorRanges,
+                        globalTokenIndex);
             } catch (IOException ex) {
                 log.debug(
                         "Failed to parse preserved content stream for vector extraction: {}",
@@ -3122,8 +3167,70 @@ public class PdfJsonConversionService {
         return vectorStream;
     }
 
+    /**
+     * Builds the [opIndexStart, opIndexEnd] token ranges (inclusive) for vector paths the editor
+     * marked deleted, so {@link #collectVectorTokens} can skip exactly those tokens on rewrite.
+     * Paths without a valid token range (extraction/token-count mismatch, see {@code
+     * PdfVectorPathService}) are left in place rather than risking an unintended deletion.
+     */
+    private List<int[]> collectDeletedVectorRanges(List<PdfJsonVectorPath> vectorPaths) {
+        if (vectorPaths == null || vectorPaths.isEmpty()) {
+            return List.of();
+        }
+        List<int[]> ranges = new ArrayList<>();
+        for (PdfJsonVectorPath path : vectorPaths) {
+            if (path == null || !Boolean.TRUE.equals(path.getDeleted())) {
+                continue;
+            }
+            Integer start = path.getOpIndexStart();
+            Integer end = path.getOpIndexEnd();
+            if (start == null || end == null || end < start) {
+                continue;
+            }
+            ranges.add(new int[] {start, end});
+        }
+        return ranges;
+    }
+
+    /**
+     * True if the page model carries at least one vector path marked deleted with a resolvable
+     * token range. Used to force vector-layer regeneration even when text/images are untouched,
+     * since otherwise a page could be skipped or its preserved stream reused verbatim, silently
+     * dropping the deletion.
+     */
+    private static boolean hasVectorDeletions(List<PdfJsonVectorPath> vectorPaths) {
+        if (vectorPaths == null || vectorPaths.isEmpty()) {
+            return false;
+        }
+        for (PdfJsonVectorPath path : vectorPaths) {
+            if (path != null
+                    && Boolean.TRUE.equals(path.getDeleted())
+                    && path.getOpIndexStart() != null
+                    && path.getOpIndexEnd() != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isWithinDeletedRange(int tokenIndex, List<int[]> deletedRanges) {
+        if (deletedRanges == null || deletedRanges.isEmpty()) {
+            return false;
+        }
+        for (int[] range : deletedRanges) {
+            if (tokenIndex >= range[0] && tokenIndex <= range[1]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void collectVectorTokens(
-            List<Object> sourceTokens, List<Object> targetTokens, Set<String> imageObjectNames) {
+            List<Object> sourceTokens,
+            List<Object> targetTokens,
+            Set<String> imageObjectNames,
+            List<int[]> deletedRanges,
+            int[] globalTokenIndex) {
         if (sourceTokens == null || sourceTokens.isEmpty()) {
             return;
         }
@@ -3132,6 +3239,8 @@ public class PdfJsonConversionService {
         boolean insideInlineImage = false;
 
         for (Object token : sourceTokens) {
+            int tokenIndex = globalTokenIndex[0]++;
+            boolean deleted = isWithinDeletedRange(tokenIndex, deletedRanges);
             if (token instanceof Operator operator) {
                 String name = operator.getName();
                 if (OperatorName.BEGIN_TEXT.equals(name)) {
@@ -3144,14 +3253,14 @@ public class PdfJsonConversionService {
                 }
                 if (OperatorName.BEGIN_INLINE_IMAGE.equals(name)
                         || OperatorName.BEGIN_INLINE_IMAGE_DATA.equals(name)) {
-                    if (!insideText) {
+                    if (!insideText && !deleted) {
                         targetTokens.add(operator);
                     }
                     insideInlineImage = true;
                     continue;
                 }
                 if (OperatorName.END_INLINE_IMAGE.equals(name)) {
-                    if (!insideText) {
+                    if (!insideText && !deleted) {
                         targetTokens.add(operator);
                     }
                     insideInlineImage = false;
@@ -3171,12 +3280,16 @@ public class PdfJsonConversionService {
                         continue;
                     }
                 }
-                targetTokens.add(operator);
+                if (!deleted) {
+                    targetTokens.add(operator);
+                }
             } else {
                 if (insideText && !insideInlineImage) {
                     continue;
                 }
-                targetTokens.add(token);
+                if (!deleted) {
+                    targetTokens.add(token);
+                }
             }
         }
     }
@@ -3374,9 +3487,17 @@ public class PdfJsonConversionService {
         String baseFontId = element.getFontId();
         boolean fallbackApplied = primaryFont == null;
         if (baseFont == null) {
-            baseFont = ensureFallbackFont(document, fontMap, fontModels, FALLBACK_FONT_ID);
+            // Honour an explicitly requested built-in fallback id (e.g. the
+            // bold/italic NotoSans variants chosen for added text) instead of
+            // always collapsing to the regular fallback.
+            String requestedId = element.getFontId();
+            String fallbackId =
+                    fallbackFontService.isBuiltInFallbackId(requestedId)
+                            ? requestedId
+                            : FALLBACK_FONT_ID;
+            baseFont = ensureFallbackFont(document, fontMap, fontModels, fallbackId);
             if (baseFont != null) {
-                baseFontId = FALLBACK_FONT_ID;
+                baseFontId = fallbackId;
                 fallbackApplied = true;
             }
         }
@@ -6755,7 +6876,8 @@ public class PdfJsonConversionService {
                         imageElements,
                         preflightResult,
                         fontLookup,
-                        pageNumberValue);
+                        pageNumberValue,
+                        hasVectorDeletions(pageModel.getVectorPaths()));
 
         if (regenerateMode == RegenerateMode.REUSE_EXISTING) {
             if (!preserveExistingAnnotations) {
@@ -6771,7 +6893,12 @@ public class PdfJsonConversionService {
 
         if (regenerateMode == RegenerateMode.REGENERATE_WITH_VECTOR_OVERLAY) {
             PDStream vectorStream =
-                    extractVectorGraphics(document, preservedStreams, imageElements);
+                    extractVectorGraphics(
+                            document,
+                            page,
+                            preservedStreams,
+                            imageElements,
+                            pageModel.getVectorPaths());
             if (vectorStream != null) {
                 page.setContents(Collections.singletonList(vectorStream));
                 appendMode = AppendMode.APPEND;
@@ -6812,12 +6939,18 @@ public class PdfJsonConversionService {
             List<PdfJsonImageElement> imageElements,
             PreflightResult preflightResult,
             Map<String, PdfJsonFont> fontLookup,
-            int pageNumberValue)
+            int pageNumberValue,
+            boolean hasVectorDeletions)
             throws IOException {
         boolean hasText = textElements != null && !textElements.isEmpty();
         boolean hasImages = imageElements != null && !imageElements.isEmpty();
 
         if (!hasText && !hasImages) {
+            // A page with pending vector deletions but no text/image edits still needs its vector
+            // layer rebuilt via extractVectorGraphics; otherwise it would be wiped blank here.
+            if (hasVectorDeletions && !preservedStreams.isEmpty()) {
+                return RegenerateMode.REGENERATE_WITH_VECTOR_OVERLAY;
+            }
             return RegenerateMode.REGENERATE_CLEAR;
         }
 
@@ -6834,7 +6967,11 @@ public class PdfJsonConversionService {
                     rewriteTextOperators(
                             document, page, textElements, false, true, fontLookup, pageNumberValue);
             if (rewriteSucceeded) {
-                return RegenerateMode.REUSE_EXISTING;
+                // A successful in-place text rewrite reuses the preserved stream verbatim, which
+                // would skip the vector-deletion filter entirely.
+                return hasVectorDeletions
+                        ? RegenerateMode.REGENERATE_WITH_VECTOR_OVERLAY
+                        : RegenerateMode.REUSE_EXISTING;
             }
             return RegenerateMode.REGENERATE_WITH_VECTOR_OVERLAY;
         }

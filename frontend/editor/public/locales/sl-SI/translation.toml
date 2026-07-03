@@ -878,11 +878,11 @@ description = "Konfigurirajte izbirne funkcije in funkcionalnosti."
 title = "Funkcije"
 
 [admin.settings.features.serverCertificate]
-description = "Konfigurirajte generiranje strežniškega potrdila za funkcionalnost \"Sign with Stirling-PDF\""
+description = "Konfigurirajte generiranje strežniškega potrdila za funkcionalnost \"Sign with AziralPDF\""
 label = "Strežniško potrdilo"
 
 [admin.settings.features.serverCertificate.enabled]
-description = "Omogoči strežniško potrdilo za možnost \"Sign with Stirling-PDF\""
+description = "Omogoči strežniško potrdilo za možnost \"Sign with AziralPDF\""
 label = "Omogoči strežniško potrdilo"
 
 [admin.settings.features.serverCertificate.organizationName]
@@ -1030,7 +1030,7 @@ description = "URL ali ime datoteke do politike piškotkov"
 label = "Politika piškotkov"
 
 [admin.settings.legal.disclaimer]
-message = "Z lastnim prilagajanjem teh pravnih dokumentov prevzemate polno odgovornost za zagotavljanje skladnosti z vsemi veljavnimi zakoni in predpisi, vključno z GDPR in drugimi zahtevami EU glede varstva podatkov. Te nastavitve spreminjajte samo, če: (1) upravljate osebno/zasebno instanco, (2) ste zunaj jurisdikcije EU in razumete svoje lokalne pravne obveznosti ali (3) ste pridobili ustrezno pravno svetovanje in prevzemate izključno odgovornost za vse uporabniške podatke in pravno skladnost. Stirling-PDF in njegovi razvijalci ne prevzemajo odgovornosti za vaše pravne obveznosti."
+message = "Z lastnim prilagajanjem teh pravnih dokumentov prevzemate polno odgovornost za zagotavljanje skladnosti z vsemi veljavnimi zakoni in predpisi, vključno z GDPR in drugimi zahtevami EU glede varstva podatkov. Te nastavitve spreminjajte samo, če: (1) upravljate osebno/zasebno instanco, (2) ste zunaj jurisdikcije EU in razumete svoje lokalne pravne obveznosti ali (3) ste pridobili ustrezno pravno svetovanje in prevzemate izključno odgovornost za vse uporabniške podatke in pravno skladnost. AziralPDF in njegovi razvijalci ne prevzemajo odgovornosti za vaše pravne obveznosti."
 title = "Opozorilo o pravni odgovornosti"
 
 [admin.settings.legal.impressum]
@@ -1402,7 +1402,7 @@ description = "Ko je omogočeno, lahko bot uporabljajo samo navedeni ID-ji upora
 label = "Dovoli določene ID-je uporabnikov"
 
 [admin.settings.telegram.enabled]
-description = "Dovoli uporabnikom interakcijo s Stirling PDF prek konfiguriranega Telegram bota."
+description = "Dovoli uporabnikom interakcijo s AziralPDF prek konfiguriranega Telegram bota."
 label = "Omogoči Telegram bota"
 
 [admin.settings.telegram.feedback]
@@ -1479,7 +1479,7 @@ settingsOverview = "To je <strong>plošča z nastavitvami</strong>. Skrbniške n
 systemCustomization = "Načini za prilagoditev vmesnika so obsežni: <strong>System Settings</strong> omogoča spremembo imena aplikacije in jezikov, <strong>Features</strong> omogoča upravljanje strežniških potrdil, <strong>Endpoints</strong> pa omogoča omogočanje ali onemogočanje posameznih orodij za vaše uporabnike."
 teamsAndUsers = "Tu upravljajte <strong>skupine</strong> in posamezne uporabnike. Nove uporabnike lahko povabite po e-pošti, s povezavami za deljenje ali jim sami ustvarite račune."
 welcome = "Dobrodošli v <strong>skrbniškem vodniku</strong>! Raziščimo napredne poslovne funkcije in nastavitve, ki so na voljo sistemskim skrbnikom."
-wrapUp = "To je bil skrbniški vodnik! Spoznali ste poslovne funkcije, zaradi katerih je Stirling PDF zmogljiva in prilagodljiva rešitev za organizacije. Do tega vodnika lahko kadarkoli dostopate iz menija <strong>Pomoč</strong>."
+wrapUp = "To je bil skrbniški vodnik! Spoznali ste poslovne funkcije, zaradi katerih je AziralPDF zmogljiva in prilagodljiva rešitev za organizacije. Do tega vodnika lahko kadarkoli dostopate iz menija <strong>Pomoč</strong>."
 
 [adminUserSettings]
 actions = "Dejanja"
@@ -1516,11 +1516,11 @@ webOnlyUser = "Samo spletni uporabnik"
 disable = "Onemogoči analitiko"
 enable = "Omogoči analitiko"
 learnMore = "Izvedite več"
-paragraph1 = "Stirling PDF se je odločil za analitiko, ki nam pomaga izboljšati izdelek. Ne sledimo nobenim osebnim podatkom ali vsebini datotek."
-paragraph2 = "Prosimo, razmislite o omogočanju analitike, ki bo pomagala rasti Stirling-PDF in nam bo omogočila boljše razumevanje naših uporabnikov."
+paragraph1 = "AziralPDF se je odločil za analitiko, ki nam pomaga izboljšati izdelek. Ne sledimo nobenim osebnim podatkom ali vsebini datotek."
+paragraph2 = "Prosimo, razmislite o omogočanju analitike, ki bo pomagala rasti AziralPDF in nam bo omogočila boljše razumevanje naših uporabnikov."
 privacyAssurance = "Ne spremljamo osebnih podatkov ali vsebine vaših datotek."
 settings = "Nastavitve za analitiko lahko spremenite v datoteki config/settings.yml"
-title = "Ali želite izboljšati Stirling PDF?"
+title = "Ali želite izboljšati AziralPDF?"
 
 [annotation]
 annotationStyle = "Slog pripombe"
@@ -1923,7 +1923,7 @@ tags = "pdf,razdelitev,dokument,organizacija"
 description = "Natisnite, vstavite, skenirajte, naložite in nam dovolite, da samodejno ločimo vaše dokumente. Ročno razvrščanje ni potrebno."
 dividerDownload2 = "Prenesi 'Samodejni razdelilnik (z navodili).pdf'"
 duplexMode = "Dupleksni način (skeniranje spredaj in zadaj)"
-formPrompt = "Pošljite PDF, ki vsebuje razdelilnike strani Stirling-PDF:"
+formPrompt = "Pošljite PDF, ki vsebuje razdelilnike strani AziralPDF:"
 header = "Samodejno razdeli PDF"
 submit = "Pošlji"
 tags = "Na osnovi QR,ločeno,skeniranje-segment,organiziranje"
@@ -1932,7 +1932,7 @@ title = "Samodejno razdeli PDF"
 [autoSplitPDF.selectText]
 1 = "Natisnite nekaj razdelilnih listov od spodaj (črno-belo je v redu)."
 2 = "Skenirajte vse dokumente hkrati tako, da mednje vstavite razdelilni list."
-3 = "Naložite eno veliko optično prebrano datoteko PDF in pustite, da Stirling PDF uredi ostalo."
+3 = "Naložite eno veliko optično prebrano datoteko PDF in pustite, da AziralPDF uredi ostalo."
 4 = "Ločilne strani so samodejno zaznane in odstranjene, kar zagotavlja čist končni dokument."
 
 [backendHealth]
@@ -2491,7 +2491,7 @@ bullet1 = "Podpira formate PEM, PKCS12, JKS in strežniško potrdilo"
 bullet2 = "Možnost prikaza ali skritja podpisa na PDF"
 bullet3 = "Dodajte razlog, lokacijo in ime podpisnika"
 bullet4 = "Izberite, na kateri strani postaviti vidne podpise"
-bullet5 = "Uporabite strežniško potrdilo za preprosto možnost »Sign with Stirling-PDF«"
+bullet5 = "Uporabite strežniško potrdilo za preprosto možnost »Sign with AziralPDF«"
 text = "Za podpis PDF potrebujete digitalno potrdilo (kot PEM, PKCS12 ali JKS). Podpis lahko na dokumentu prikažete ali ga ohranite nevidnega zgolj zaradi varnosti."
 title = "Dodajanje podpisov"
 
@@ -3014,15 +3014,15 @@ upgradeButton = "Nadgradi račun"
 chartAriaLabel = "Uporaba kreditov: vključenih {{includedUsed}} od {{includedTotal}}, kupljenih {{purchasedUsed}} od {{purchasedTotal}}"
 copyKeyAriaLabel = "Kopiraj API ključ"
 creditsRemaining = "Preostali krediti"
-description = "Vaš API ključ za dostop do Stirlingove zbirke PDF orodij. Kopirajte ga v svoj projekt ali osvežite za ustvarjanje novega."
-docsDescription = "Več o integraciji s Stirling PDF:"
+description = "Vaš API ključ za dostop do AziralPDFove zbirke PDF orodij. Kopirajte ga v svoj projekt ali osvežite za ustvarjanje novega."
+docsDescription = "Več o integraciji s AziralPDF:"
 docsLink = "API dokumentacija"
 docsTitle = "API dokumentacija"
 generateError = "API ključa ni bilo mogoče ustvariti."
 goToAccount = "Pojdi na račun"
 guestInfo = "Gosti uporabniki ne prejmejo API ključev. Ustvarite račun, da dobite API ključ, ki ga lahko uporabljate v svojih aplikacijah."
 includedCredits = "Vključeni krediti"
-intro = "S svojim API ključem programatično dostopajte do zmožnosti obdelave Stirling PDF."
+intro = "S svojim API ključem programatično dostopajte do zmožnosti obdelave AziralPDF."
 label = "API ključ"
 lastApiUse = "Zadnja uporaba API"
 nextReset = "Naslednja ponastavitev"
@@ -3066,7 +3066,7 @@ system = "Sistemska konfiguracija"
 [connectionMode.status]
 localOffline = "Zagnan je način brez povezave"
 localOnline = "Zagnan je način brez povezave"
-saas = "Povezano s Stirling Cloud"
+saas = "Povezano s AziralPDF Cloud"
 selfhostedChecking = "Povezano z lastno gostovanim strežnikom (preverjanje...)"
 selfhostedOffline = "Lastno gostovani strežnik nedosegljiv"
 selfhostedOnline = "Povezano z lastno gostovanim strežnikom"
@@ -3196,7 +3196,7 @@ showPreferencesBtn = "Upravljaj nastavitve"
 title = "Kako uporabljamo piškotke"
 
 [cookieBanner.popUp.description]
-1 = "Piškotke in druge tehnologije uporabljamo, da Stirling PDF deluje bolje za vas — to nam pomaga izboljševati naša orodja in graditi funkcije, ki vam bodo všeč."
+1 = "Piškotke in druge tehnologije uporabljamo, da AziralPDF deluje bolje za vas — to nam pomaga izboljševati naša orodja in graditi funkcije, ki vam bodo všeč."
 2 = "If you’d rather not, clicking 'No Thanks' will only enable the essential cookies needed to keep things running smoothly."
 
 [cookieBanner.preferencesModal]
@@ -3209,12 +3209,12 @@ subtitle = "Uporaba piškotkov"
 title = "Center za nastavitve soglasja"
 
 [cookieBanner.preferencesModal.analytics]
-description = "Ti piškotki nam pomagajo razumeti, kako se naša orodja uporabljajo, da se lahko osredotočimo na gradnjo funkcij, ki jih naša skupnost najbolj ceni. Bodite brez skrbi — Stirling PDF ne more in nikoli ne bo sledil vsebini dokumentov, s katerimi delate."
+description = "Ti piškotki nam pomagajo razumeti, kako se naša orodja uporabljajo, da se lahko osredotočimo na gradnjo funkcij, ki jih naša skupnost najbolj ceni. Bodite brez skrbi — AziralPDF ne more in nikoli ne bo sledil vsebini dokumentov, s katerimi delate."
 title = "Analitika"
 
 [cookieBanner.preferencesModal.description]
-1 = "Stirling PDF uporablja piškotke in podobne tehnologije za izboljšanje vaše izkušnje in razumevanje uporabe naših orodij. To nam pomaga izboljšati zmogljivost, razvijati funkcije, ki so vam pomembne, in nenehno podpirati naše uporabnike."
-2 = "Stirling PDF ne more — in nikoli ne bo — sledil ali dostopal do vsebine dokumentov, ki jih uporabljate."
+1 = "AziralPDF uporablja piškotke in podobne tehnologije za izboljšanje vaše izkušnje in razumevanje uporabe naših orodij. To nam pomaga izboljšati zmogljivost, razvijati funkcije, ki so vam pomembne, in nenehno podpirati naše uporabnike."
+2 = "AziralPDF ne more — in nikoli ne bo — sledil ali dostopal do vsebine dokumentov, ki jih uporabljate."
 3 = "Vaša zasebnost in zaupanje sta v središču našega dela."
 
 [cookieBanner.preferencesModal.necessary]
@@ -3383,7 +3383,7 @@ unexpectedError = "Pri obdelavi datoteke je prišlo do napake. prosim poskusite 
 [defaultApp]
 description = "To lahko kasneje spremenite v sistemskih nastavitvah."
 dismiss = "Zapri"
-message = "Želite nastaviti Stirling PDF kot privzeti urejevalnik PDF?"
+message = "Želite nastaviti AziralPDF kot privzeti urejevalnik PDF?"
 notNow = "Ne zdaj"
 setDefault = "Nastavi kot privzeto"
 title = "Nastavi kot privzeto aplikacijo za PDF"
@@ -3393,15 +3393,15 @@ message = "Privzetega upravljalnika PDF ni bilo mogoče nastaviti"
 title = "Napaka"
 
 [defaultApp.prompt]
-message = "Nastavite Stirling PDF kot privzeto aplikacijo za odpiranje datotek PDF."
+message = "Nastavite AziralPDF kot privzeto aplikacijo za odpiranje datotek PDF."
 title = "Nastavi kot privzeti urejevalnik PDF"
 
 [defaultApp.settingsOpened]
-message = "V sistemskih nastavitvah izberite Stirling PDF"
+message = "V sistemskih nastavitvah izberite AziralPDF"
 title = "Nastavitve odprte"
 
 [defaultApp.success]
-message = "Stirling PDF je zdaj vaš privzeti urejevalnik PDF"
+message = "AziralPDF je zdaj vaš privzeti urejevalnik PDF"
 title = "Privzeta aplikacija nastavljena"
 
 [editTableOfContents]
@@ -3543,9 +3543,9 @@ visitsTooltip = "Obiski: {0} ({1}% vseh)"
 
 [enterpriseEdition]
 button = "Nadgradi na Pro"
-ssoAdvert = "Iščete več funkcij za upravljanje uporabnikov? Oglejte si Stirling PDF Pro"
+ssoAdvert = "Iščete več funkcij za upravljanje uporabnikov? Oglejte si AziralPDF Pro"
 warning = "Ta funkcija je na voljo samo uporabnikom Pro."
-yamlAdvert = "Stirling PDF Pro podpira konfiguracijske datoteke YAML in druge funkcije SSO."
+yamlAdvert = "AziralPDF Pro podpira konfiguracijske datoteke YAML in druge funkcije SSO."
 
 [error]
 _value = "Napaka"
@@ -4021,7 +4021,7 @@ invisible = "Nevidno (samo metapodatki)"
 location = "Lokacija:"
 logo = "Logotip:"
 logoHidden = "Brez logotipa"
-logoShown = "Prikazan logotip Stirling PDF"
+logoShown = "Prikazan logotip AziralPDF"
 participantCount = "{{count}} udeležencev bo podpisovalo po vrsti"
 participants = "Udeleženci"
 reason = "Razlog:"
@@ -4073,7 +4073,7 @@ title = "Zaporedno podpisovanje"
 dismiss = "Skrij pasico"
 message = "Ustvarite brezplačen račun, da shranite svoje delo, dostopate do več funkcij in podprete projekt."
 signUp = "Registrirajte se brezplačno"
-title = "Stirling PDF uporabljate kot gost!"
+title = "AziralPDF uporabljate kot gost!"
 
 [home]
 alphabetical = "Abecedno"
@@ -4247,7 +4247,7 @@ tags = "združi,spoji,poenoti"
 title = "Združi"
 
 [home.mobile]
-brandAlt = "Logotip Stirling PDF"
+brandAlt = "Logotip AziralPDF"
 openFiles = "Odpri datoteke"
 swipeHint = "Podrsnite levo ali desno za preklapljanje pogledov"
 tools = "Orodja"
@@ -4287,7 +4287,7 @@ tags = "organizira,preuredi,razvrsti"
 title = "Organiziraj"
 
 [home.pdfTextEditor]
-desc = "Pregledujte in urejajte Stirling PDF JSON izvoze z urejanjem združenega besedila in ponovnim ustvarjanjem PDF"
+desc = "Pregledujte in urejajte AziralPDF JSON izvoze z urejanjem združenega besedila in ponovnim ustvarjanjem PDF"
 tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
 title = "Urejevalnik besedila PDF"
 
@@ -4493,14 +4493,14 @@ passwordTooShort = "Geslo mora vsebovati vsaj 6 znakov"
 signIn = "Prijava"
 validating = "Preverjanje povabila..."
 validationError = "Validacija povezave za povabilo ni uspela"
-welcome = "Dobrodošli v Stirling PDF"
+welcome = "Dobrodošli v AziralPDF"
 welcomeSubtitle = "Dokončajte nastavitev računa za začetek"
 welcomeTitle = "Povabljeni ste!"
 
 [landing]
 addFiles = "Dodaj datoteke"
 heroSubtitle = "Spustite sem ali dodajte obstoječi PDF, da začnete."
-heroTitle = "Stirling PDF"
+heroTitle = "AziralPDF"
 mobileUpload = "Naloži iz mobilne naprave"
 openFromComputer = "Odpri iz računalnika"
 uploadFromComputer = "Naloži z računalnika"
@@ -4526,7 +4526,7 @@ title = "Licence tretjih oseb"
 version = "Različica"
 
 [localMode]
-toolUnavailable = "To orodje zahteva račun. Prijavite se v Stirling Cloud ali se povežite z lastno gostovanim strežnikom, da ga uporabite."
+toolUnavailable = "To orodje zahteva račun. Prijavite se v AziralPDF Cloud ali se povežite z lastno gostovanim strežnikom, da ga uporabite."
 
 [localMode.banner]
 message = "Prijavite se, da odklenete vsa orodja."
@@ -4602,7 +4602,7 @@ signinTitle = "Prosim prijavite se"
 signInWith = "Prijavite se z"
 signOut = "Odjava"
 ssoSignIn = "Prijava prek enotne prijave"
-subtitle = "Znova se prijavite v Stirling PDF"
+subtitle = "Znova se prijavite v AziralPDF"
 title = "Prijava"
 toManySessions = "Imate preveč aktivnih sej"
 unexpectedError = "Nepričakovana napaka: {{message}}"
@@ -4621,7 +4621,7 @@ subtitle = "Z več kot ducatom orodij za začrnjevanje, podpisovanje, branje in 
 title = "Uredite PDF-je za prikaz ali zaščito želenih informacij"
 
 [login.slides.overview]
-alt = "Pregled Stirling PDF"
+alt = "Pregled AziralPDF"
 subtitle = "Paket v oblaku, ki postavlja zasebnost na prvo mesto: pretvarjajte, podpisujte, začrnjajte in upravljajte dokumente ter uporabite več kot 50 drugih zmogljivih orodij."
 title = "Vse na enem mestu za vse vaše potrebe s PDF"
 
@@ -4787,7 +4787,7 @@ message = "Overjanje ni bilo uspešno. Okno lahko zaprete in poskusite znova."
 title = "Overjanje ni uspelo"
 
 [oauth.success]
-message = "To okno lahko zaprete in se vrnete v Stirling PDF."
+message = "To okno lahko zaprete in se vrnete v AziralPDF."
 title = "Overjanje uspešno"
 
 [ocr]
@@ -4911,7 +4911,7 @@ runButton = "Ko je orodje nastavljeno, ta gumb omogoča zagon orodja na vseh izb
 selectControls = "<strong>Desni stolpec</strong> vsebuje gumbe za hitro izbiranje/preklic izbire vseh aktivnih PDF-jev ter gumbe za spremembo teme ali jezika aplikacije."
 selectCropTool = "Izberimo orodje <strong>Obreži</strong>, da pokažemo, kako uporabiti eno izmed orodij."
 startTour = "Začni vodnik"
-startTourDescription = "Opravite voden ogled ključnih funkcij Stirling PDF"
+startTourDescription = "Opravite voden ogled ključnih funkcij AziralPDF"
 toolInterface = "To je vmesnik orodja <strong>Obreži</strong>. Kot vidite, ni veliko prikazanega, ker še nismo dodali nobenih PDF datotek za delo."
 viewer = "<strong>Pregledovalnik</strong> vam omogoča branje in označevanje vaših PDF-jev."
 viewSwitcher = "S temi kontrolniki izberete, kako želite prikazati svoje PDF-je."
@@ -4927,22 +4927,22 @@ skipForNow = "Preskoči za zdaj"
 skipTheTour = "Preskoči ogled"
 
 [onboarding.desktopInstall]
-body = "Stirling najbolje deluje kot namizna aplikacija. Uporabljate ga lahko brez povezave, hitreje dostopate do dokumentov in urejate lokalno na računalniku."
+body = "AziralPDF najbolje deluje kot namizna aplikacija. Uporabljate ga lahko brez povezave, hitreje dostopate do dokumentov in urejate lokalno na računalniku."
 title = "Prenesi"
 titleWithOs = "Prenesi za {{osLabel}}"
 
 [onboarding.freeTrial]
 afterTrialWithoutPayment = "Po koncu preizkusnega obdobja boste nadaljevali z brezplačnim paketom. Dodajte plačilno sredstvo, da ohranite dostop do Pro."
 afterTrialWithPayment = "Vaša naročnina Pro se bo samodejno začela po koncu preizkusa."
-body = "Med preizkusom imate poln dostop do funkcij Stirling PDF Pro. Uživajte v neomejenih pretvorbah, večjih velikostih datotek in prednostni obdelavi."
+body = "Med preizkusom imate poln dostop do funkcij AziralPDF Pro. Uživajte v neomejenih pretvorbah, večjih velikostih datotek in prednostni obdelavi."
 daysRemaining = "Preostaja {{days}} dni"
 daysRemainingSingular = "Preostaja {{days}} dan"
 title = "Vaš 30-dnevni preizkus Pro"
 trialEnds = "Preizkus se konča {{date}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Ko omogočite način prijave, lahko upravljate uporabnike, nastavite možnosti in spremljate stanje strežnika. Prvih <strong>{{freeTierLimit}}</strong> oseb na vašem strežniku lahko Stirling uporablja brezplačno."
-adminBodyLoginEnabled = "Kot skrbnik lahko upravljate uporabnike, nastavite možnosti in spremljate stanje strežnika. Prvih <strong>{{freeTierLimit}}</strong> oseb na vašem strežniku lahko Stirling uporablja brezplačno."
+adminBodyLoginDisabled = "Ko omogočite način prijave, lahko upravljate uporabnike, nastavite možnosti in spremljate stanje strežnika. Prvih <strong>{{freeTierLimit}}</strong> oseb na vašem strežniku lahko AziralPDF uporablja brezplačno."
+adminBodyLoginEnabled = "Kot skrbnik lahko upravljate uporabnike, nastavite možnosti in spremljate stanje strežnika. Prvih <strong>{{freeTierLimit}}</strong> oseb na vašem strežniku lahko AziralPDF uporablja brezplačno."
 adminTitle = "Pregled skrbnika"
 userBody = "Povabite sodelavce, dodelite vloge in ohranite dokumente organizirane v enem varnem delovnem prostoru. Omogočite način prijave, ko ste pripravljeni prerasti samostojno rabo."
 userTitle = "Pregled načrta"
@@ -4951,16 +4951,16 @@ userTitle = "Pregled načrta"
 message = "Aplikacija je nedavno doživela pomembne spremembe. Morda bo potrebna pozornost skrbnika strežnika. Za nadaljevanje potrdite svojo vlogo."
 
 [onboarding.serverLicense]
-freeBody = "Naše licenciranje <strong>Open-Core</strong> brezplačno omogoča do <strong>{{freeTierLimit}}</strong> uporabnikov na strežnik. Za nemoteno rast in zgodnji dostop do našega novega <strong>orodja za urejanje besedila PDF</strong> priporočamo načrt Stirling Server – polno urejanje in <strong>neomejena mesta</strong> za $99/strežnik/mesec."
+freeBody = "Naše licenciranje <strong>Open-Core</strong> brezplačno omogoča do <strong>{{freeTierLimit}}</strong> uporabnikov na strežnik. Za nemoteno rast in zgodnji dostop do našega novega <strong>orodja za urejanje besedila PDF</strong> priporočamo načrt AziralPDF Server – polno urejanje in <strong>neomejena mesta</strong> za $99/strežnik/mesec."
 freeTitle = "Licenca strežnika"
-overLimitBody = "Naše licenciranje brezplačno omogoča do <strong>{{freeTierLimit}}</strong> uporabnikov na strežnik. Imate <strong>{{overLimitUserCopy}}</strong> uporabnikov Stirling. Za nemoteno uporabo nadgradite na načrt Stirling Server – <strong>neomejena mesta</strong>, urejanje besedila PDF in popoln skrbniški nadzor za $99/strežnik/mesec."
+overLimitBody = "Naše licenciranje brezplačno omogoča do <strong>{{freeTierLimit}}</strong> uporabnikov na strežnik. Imate <strong>{{overLimitUserCopy}}</strong> uporabnikov AziralPDF. Za nemoteno uporabo nadgradite na načrt AziralPDF Server – <strong>neomejena mesta</strong>, urejanje besedila PDF in popoln skrbniški nadzor za $99/strežnik/mesec."
 overLimitTitle = "Potrebna licenca strežnika"
 seePlans = "Poglej načrte →"
 skip = "Preskoči za zdaj"
 upgrade = "Nadgradi zdaj →"
 
 [onboarding.tourOverview]
-body = "Stirling PDF V2 prinaša številna orodja in osveženo postavitev. Opravite kratek ogled, da vidite, kaj se je spremenilo in kje najdete potrebne funkcije."
+body = "AziralPDF prinaša številna orodja in osveženo postavitev. Opravite kratek ogled, da vidite, kaj se je spremenilo in kje najdete potrebne funkcije."
 title = "Pregled ogleda"
 
 [onboarding.welcomeModal]
@@ -4969,11 +4969,11 @@ dontShowAgain = "Ne prikazuj več"
 helpHint = "Do tega vodnika lahko vedno dostopate prek gumba <strong>Pomoč</strong> spodaj levo."
 maybeLater = "Morda kasneje"
 startTour = "Začni vodnik"
-title = "Dobrodošli v Stirling PDF!"
+title = "Dobrodošli v AziralPDF!"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF je zdaj pripravljen za ekipe vseh velikosti. Ta posodobitev vključuje novo postavitev, zmogljive nove skrbniške zmožnosti in našo najbolj zahtevano funkcijo – <strong>Uredi besedilo</strong>."
-title = "Dobrodošli v Stirling"
+body = "AziralPDF je zdaj pripravljen za ekipe vseh velikosti. Ta posodobitev vključuje novo postavitev, zmogljive nove skrbniške zmožnosti in našo najbolj zahtevano funkcijo – <strong>Uredi besedilo</strong>."
+title = "Dobrodošli v AziralPDF"
 
 [onboarding.whatsNew]
 activeFilesView = "Uporabite Aktivne datoteke, da vidite vse odprto in izberete, na čem delati."
@@ -4982,7 +4982,7 @@ leftPanel = "Levi panel <strong>Orodja</strong> navaja vse, kar lahko storite. B
 pageEditorView = "Preklopite na Urejevalnik strani za preurejanje, vrtenje ali brisanje strani."
 quickAccess = "Začnite na stranskem traku <strong>Hiter dostop</strong> za preklapljanje med Bralnikom, Avtomatizacijo, vašimi datotekami in vsemi ogledi."
 topBar = "Zgornja vrstica omogoča preklapljanje med <strong>Pregledovalnik</strong>, <strong>Urejevalnik strani</strong> in <strong>Aktivne datoteke</strong>."
-wrapUp = "To je novo v V2. Kadar koli odprite meni <strong>Ogledi</strong> za ponoven ogled tega, ogleda orodij ali skrbniškega ogleda."
+wrapUp = "To je novo v . Kadar koli odprite meni <strong>Ogledi</strong> za ponoven ogled tega, ogleda orodij ali skrbniškega ogleda."
 
 [overlay-pdfs]
 desc = "Prekrij en PDF preko drugega"
@@ -5794,7 +5794,7 @@ included = "Vključeno"
 name = "Brezplačni"
 
 [plan.licenseWarning]
-body = "Imate {{total}} uporabnikov, vendar brezplačni nivo podpira le {{limit}} na strežnik. Nadgradite, da bo Stirling PDF deloval nemoteno."
+body = "Imate {{total}} uporabnikov, vendar brezplačni nivo podpira le {{limit}} na strežnik. Nadgradite, da bo AziralPDF deloval nemoteno."
 cta = "Poglej načrte"
 overLimit = "več kot {{limit}}"
 title = "Dosežena brezplačna omejitev samogostovanja"
@@ -6148,7 +6148,7 @@ whatsNewTourDesc = "Ogled posodobljene postavitve"
 
 [quickAccess.toursTooltip]
 admin = "Oglejte si predstavitve tukaj: ogled orodij, ogled nove postavitve V2 in skrbniški ogled."
-user = "Oglejte si predstavitve tukaj: ogled orodij in ogled nove postavitve V2."
+user = "Oglejte si predstavitve tukaj: ogled orodij in ogled nove postavitve . "
 
 [redact]
 submit = "Uredi"
@@ -6733,8 +6733,8 @@ hideTools = "Skrij nedosegljiva orodja ▴"
 messageNoFallback = "Orodja niso na voljo, dokler vaš strežnik ne bo spet na spletu."
 messageWithFallback = "Nekatera orodja zahtevajo povezavo s strežnikom."
 showTools = "Prikaži nedosegljiva orodja ▾"
-title = "Vaš strežnik Stirling-PDF ni dosegljiv"
-toolNotAvailableLocally = "Vaš strežnik Stirling-PDF je brez povezave in \"{{endpoint}}\" ni na voljo v lokalnem zaledju."
+title = "Vaš strežnik AziralPDF ni dosegljiv"
+toolNotAvailableLocally = "Vaš strežnik AziralPDF je brez povezave in \"{{endpoint}}\" ni na voljo v lokalnem zaledju."
 
 [session]
 expired = "Vaša seja je potekla. Osvežite stran in poskusite znova."
@@ -6791,7 +6791,7 @@ user = "Prijavljeni kot"
 
 [settings.connection.mode]
 local = "Samo lokalno"
-saas = "Stirling Cloud"
+saas = "AziralPDF Cloud"
 selfhosted = "Samogostovano"
 
 [settings.developer]
@@ -6806,7 +6806,7 @@ autoUnzipFileLimitDescription = "Največje število datotek za razpakiranje iz Z
 autoUnzipFileLimitTooltip = "Razpakiraj samo, če ZIP vsebuje toliko ali manj datotek. Nastavite višje za razpakiranje večjih ZIP-ov."
 autoUnzipTooltip = "Samodejno razpakira ZIP datoteke, vrnjene iz operacij API. Onemogočite, da ohranite ZIP datoteke nedotaknjene. To ne vpliva na avtomatizirane poteke."
 defaultPdfEditor = "Privzeti urejevalnik PDF"
-defaultPdfEditorActive = "Stirling PDF je vaš privzeti urejevalnik PDF"
+defaultPdfEditorActive = "AziralPDF je vaš privzeti urejevalnik PDF"
 defaultPdfEditorChecking = "Preverjanje..."
 defaultPdfEditorInactive = "Druga aplikacija je nastavljena kot privzeta"
 defaultPdfEditorSet = "Že privzeto"
@@ -6913,7 +6913,7 @@ usageAnalytics = "Analitika uporabe"
 [settings.planBilling]
 currentPlan = "Trenutni načrt"
 loading = "Nalaganje podatkov o zaračunavanju ..."
-notAvailable = "Načrt in zaračunavanje sta na voljo le ob povezavi s Stirling Cloud (način SaaS)."
+notAvailable = "Načrt in zaračunavanje sta na voljo le ob povezavi s AziralPDF Cloud (način SaaS)."
 title = "Načrt in zaračunavanje"
 
 [settings.planBilling.billing]
@@ -7023,13 +7023,13 @@ teams = "Skupine"
 title = "Delovni prostor"
 
 [setup]
-description = "Začnite z izbiro načina uporabe Stirling PDF"
-welcome = "Dobrodošli v Stirling PDF"
+description = "Začnite z izbiro načina uporabe AziralPDF"
+welcome = "Dobrodošli v AziralPDF"
 
 [setup.login]
 connectingTo = "Povezovanje z:"
 hideInstructions = "Skrij navodila"
-instructions = "Za omogočanje prijave na vašem strežniku Stirling PDF:"
+instructions = "Za omogočanje prijave na vašem strežniku AziralPDF:"
 instructionsEnvVar = "Nastavite okoljsko spremenljivko:"
 instructionsOrYml = "Ali v settings.yml:"
 instructionsRestart = "Nato znova zaženite strežnik, da spremembe začnejo veljati."
@@ -7063,16 +7063,16 @@ label = "Uporabniško ime"
 placeholder = "Vnesite uporabniško ime"
 
 [setup.mode.saas]
-description = "Prijavite se s svojim računom Stirling"
-title = "Stirling Cloud"
+description = "Prijavite se s svojim računom AziralPDF"
+title = "AziralPDF Cloud"
 
 [setup.mode.selfhosted]
-description = "Povežite se s svojim strežnikom Stirling PDF"
+description = "Povežite se s svojim strežnikom AziralPDF"
 title = "Samogostovani strežnik"
 
 [setup.saas]
-subtitle = "Prijavite se s svojim računom Stirling"
-title = "Prijavite se v Stirling"
+subtitle = "Prijavite se s svojim računom AziralPDF"
+title = "Prijavite se v AziralPDF"
 
 [setup.selfhosted]
 changeServerLocked = "Vaša organizacija je omejila to aplikacijo na določen strežnik"
@@ -7111,11 +7111,11 @@ step3 = "Znova zaženite strežnik"
 title = "Prijava ni omogočena"
 
 [setup.server.type]
-saas = "Stirling PDF SaaS"
+saas = "AziralPDF SaaS"
 selfhosted = "Samogostovani strežnik"
 
 [setup.server.url]
-description = "Vnesite celoten URL svojega samogostovanega strežnika Stirling PDF"
+description = "Vnesite celoten URL svojega samogostovanega strežnika AziralPDF"
 label = "URL strežnika"
 
 [setup.step1]
@@ -7340,7 +7340,7 @@ passwordsDoNotMatch = "Gesli se ne ujemata"
 passwordTooShort = "Geslo mora imeti vsaj 6 znakov"
 pleaseFillAllFields = "Izpolnite vsa polja"
 signUp = "Registracija"
-subtitle = "Pridružite se Stirling PDF in začnite"
+subtitle = "Pridružite se AziralPDF in začnite"
 title = "Ustvarite račun"
 unexpectedError = "Nepričakovana napaka: {{message}}"
 useEmailInstead = "Namesto tega uporabi e-pošto"
@@ -7627,7 +7627,7 @@ download = "Prenesi"
 downloaded = "Preneseno"
 downloadFailed = "Te datoteke ni mogoče prenesti."
 downloadsCount = "Prenosi: {{count}}"
-emailWarningBody = "Videti je kot e-poštni naslov. Če ta oseba ni uporabnik Stirling PDF, ne bo mogla dostopati do datoteke."
+emailWarningBody = "Videti je kot e-poštni naslov. Če ta oseba ni uporabnik AziralPDF, ne bo mogla dostopati do datoteke."
 emailWarningConfirm = "Vseeno daj v skupno rabo"
 emailWarningTitle = "E-poštni naslov"
 errorTitle = "Skupna raba ni uspela"
@@ -7657,7 +7657,7 @@ manageTitle = "Upravljanje skupne rabe"
 noActivity = "Še ni dejavnosti."
 noLinks = "Ni aktivnih povezav za skupno rabo."
 noSharedUsers = "Noben uporabnik še nima dostopa."
-openInApp = "Odpri v Stirling PDF"
+openInApp = "Odpri v AziralPDF"
 ownerLabel = "Lastnik"
 ownerOnly = "Le lastnik lahko upravlja skupno rabo."
 ownerUnknown = "Neznano"
@@ -7718,28 +7718,28 @@ trialing = "Preizkus"
 
 [survey]
 button = "Izpolnite anketo"
-changes = "Stirling-PDF se je spremenil od zadnje ankete! Če želite izvedeti več, si oglejte objavo v spletnem dnevniku tukaj:"
+changes = "AziralPDF se je spremenil od zadnje ankete! Če želite izvedeti več, si oglejte objavo v spletnem dnevniku tukaj:"
 changes2 = "S temi spremembami dobimo plačano poslovno podporo in financiranje"
-description = "Stirling-PDF nima sledenja, zato želimo slišati od naših uporabnikov, da bi izboljšali Stirling-PDF!"
+description = "AziralPDF nima sledenja, zato želimo slišati od naših uporabnikov, da bi izboljšali AziralPDF!"
 disabled = "(Pojavno okno ankete bo v naslednjih posodobitvah onemogočeno, vendar na voljo na dnu strani)"
 dontShowAgain = "Ne prikaži več"
 nav = "Anketa"
-please = "Prosimo, razmislite o sodelovanju v naši anketi, če želite prispevati k prihodnosti Stirling-PDF!"
-title = "Anketa Stirling-PDF"
+please = "Prosimo, razmislite o sodelovanju v naši anketi, če želite prispevati k prihodnosti AziralPDF!"
+title = "Anketa AziralPDF"
 
 [survey.meeting]
-1 = "Če v službi uporabljate Stirling PDF, bi radi govorili z vami. Ponujamo seje tehnične podpore v zameno za 15-minutno sejo odkrivanja uporabnikov."
+1 = "Če v službi uporabljate AziralPDF, bi radi govorili z vami. Ponujamo seje tehnične podpore v zameno za 15-minutno sejo odkrivanja uporabnikov."
 2 = "To je priložnost za:"
 3 = "Poiščite pomoč pri uvajanju, integracijah ali odpravljanju težav"
 4 = "Zagotovite neposredne povratne informacije o zmogljivosti, robnih primerih in vrzeli v funkcijah"
-5 = "Pomagajte nam izboljšati Stirling PDF za uporabo v podjetju v resničnem svetu"
+5 = "Pomagajte nam izboljšati AziralPDF za uporabo v podjetju v resničnem svetu"
 6 = "Če ste zainteresirani, si lahko rezervirate čas neposredno pri naši ekipi. (samo angleško govoreči)"
-7 = "Veselimo se poglobitve v vaše primere uporabe in izboljšanja Stirling PDF-ja!"
+7 = "Veselimo se poglobitve v vaše primere uporabe in izboljšanja AziralPDF-ja!"
 button = "Rezerviraj srečanje"
 notInterested = "Niste podjetje in/ali vas zanima srečanje?"
 
 [swagger]
-desc = "Oglejte si in preizkusite končne točke Stirling PDF API"
+desc = "Oglejte si in preizkusite končne točke AziralPDF API"
 header = "Dokumentacija API"
 tags = "api,dokumentacija,swagger,končne-točke,razvoj"
 title = "Dokumentacija API"
@@ -7883,7 +7883,7 @@ favorites = "Priljubljene"
 heading = "Vsa orodja (celozaslonski pogled)"
 noResults = "Poskusite prilagoditi iskanje ali preklopiti opise, da najdete, kar potrebujete."
 recommended = "Priporočeno"
-selfHostedOffline = "Zahteva vaš strežnik Stirling-PDF (trenutno brez povezave):"
+selfHostedOffline = "Zahteva vaš strežnik AziralPDF (trenutno brez povezave):"
 showDetails = "Pokaži podrobnosti"
 unavailable = "Onemogočeno s strani skrbnika strežnika:"
 unavailableDependency = "Ni na voljo – na strežniku manjka zahtevano orodje:"
@@ -7892,7 +7892,7 @@ unfavorite = "Odstrani iz priljubljenih"
 [toolPanel.modePrompt]
 chooseFullscreen = "Uporabi celozaslonski način"
 chooseSidebar = "Uporabi način stranske vrstice"
-description = "Predogled obeh postavitev in odločite se, kako želite raziskovati orodja Stirling PDF."
+description = "Predogled obeh postavitev in odločite se, kako želite raziskovati orodja AziralPDF."
 dismiss = "Morda kasneje"
 fullscreenDescription = "Brskajte po vseh orodjih v katalogu, ki pokrije delovni prostor, dokler ne izberete enega."
 fullscreenTitle = "Celozaslonski način - (zastarelo)"
@@ -7986,7 +7986,7 @@ attentionBody = "Vaš skrbnik se mora prijaviti za več informacij. Prosimo, kon
 attentionBodyAdmin = "Preglejte licenčne zahteve, da bo ta strežnik v skladu."
 attentionTitle = "Ta strežnik potrebuje pozornost skrbnika"
 dismiss = "Skrij pasico"
-message = "Izkoristite Stirling PDF z neomejenimi uporabniki in naprednimi funkcijami"
+message = "Izkoristite AziralPDF z neomejenimi uporabniki in naprednimi funkcijami"
 seeInfo = "Poglej informacije"
 title = "Nadgradite na načrt Server"
 upgradeButton = "Nadgradi zdaj"
@@ -8108,7 +8108,7 @@ continued = "Nadaljevanje"
 downloads = "Prenosi"
 entryLabel = "Povzetek podpisa"
 filesEvaluated = "{{count}} obravnavanih datotek"
-footer = "Preverjeno prek Stirling PDF"
+footer = "Preverjeno prek AziralPDF"
 generatedAt = "Ustvarjeno"
 noPdf = "Poročilo PDF bo na voljo po uspešnem preverjanju."
 page = "Stran"

@@ -94,6 +94,28 @@ export interface PdfJsonStream {
   rawData?: string | null;
 }
 
+/** A single vector object (path-painting op) extracted for Stage 3 (d) select/delete. */
+export interface PdfJsonVectorPath {
+  id?: string | null;
+  pageNumber?: number | null;
+  /** "stroke" | "fill" | "fillStroke" | "clip" | "none". */
+  paintType?: string | null;
+  windingRule?: number | null;
+  x?: number | null;
+  y?: number | null;
+  width?: number | null;
+  height?: number | null;
+  left?: number | null;
+  right?: number | null;
+  top?: number | null;
+  bottom?: number | null;
+  strokeColor?: PdfJsonTextColor | null;
+  fillColor?: PdfJsonTextColor | null;
+  deleted?: boolean | null;
+  opIndexStart?: number | null;
+  opIndexEnd?: number | null;
+}
+
 export interface PdfJsonPage {
   pageNumber?: number | null;
   width?: number | null;
@@ -105,6 +127,8 @@ export interface PdfJsonPage {
   imageElements?: PdfJsonImageElement[] | null;
   resources?: unknown;
   contentStreams?: PdfJsonStream[] | null;
+  regenerateContent?: boolean | null;
+  vectorPaths?: PdfJsonVectorPath[] | null;
 }
 
 export interface PdfJsonMetadata {
@@ -171,6 +195,8 @@ export interface TextGroup {
   originalText: string;
   bounds: BoundingBox;
   childLineGroups?: TextGroup[] | null;
+  /** True when the user has repositioned this group; forces a model rebuild. */
+  moved?: boolean;
 }
 
 export const DEFAULT_PAGE_WIDTH = 612;
@@ -188,6 +214,8 @@ export interface PdfTextEditorViewData {
   document: PdfJsonDocument | null;
   groupsByPage: TextGroup[][];
   imagesByPage: PdfJsonImageElement[][];
+  vectorPathsByPage: PdfJsonVectorPath[][];
+  vectorPathsLoadingPage: number | null;
   pagePreviews: Map<number, string>;
   selectedPage: number;
   dirtyPages: boolean[];
@@ -219,7 +247,50 @@ export interface PdfTextEditorViewData {
     },
   ) => void;
   onImageReset: (pageIndex: number, imageId: string) => void;
+  onImageDelete: (pageIndex: number, imageId: string) => void;
+  onAddImage: (pageIndex: number, file: File) => Promise<void>;
+  onRequestVectorPaths: (pageIndex: number) => void;
+  onVectorPathDelete: (pageIndex: number, vectorPathId: string) => void;
+  onAddRedaction: (
+    pageIndex: number,
+    rect: {
+      left: number;
+      bottom: number;
+      width: number;
+      height: number;
+      color: string;
+    },
+  ) => void;
+  onAddText: (
+    pageIndex: number,
+    pdfX: number,
+    baselineY: number,
+    fontSize?: number,
+    color?: string,
+    bold?: boolean,
+    italic?: boolean,
+  ) => string;
+  onAddTextStyle: (
+    pageIndex: number,
+    groupId: string,
+    style: {
+      fontSize?: number;
+      color?: string;
+      bold?: boolean;
+      italic?: boolean;
+    },
+  ) => void;
+  onGroupMove: (
+    pageIndex: number,
+    groupId: string,
+    dxPdf: number,
+    dyPdf: number,
+  ) => void;
   onReset: () => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
   onDownloadJson: () => void;
   onGeneratePdf: () => void;
   onGeneratePdfForNavigation: () => Promise<void>;

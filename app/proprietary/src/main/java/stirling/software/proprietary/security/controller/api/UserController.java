@@ -76,8 +76,14 @@ public class UserController {
             throws SQLException, UnsupportedProviderException {
         String username = usernameAndPass.getUsername();
         String password = usernameAndPass.getPassword();
+        String email = usernameAndPass.getEmail();
         try {
             log.debug("Registration attempt for user: {}", username);
+
+            if (username == null || username.isBlank()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "Username is required"));
+            }
 
             if (userService.usernameExistsIgnoreCase(username)) {
                 log.warn("Registration failed: username already exists: {}", username);
@@ -96,6 +102,21 @@ public class UserController {
                         .body(Map.of("error", "Password is required"));
             }
 
+            if (email == null || email.isBlank()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "Email is required"));
+            }
+            String normalizedEmail = email.trim();
+            if (!normalizedEmail.contains("@") || !normalizedEmail.contains(".")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "Invalid email format"));
+            }
+            if (userRepository.findByEmail(normalizedEmail).isPresent()) {
+                log.warn("Registration failed: email already registered");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "Email already registered"));
+            }
+
             if (licenseSettingsService.wouldExceedLimit(1)) {
                 long availableSlots = licenseSettingsService.getAvailableUserSlots();
                 int maxAllowed = licenseSettingsService.calculateMaxAllowedUsers();
@@ -112,9 +133,10 @@ public class UserController {
             SaveUserRequest.Builder builder =
                     SaveUserRequest.builder()
                             .username(username)
+                            .email(normalizedEmail)
                             .password(password)
                             .team(team)
-                            .enabled(false);
+                            .enabled(true);
             User user = userService.saveUserCore(builder.build());
 
             log.info("User registered successfully: {}", username);
@@ -147,7 +169,13 @@ public class UserController {
     private Map<String, Object> buildUserResponse(User user) {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("id", user.getId());
-        userMap.put("email", user.getUsername()); // Use username as email
+        // Prefer the stored email; fall back to username for legacy accounts
+        // that were created with the email as the username.
+        String emailValue =
+                (user.getEmail() != null && !user.getEmail().isBlank())
+                        ? user.getEmail()
+                        : user.getUsername();
+        userMap.put("email", emailValue);
         userMap.put("username", user.getUsername());
         userMap.put("role", user.getRolesAsString());
         userMap.put("enabled", user.isEnabled());

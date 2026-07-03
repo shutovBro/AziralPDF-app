@@ -93,7 +93,7 @@ RUN set -eux; \
 
 # Write version to a file so it is readable by scripts without env-var inheritance.
 # init-without-ocr.sh reads /etc/stirling_version for the AOT cache fingerprint.
-RUN echo "${VERSION_TAG:-dev}" > /etc/stirling_version
+RUN echo "${VERSION_TAG:-dev}" > /etc/stirling_version && echo "${VERSION_TAG:-dev}" > /etc/aziralpdf_version
 
 # Environment variables
 ENV VERSION_TAG=$VERSION_TAG \
@@ -114,15 +114,15 @@ ENV VERSION_TAG=$VERSION_TAG \
     SAL_TMP=/tmp/stirling-pdf/libre
 
 # Metadata labels
-LABEL org.opencontainers.image.title="Stirling-PDF" \
-      org.opencontainers.image.description="Full version with Calibre, LibreOffice, Tesseract, OCRmyPDF" \
-      org.opencontainers.image.source="https://github.com/Stirling-Tools/Stirling-PDF" \
+LABEL org.opencontainers.image.title="AziralPDF" \
+      org.opencontainers.image.description="AziralPDF — full-featured PDF processing platform" \
+      org.opencontainers.image.source="https://github.com/shutovBro/AziralPDF-app" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.vendor="Stirling-Tools" \
-      org.opencontainers.image.url="https://www.stirlingpdf.com" \
-      org.opencontainers.image.documentation="https://docs.stirlingpdf.com" \
-      maintainer="Stirling-Tools" \
-      org.opencontainers.image.authors="Stirling-Tools" \
+      org.opencontainers.image.vendor="Aziral" \
+      org.opencontainers.image.url="https://pdf.aziral.com" \
+      org.opencontainers.image.documentation="https://pdf.aziral.com/docs" \
+      maintainer="Aziral" \
+      org.opencontainers.image.authors="Aziral" \
       org.opencontainers.image.version="${VERSION_TAG}" \
       org.opencontainers.image.keywords="PDF, manipulation, API, Spring Boot, React"
 

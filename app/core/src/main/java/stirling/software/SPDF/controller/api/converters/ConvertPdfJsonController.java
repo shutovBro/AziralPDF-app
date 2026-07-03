@@ -30,6 +30,7 @@ import stirling.software.SPDF.config.swagger.StandardPdfResponse;
 import stirling.software.SPDF.model.json.PdfJsonDocument;
 import stirling.software.SPDF.model.json.PdfJsonMetadata;
 import stirling.software.SPDF.service.PdfJsonConversionService;
+import stirling.software.SPDF.service.PdfVectorPathService;
 import stirling.software.common.annotations.AutoJobPostMapping;
 import stirling.software.common.annotations.api.ConvertApi;
 import stirling.software.common.enumeration.ResourceWeight;
@@ -50,6 +51,7 @@ public class ConvertPdfJsonController {
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("[\\r\\n\\t]+");
     private static final Pattern NON_PRINTABLE_PATTERN = Pattern.compile("[^\\x20-\\x7E]");
     private final PdfJsonConversionService pdfJsonConversionService;
+    private final PdfVectorPathService pdfVectorPathService;
     private final TempFileManager tempFileManager;
 
     @Autowired(required = false)
@@ -90,6 +92,39 @@ public class ConvertPdfJsonController {
         try {
             logJsonResponse("pdf/text-editor", tempOut.getPath());
             return WebResponseUtils.fileToWebResponse(tempOut, docName, MediaType.APPLICATION_JSON);
+        } catch (Exception e) {
+            tempOut.close();
+            throw e;
+        }
+    }
+
+    @AutoJobPostMapping(
+            consumes = "multipart/form-data",
+            value = "/pdf/vector-paths",
+            resourceWeight = ResourceWeight.MEDIUM_WEIGHT)
+    @Operation(
+            summary = "Extract vector path objects (experimental)",
+            description =
+                    "Diagnostic endpoint for the PDF editor's vector-object feature (Stage 3 d):"
+                            + " extracts content-stream path-painting operations as objects with"
+                            + " PDF-space bounding boxes. Input:PDF Output:JSON Type:SISO")
+    public ResponseEntity<Resource> extractVectorPaths(@ModelAttribute PDFFile request)
+            throws Exception {
+        MultipartFile inputFile = request.getFileInput();
+        if (inputFile == null) {
+            throw ExceptionUtils.createNullArgumentException("fileInput");
+        }
+        TempFile tempOut = tempFileManager.createManagedTempFile(".json");
+        try (OutputStream os = Files.newOutputStream(tempOut.getPath())) {
+            pdfVectorPathService.extractVectorPaths(inputFile, os);
+        } catch (Exception e) {
+            tempOut.close();
+            throw e;
+        }
+        try {
+            logJsonResponse("pdf/vector-paths", tempOut.getPath());
+            return WebResponseUtils.fileToWebResponse(
+                    tempOut, "vector-paths.json", MediaType.APPLICATION_JSON);
         } catch (Exception e) {
             tempOut.close();
             throw e;

@@ -1,6 +1,6 @@
-# Stirling PDF Audit System
+# AziralPDF Audit System
 
-This document provides guidance on how to use the audit system in Stirling PDF.
+This document provides guidance on how to use the audit system in AziralPDF.
 
 ## Overview
 

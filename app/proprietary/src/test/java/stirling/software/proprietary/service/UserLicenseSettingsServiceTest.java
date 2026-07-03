@@ -203,7 +203,10 @@ class UserLicenseSettingsServiceTest {
 
         int result = service.calculateMaxAllowedUsers();
 
-        assertEquals(5, result, "Should fall back to default 5 users if grandfathered is 0");
+        assertEquals(
+                Integer.MAX_VALUE,
+                result,
+                "Should fall back to the unlimited default when grandfathered is 0");
     }
 
     @Test

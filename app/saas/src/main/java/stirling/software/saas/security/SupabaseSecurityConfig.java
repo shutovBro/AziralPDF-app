@@ -264,9 +264,9 @@ public class SupabaseSecurityConfig {
                                 "http://localhost:3000",
                                 "http://localhost:5173",
                                 "http://localhost:8080",
-                                "https://stirling.com",
-                                "https://app.stirling.com",
-                                "https://api.stirling.com");
+                                "https://pdf.aziral.com",
+                                "https://app.aziral.com",
+                                "https://api.aziral.com");
         if (origins.stream().anyMatch(o -> o.contains("*"))) {
             log.warn(
                     "CORS origins contain a wildcard paired with allowCredentials=true: {}."

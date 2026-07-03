@@ -1,10 +1,10 @@
 # Windows PDF Thumbnail Handler
 
-A lightweight COM DLL that provides PDF page-preview thumbnails in Windows Explorer when Stirling-PDF is the default PDF application.
+A lightweight COM DLL that provides PDF page-preview thumbnails in Windows Explorer when AziralPDF is the default PDF application.
 
 ## Why this exists
 
-When Stirling-PDF registers as the default PDF handler, Windows associates `.pdf` files with Stirling's ProgID. Without a thumbnail handler on that ProgID, Explorer falls back to showing the application icon (the big S logo) instead of a page preview. This DLL restores thumbnail previews by implementing the Windows Shell `IThumbnailProvider` COM interface.
+When AziralPDF registers as the default PDF handler, Windows associates `.pdf` files with AziralPDF's ProgID. Without a thumbnail handler on that ProgID, Explorer falls back to showing the application icon (the app logo) instead of a page preview. This DLL restores thumbnail previews by implementing the Windows Shell `IThumbnailProvider` COM interface.
 
 ## How it works
 
@@ -26,7 +26,7 @@ All COM methods are wrapped in `catch_unwind` so a malformed PDF cannot crash Ex
 | **External deps** | None — uses only Windows built-in APIs |
 | **PDF renderer** | `Windows.Data.Pdf` (WinRT, Windows 10+) |
 | **Image decode** | WIC (`IWICImagingFactory`) with BGRA32 format conversion |
-| **COM CLSID** | `{2D2FBE3A-9A88-4308-A52E-7EF63CA7CF48}` |
+| **COM CLSID** | `{F47C4F53-C8B0-414F-ABFA-B9EA8978749C}` |
 | **Threading model** | Apartment (STA — standard for shell extensions) |
 | **Min Windows** | Windows 10 |
 
@@ -34,7 +34,7 @@ All COM methods are wrapped in `catch_unwind` so a malformed PDF cannot crash Ex
 
 The WiX installer (`provisioning.wxs`) registers:
 
-- **CLSID** at `HKLM\SOFTWARE\Classes\CLSID\{2D2FBE3A-...}\InprocServer32` pointing to the DLL
+- **CLSID** at `HKLM\SOFTWARE\Classes\CLSID\{F47C4F53-...}\InprocServer32` pointing to the DLL
 - **Shellex** at `HKLM\SOFTWARE\Classes\.pdf\shellex\{E357FCCD-...}` linking `.pdf` thumbnails to our CLSID
 
 Both are automatically removed on uninstall.
@@ -53,7 +53,7 @@ To build the DLL standalone:
 ```bash
 cd frontend/editor/src-tauri/thumbnail-handler
 cargo build --release
-# Output: target/release/stirling_thumbnail_handler.dll
+# Output: target/release/aziralpdf_thumbnail_handler.dll
 ```
 
 ## Linux / macOS

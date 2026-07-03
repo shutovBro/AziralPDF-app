@@ -47,7 +47,7 @@ export default function LoggedInState() {
             }}
           >
             <LogoIcon
-              alt="Stirling PDF Logo"
+              alt="AziralPDF Logo"
               style={{ width: "64px", height: "64px", objectFit: "contain" }}
             />
           </div>

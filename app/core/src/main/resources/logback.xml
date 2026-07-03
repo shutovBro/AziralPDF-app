@@ -5,7 +5,7 @@
     <!-- Console Appender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{0} - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -13,7 +13,7 @@
     <appender name="AUTHLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/invalid-auths.log</file>
         <encoder>
-            <pattern>%d %p %c{1} [%thread] %m%n</pattern>
+            <pattern>%d %p %c{0} [%thread] %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_PATH}/auth-%d{yyyy-MM-dd}.log</fileNamePattern>
@@ -25,7 +25,7 @@
     <appender name="GENERAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/info.log</file>
         <encoder>
-            <pattern>%d %p %c{1} [%thread] %m%n</pattern>
+            <pattern>%d %p %c{0} [%thread] %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_PATH}/info-%d{yyyy-MM-dd}.log</fileNamePattern>

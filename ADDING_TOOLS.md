@@ -1,4 +1,4 @@
-# Adding New React Tools to Stirling PDF
+# Adding New React Tools to AziralPDF
 
 This guide covers how to add new PDF tools to the React frontend.
 

@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/main/docs/stirling.png" width="80" alt="Stirling PDF logo">
+  <img src="https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/main/docs/stirling.png" width="80" alt="AziralPDF logo">
 </p>
 
-<h1 align="center">Stirling PDF - The Open-Source PDF Platform</h1>
+<h1 align="center">AziralPDF - The Open-Source PDF Platform</h1>
 
-Stirling PDF is a powerful, open-source PDF editing platform. Run it as a personal desktop app, in the browser, or deploy it on your own servers with a private API. Edit, sign, redact, convert, and automate PDFs without sending documents to external services.
+AziralPDF is a powerful, open-source PDF editing platform. Run it as a personal desktop app, in the browser, or deploy it on your own servers with a private API. Edit, sign, redact, convert, and automate PDFs without sending documents to external services.
 
 <p align="center">
   <a href="https://hub.docker.com/r/stirlingtools/stirling-pdf">
@@ -21,7 +21,7 @@ Stirling PDF is a powerful, open-source PDF editing platform. Run it as a person
   </a>
 </p>
 
-![Stirling PDF - Dashboard](images/home-light.png)
+![AziralPDF - Dashboard](images/home-light.png)
 
 ## Key Capabilities
 
@@ -66,4 +66,4 @@ For adding translations, see the [Translation Guide](devGuide/HowToAddNewLanguag
 
 ## License
 
-Stirling PDF is open-core. See [LICENSE](LICENSE) for details.
+AziralPDF is open-core. See [LICENSE](LICENSE) for details.

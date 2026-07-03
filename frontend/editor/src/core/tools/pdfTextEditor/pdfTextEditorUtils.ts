@@ -4,6 +4,7 @@ import {
   PdfJsonPage,
   PdfJsonTextElement,
   PdfJsonImageElement,
+  PdfJsonVectorPath,
   TextGroup,
   DEFAULT_PAGE_HEIGHT,
   DEFAULT_PAGE_WIDTH,
@@ -150,6 +151,10 @@ export const cloneImageElement = (
     : (element.transform ?? undefined),
 });
 
+export const cloneVectorPath = (
+  path: PdfJsonVectorPath,
+): PdfJsonVectorPath => ({ ...path });
+
 const getBaseline = (element: PdfJsonTextElement): number => {
   if (element.textMatrix && element.textMatrix.length === 6) {
     return valueOr(element.textMatrix[5]);
@@ -295,6 +300,14 @@ export const getImageBounds = (element: PdfJsonImageElement): BoundingBox => {
     bottom,
     top,
   };
+};
+
+export const getVectorPathBounds = (path: PdfJsonVectorPath): BoundingBox => {
+  const left = valueOr(path.left ?? path.x, 0);
+  const bottom = valueOr(path.bottom ?? path.y, 0);
+  const right = valueOr(path.right, left + valueOr(path.width, 0));
+  const top = valueOr(path.top, bottom + valueOr(path.height, 0));
+  return { left, right, bottom, top };
 };
 
 const getSpacingHint = (element: PdfJsonTextElement): number => {
@@ -1160,6 +1173,211 @@ export const createMergedElement = (group: TextGroup): PdfJsonTextElement => {
   return merged;
 };
 
+// --- Add-text (Stage 2b) ---------------------------------------------------
+
+// Added text references the engine's built-in fallback fonts (NotoSans family,
+// ids "fallback-noto-sans"[-bold|-italic|-bolditalic]), which cover Latin +
+// Cyrillic and are loaded on demand into the JSON->PDF font map. No font
+// injection is needed; the draw path resolves the referenced fallback id (see
+// buildFontRuns -> ensureFallbackFont). IDs MUST match the fallback ids
+// registered in PdfJsonFallbackFontService on the backend.
+export const ADDED_TEXT_FONT_ID = "fallback-noto-sans";
+export const ADDED_TEXT_FONT_ID_BOLD = "fallback-noto-sans-bold";
+export const ADDED_TEXT_FONT_ID_ITALIC = "fallback-noto-sans-italic";
+export const ADDED_TEXT_FONT_ID_BOLD_ITALIC = "fallback-noto-sans-bolditalic";
+
+const ADDED_TEXT_FONT_IDS: ReadonlySet<string> = new Set([
+  ADDED_TEXT_FONT_ID,
+  ADDED_TEXT_FONT_ID_BOLD,
+  ADDED_TEXT_FONT_ID_ITALIC,
+  ADDED_TEXT_FONT_ID_BOLD_ITALIC,
+]);
+
+/** True for any added-text fallback font id (regular/bold/italic/bold-italic). */
+export const isAddedTextFontId = (fontId?: string | null): boolean =>
+  fontId != null && ADDED_TEXT_FONT_IDS.has(fontId);
+
+/** Maps a bold/italic combination to the matching added-text fallback font id. */
+export const resolveAddedTextFontId = (
+  bold: boolean,
+  italic: boolean,
+): string => {
+  if (bold && italic) {
+    return ADDED_TEXT_FONT_ID_BOLD_ITALIC;
+  }
+  if (bold) {
+    return ADDED_TEXT_FONT_ID_BOLD;
+  }
+  if (italic) {
+    return ADDED_TEXT_FONT_ID_ITALIC;
+  }
+  return ADDED_TEXT_FONT_ID;
+};
+
+/** Derives the bold/italic flags carried by an added-text fallback font id. */
+export const addedTextFontStyleFlags = (
+  fontId?: string | null,
+): { bold: boolean; italic: boolean } => ({
+  bold:
+    fontId === ADDED_TEXT_FONT_ID_BOLD ||
+    fontId === ADDED_TEXT_FONT_ID_BOLD_ITALIC,
+  italic:
+    fontId === ADDED_TEXT_FONT_ID_ITALIC ||
+    fontId === ADDED_TEXT_FONT_ID_BOLD_ITALIC,
+});
+
+// NotoSans metrics (approximate, em-relative) for placing the editable box.
+const ADDED_TEXT_ASCENT_RATIO = 0.74;
+const ADDED_TEXT_DESCENT_RATIO = 0.25;
+export const DEFAULT_ADD_TEXT_FONT_SIZE = 16;
+const DEFAULT_ADD_TEXT_WIDTH_FACTOR = 12;
+export const ADD_TEXT_MIN_FONT_SIZE = 6;
+export const ADD_TEXT_MAX_FONT_SIZE = 120;
+export const DEFAULT_ADD_TEXT_COLOR = "#000000";
+
+/**
+ * Parses a CSS hex colour ("#rgb" or "#rrggbb") into DeviceRGB components in the
+ * 0..1 range expected by the PDF model. Falls back to black on bad input.
+ */
+export const hexToRgbComponents = (hex: string): number[] => {
+  const normalized = (hex ?? "").trim().replace(/^#/, "");
+  let r = 0;
+  let g = 0;
+  let b = 0;
+  if (/^[0-9a-fA-F]{3}$/.test(normalized)) {
+    r = parseInt(normalized[0] + normalized[0], 16);
+    g = parseInt(normalized[1] + normalized[1], 16);
+    b = parseInt(normalized[2] + normalized[2], 16);
+  } else if (/^[0-9a-fA-F]{6}$/.test(normalized)) {
+    r = parseInt(normalized.slice(0, 2), 16);
+    g = parseInt(normalized.slice(2, 4), 16);
+    b = parseInt(normalized.slice(4, 6), 16);
+  }
+  return [r / 255, g / 255, b / 255];
+};
+
+/**
+ * Builds an editable text group for a freshly inserted text box. The carried
+ * element has no textMatrix, so the backend draws it with Matrix(1,0,0,1,x,y)
+ * at the given font size (see applyTextMatrix / resolveFontMatrixSize).
+ */
+export const createAddedTextGroup = (
+  pageIndex: number,
+  idSuffix: string,
+  pdfX: number,
+  baselineY: number,
+  fontSize: number = DEFAULT_ADD_TEXT_FONT_SIZE,
+  color: string = DEFAULT_ADD_TEXT_COLOR,
+  bold: boolean = false,
+  italic: boolean = false,
+): TextGroup => {
+  const fontId = resolveAddedTextFontId(bold, italic);
+  const fillColor = {
+    colorSpace: "DeviceRGB",
+    components: hexToRgbComponents(color),
+  };
+  const template: PdfJsonTextElement = {
+    text: "",
+    fontId,
+    fontSize,
+    fontMatrixSize: fontSize,
+    x: pdfX,
+    y: baselineY,
+    fillColor,
+    renderingMode: 0,
+  };
+  const width = Math.max(fontSize * DEFAULT_ADD_TEXT_WIDTH_FACTOR, 80);
+  const bounds: BoundingBox = {
+    left: pdfX,
+    right: pdfX + width,
+    top: baselineY + fontSize * ADDED_TEXT_ASCENT_RATIO,
+    bottom: baselineY - fontSize * ADDED_TEXT_DESCENT_RATIO,
+  };
+  return {
+    id: `${pageIndex}-added-${idSuffix}`,
+    pageIndex,
+    fontId,
+    fontSize,
+    fontMatrixSize: fontSize,
+    color,
+    fontWeight: bold ? "bold" : null,
+    rotation: null,
+    anchor: null,
+    baselineLength: width,
+    baseline: baselineY,
+    elements: [cloneTextElement(template)],
+    originalElements: [cloneTextElement(template)],
+    text: "",
+    originalText: "",
+    bounds,
+  };
+};
+
+/**
+ * Returns a new added-text group with the given font size, colour and/or
+ * weight/style applied to the group and every carried element. Vertical bounds
+ * are recomputed from the baseline so the editable box tracks the new size; the
+ * horizontal extent (any user width resize) is preserved. Bold/italic swap the
+ * referenced fallback font id (fallback-noto-sans[-bold|-italic|-bolditalic]).
+ * Only meaningful for added-text groups, which always rebuild via the
+ * regenerate path.
+ */
+export const applyAddedTextStyle = (
+  group: TextGroup,
+  style: {
+    fontSize?: number;
+    color?: string;
+    bold?: boolean;
+    italic?: boolean;
+  },
+): TextGroup => {
+  const nextFontSize =
+    style.fontSize !== undefined && Number.isFinite(style.fontSize)
+      ? Math.max(
+          ADD_TEXT_MIN_FONT_SIZE,
+          Math.min(ADD_TEXT_MAX_FONT_SIZE, style.fontSize),
+        )
+      : (group.fontMatrixSize ?? group.fontSize ?? DEFAULT_ADD_TEXT_FONT_SIZE);
+  const nextColor = style.color ?? group.color ?? DEFAULT_ADD_TEXT_COLOR;
+  const nextFill = {
+    colorSpace: "DeviceRGB",
+    components: hexToRgbComponents(nextColor),
+  };
+
+  const currentFlags = addedTextFontStyleFlags(group.fontId);
+  const nextBold = style.bold ?? currentFlags.bold;
+  const nextItalic = style.italic ?? currentFlags.italic;
+  const nextFontId = resolveAddedTextFontId(nextBold, nextItalic);
+
+  const restyleElement = (element: PdfJsonTextElement): PdfJsonTextElement => {
+    const next = cloneTextElement(element);
+    next.fontId = nextFontId;
+    next.fontSize = nextFontSize;
+    next.fontMatrixSize = nextFontSize;
+    next.fillColor = { ...nextFill, components: [...nextFill.components] };
+    return next;
+  };
+
+  const baselineY = group.baseline ?? group.bounds.bottom;
+  const bounds: BoundingBox = {
+    left: group.bounds.left,
+    right: group.bounds.right,
+    top: baselineY + nextFontSize * ADDED_TEXT_ASCENT_RATIO,
+    bottom: baselineY - nextFontSize * ADDED_TEXT_DESCENT_RATIO,
+  };
+
+  return {
+    ...group,
+    fontId: nextFontId,
+    fontSize: nextFontSize,
+    fontMatrixSize: nextFontSize,
+    color: nextColor,
+    fontWeight: nextBold ? "bold" : null,
+    elements: group.elements.map(restyleElement),
+    bounds,
+  };
+};
+
 const distributeTextAcrossElements = (
   text: string | undefined,
   elements: PdfJsonTextElement[],
@@ -1370,12 +1588,55 @@ export const buildUpdatedDocument = (
   return updated;
 };
 
+const IMAGE_GEOMETRY_EPSILON = 0.5;
+
+/**
+ * Detects whether the page's images were structurally changed by the editor (added, removed, or
+ * moved/resized) relative to the originals. Such changes cannot be represented by patching the
+ * preserved content stream, so the page must be flagged for a full model-based regeneration.
+ */
+const imagesStructurallyChanged = (
+  images: PdfJsonImageElement[],
+  baseline: PdfJsonImageElement[],
+): boolean => {
+  if (images.length !== baseline.length) {
+    return true;
+  }
+  const baselineByKey = new Map<string, PdfJsonImageElement>();
+  baseline.forEach((image) => {
+    const key = image.id ?? image.objectName ?? "";
+    baselineByKey.set(key, image);
+  });
+  const near = (a?: number | null, b?: number | null): boolean => {
+    const first = typeof a === "number" && Number.isFinite(a) ? a : 0;
+    const second = typeof b === "number" && Number.isFinite(b) ? b : 0;
+    return Math.abs(first - second) <= IMAGE_GEOMETRY_EPSILON;
+  };
+  for (const image of images) {
+    const key = image.id ?? image.objectName ?? "";
+    const base = baselineByKey.get(key);
+    if (!base) {
+      return true;
+    }
+    if (
+      !near(image.left, base.left) ||
+      !near(image.bottom, base.bottom) ||
+      !near(image.width, base.width) ||
+      !near(image.height, base.height)
+    ) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const restoreGlyphElements = (
   source: PdfJsonDocument,
   groupsByPage: TextGroup[][],
   imagesByPage: PdfJsonImageElement[][],
   originalImagesByPage: PdfJsonImageElement[][],
   forceMergedGroups: boolean = false,
+  vectorPathsByPage: PdfJsonVectorPath[][] = [],
 ): PdfJsonDocument => {
   const updated = deepCloneDocument(source);
   const pages = updated.pages ?? [];
@@ -1383,12 +1644,30 @@ export const restoreGlyphElements = (
   updated.pages = pages.map((page, pageIndex) => {
     const groups = groupsByPage[pageIndex] ?? [];
     const images = imagesByPage[pageIndex] ?? [];
-    const _baselineImages = originalImagesByPage[pageIndex] ?? [];
+    const baselineImages = originalImagesByPage[pageIndex] ?? [];
+    const imagesChanged = imagesStructurallyChanged(images, baselineImages);
+    // Inserted text cannot be patched into the preserved stream by token
+    // rewriting, so any added-text group forces a model regeneration too.
+    const hasAddedText = groups.some((group) =>
+      isAddedTextFontId(group.fontId),
+    );
+    // Repositioned text cannot be patched in place either -> force regeneration.
+    const hasMovedText = groups.some((group) => group.moved === true);
+    // Vector paths marked deleted (Stage 3 d) are only sent when present, so the
+    // backend model stays untouched for pages the user never opened in Objects mode.
+    const vectorPaths = vectorPathsByPage[pageIndex] ?? [];
+    const hasVectorDeletions = vectorPaths.some(
+      (path) => path.deleted === true,
+    );
 
     if (!groups.length) {
       return {
         ...page,
         imageElements: images.map(cloneImageElement),
+        regenerateContent: imagesChanged || undefined,
+        vectorPaths: hasVectorDeletions
+          ? vectorPaths.map(cloneVectorPath)
+          : undefined,
       };
     }
 
@@ -1440,6 +1719,11 @@ export const restoreGlyphElements = (
       textElements: rebuiltElements,
       imageElements: images.map(cloneImageElement),
       contentStreams: page.contentStreams ?? null,
+      regenerateContent:
+        imagesChanged || hasAddedText || hasMovedText || undefined,
+      vectorPaths: hasVectorDeletions
+        ? vectorPaths.map(cloneVectorPath)
+        : undefined,
     };
   });
 
@@ -1529,6 +1813,7 @@ export const getDirtyPages = (
   imagesByPage: PdfJsonImageElement[][],
   originalGroupsByPage: TextGroup[][],
   originalImagesByPage: PdfJsonImageElement[][],
+  vectorPathsByPage: PdfJsonVectorPath[][] = [],
 ): boolean[] => {
   return groupsByPage.map((groups, index) => {
     // Check if any text was modified
@@ -1543,7 +1828,11 @@ export const getDirtyPages = (
       originalImagesByPage[index] ?? [],
     );
 
-    const isDirty = textDirty || groupCountChanged || imageDirty;
+    const vectorDirty = (vectorPathsByPage[index] ?? []).some(
+      (path) => path.deleted === true,
+    );
+
+    const isDirty = textDirty || groupCountChanged || imageDirty || vectorDirty;
 
     if (groupCountChanged || textDirty) {
       console.log(`📄 Page ${index} dirty check:`, {

@@ -30,6 +30,15 @@ class CleanUrlInterceptorTest {
     }
 
     @Test
+    void preHandleAllowsLocalesWithCacheBustParam() throws Exception {
+        // Translation files use a ?v=<build id> cache-bust that must pass through
+        when(request.getRequestURI()).thenReturn("/locales/ru-RU/translation.toml");
+        when(request.getQueryString()).thenReturn("v=abc123");
+        assertTrue(interceptor.preHandle(request, response, new Object()));
+        verify(response, never()).sendRedirect(anyString());
+    }
+
+    @Test
     void preHandleAllowsRequestWithNoQueryString() throws Exception {
         when(request.getRequestURI()).thenReturn("/some-page");
         when(request.getQueryString()).thenReturn(null);

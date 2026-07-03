@@ -22,7 +22,7 @@ pub(crate) const UPDATE_MODE_KEY: &str = "update_mode";
 /// an admin may want to lock updates without locking the connection URL,
 /// or vice versa.
 pub(crate) const UPDATE_MODE_LOCKED_KEY: &str = "update_mode_locked";
-const PROVISIONING_FILE_NAME: &str = "stirling-provisioning.json";
+const PROVISIONING_FILE_NAME: &str = "aziralpdf-provisioning.json";
 
 /// How the desktop auto-updater should behave on startup.
 ///
@@ -457,9 +457,9 @@ mod tests {
         // selector. The file is deleted after apply but the lock flag would
         // persist in the store, locking the user out with no way back.
         let user_path = PathBuf::from(
-            "C:\\Users\\alice\\AppData\\Roaming\\Stirling-PDF\\stirling-provisioning.json",
+            "C:\\Users\\alice\\AppData\\Roaming\\AziralPDF\\aziralpdf-provisioning.json",
         );
-        let system_dir = PathBuf::from("C:\\ProgramData\\Stirling-PDF");
+        let system_dir = PathBuf::from("C:\\ProgramData\\AziralPDF");
 
         assert!(!provisioning_path_is_admin_owned(
             &user_path,
@@ -470,13 +470,13 @@ mod tests {
     #[cfg(target_os = "windows")]
     #[test]
     fn system_provisioning_dir_does_lock_ui() {
-        // A provisioning file in ProgramData\Stirling-PDF (or /Library, /etc)
+        // A provisioning file in ProgramData\AziralPDF (or /Library, /etc)
         // requires admin/root rights to write — those locations are how MSI
         // and Intune deliver policy — so locking the UI here is correct.
         let system_path = PathBuf::from(
-            "C:\\ProgramData\\Stirling-PDF\\stirling-provisioning.json",
+            "C:\\ProgramData\\AziralPDF\\aziralpdf-provisioning.json",
         );
-        let system_dir = PathBuf::from("C:\\ProgramData\\Stirling-PDF");
+        let system_dir = PathBuf::from("C:\\ProgramData\\AziralPDF");
 
         assert!(provisioning_path_is_admin_owned(
             &system_path,
@@ -486,8 +486,8 @@ mod tests {
 
     #[test]
     fn linux_etc_provisioning_does_lock_ui() {
-        let system_path = PathBuf::from("/etc/stirling-pdf/stirling-provisioning.json");
-        let system_dir = PathBuf::from("/etc/stirling-pdf");
+        let system_path = PathBuf::from("/etc/aziral-pdf/aziralpdf-provisioning.json");
+        let system_dir = PathBuf::from("/etc/aziral-pdf");
         assert!(provisioning_path_is_admin_owned(
             &system_path,
             Some(&system_dir),
@@ -497,8 +497,8 @@ mod tests {
     #[test]
     fn linux_home_config_does_not_lock_ui() {
         let user_path =
-            PathBuf::from("/home/alice/.config/Stirling-PDF/stirling-provisioning.json");
-        let system_dir = PathBuf::from("/etc/stirling-pdf");
+            PathBuf::from("/home/alice/.config/AziralPDF/aziralpdf-provisioning.json");
+        let system_dir = PathBuf::from("/etc/aziral-pdf");
         assert!(!provisioning_path_is_admin_owned(
             &user_path,
             Some(&system_dir),
@@ -508,10 +508,10 @@ mod tests {
     #[test]
     fn macos_library_provisioning_does_lock_ui() {
         let system_path = PathBuf::from(
-            "/Library/Application Support/Stirling-PDF/stirling-provisioning.json",
+            "/Library/Application Support/AziralPDF/aziralpdf-provisioning.json",
         );
         let system_dir =
-            PathBuf::from("/Library/Application Support/Stirling-PDF");
+            PathBuf::from("/Library/Application Support/AziralPDF");
         assert!(provisioning_path_is_admin_owned(
             &system_path,
             Some(&system_dir),
@@ -521,10 +521,10 @@ mod tests {
     #[test]
     fn macos_user_library_does_not_lock_ui() {
         let user_path = PathBuf::from(
-            "/Users/alice/Library/Application Support/Stirling-PDF/stirling-provisioning.json",
+            "/Users/alice/Library/Application Support/AziralPDF/aziralpdf-provisioning.json",
         );
         let system_dir =
-            PathBuf::from("/Library/Application Support/Stirling-PDF");
+            PathBuf::from("/Library/Application Support/AziralPDF");
         assert!(!provisioning_path_is_admin_owned(
             &user_path,
             Some(&system_dir),
@@ -537,7 +537,7 @@ mod tests {
         // refuse to lock — the user-AppData file is the only thing we'd be
         // matching against, and that's the case we explicitly want to leave
         // unlocked.
-        let user_path = PathBuf::from("/home/alice/.config/Stirling-PDF/stirling-provisioning.json");
+        let user_path = PathBuf::from("/home/alice/.config/AziralPDF/aziralpdf-provisioning.json");
         assert!(!provisioning_path_is_admin_owned(&user_path, None));
     }
 }

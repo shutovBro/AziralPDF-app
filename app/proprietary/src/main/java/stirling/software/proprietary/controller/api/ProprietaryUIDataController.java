@@ -551,6 +551,8 @@ public class ProprietaryUIDataController {
         summary.setAuthenticationType(user.getAuthenticationType());
         summary.setCreatedAt(user.getCreatedAt());
         summary.setUpdatedAt(user.getUpdatedAt());
+        summary.setLicenseTier(user.getEffectiveLicenseTier().name());
+        summary.setLicenseExpiresAt(user.getLicenseExpiresAt());
 
         // Map team if present
         if (user.getTeam() != null) {

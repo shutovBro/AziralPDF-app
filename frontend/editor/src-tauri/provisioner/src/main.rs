@@ -25,7 +25,7 @@ fn parse_bool(value: &str) -> bool {
 
 /// Normalise the `--update-mode` argument into the lowercase tokens the app
 /// understands. Empty / whitespace values are treated as "not supplied" so
-/// MSI installs that don't pass STIRLING_UPDATE_MODE behave identically to
+/// MSI installs that don't pass AZIRALPDF_UPDATE_MODE behave identically to
 /// earlier builds.
 fn parse_update_mode(value: &str) -> Result<Option<&'static str>, String> {
     match value.trim().to_lowercase().as_str() {
@@ -92,7 +92,7 @@ fn main() -> Result<(), String> {
         .flatten();
 
     // Nothing to write — avoid clobbering an existing provisioning file when
-    // the MSI is invoked without any of STIRLING_SERVER_URL / STIRLING_UPDATE_MODE.
+    // the MSI is invoked without any of AZIRALPDF_SERVER_URL / AZIRALPDF_UPDATE_MODE.
     if url.is_none() && update_mode.is_none() {
         return Ok(());
     }

@@ -24,6 +24,7 @@ export default function Signup() {
   const { session, loading } = useAuth();
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -41,12 +42,12 @@ export default function Signup() {
 
   // Set document meta
   useDocumentMeta({
-    title: `${t("signup.title", "Create an account")} - Stirling PDF`,
+    title: `${t("signup.title", "Create an account")} - AziralPDF`,
     description: t(
       "app.description",
       "The Free Adobe Acrobat alternative (10M+ Downloads)",
     ),
-    ogTitle: `${t("signup.title", "Create an account")} - Stirling PDF`,
+    ogTitle: `${t("signup.title", "Create an account")} - AziralPDF`,
     ogDescription: t(
       "app.description",
       "The Free Adobe Acrobat alternative (10M+ Downloads)",
@@ -59,7 +60,13 @@ export default function Signup() {
   const { signUp } = useAuthService();
 
   const handleSignUp = async () => {
-    const validation = validateSignupForm(email, password, confirmPassword);
+    const validation = validateSignupForm(
+      email,
+      password,
+      confirmPassword,
+      undefined,
+      username,
+    );
     if (!validation.isValid) {
       setError(validation.error);
       setFieldErrors(validation.fieldErrors || {});
@@ -71,7 +78,7 @@ export default function Signup() {
       setError(null);
       setFieldErrors({});
 
-      const result = await signUp(email, password, "");
+      const result = await signUp(username.trim(), email, password);
 
       if (result.user) {
         // Show success message and redirect to login
@@ -94,16 +101,18 @@ export default function Signup() {
     <AuthLayout>
       <LoginHeader
         title={t("signup.title", "Create an account")}
-        subtitle={t("signup.subtitle", "Join Stirling PDF")}
+        subtitle={t("signup.subtitle", "Join AziralPDF")}
       />
 
       <ErrorMessage error={error} />
 
       {/* Signup form - shown immediately */}
       <SignupForm
+        username={username}
         email={email}
         password={password}
         confirmPassword={confirmPassword}
+        setUsername={setUsername}
         setEmail={setEmail}
         setPassword={setPassword}
         setConfirmPassword={setConfirmPassword}
@@ -111,6 +120,7 @@ export default function Signup() {
         isSubmitting={isSigningUp}
         fieldErrors={fieldErrors}
         showName={false}
+        showUsername={true}
         showTerms={false}
       />
 

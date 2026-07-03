@@ -67,6 +67,15 @@ const AppConfigModalInner: React.FC<AppConfigModalProps> = ({
     }
   }, [location.pathname, opened, navigate]);
 
+  // AziralPDF: the upstream Stirling "Plan" pricing storefront was removed from
+  // the nav. Various legacy "upgrade" links still point at /settings/adminPlan,
+  // so redirect that route to General instead of rendering a blank panel.
+  useEffect(() => {
+    if (opened && active === "adminPlan") {
+      navigate("/settings/general", { replace: true });
+    }
+  }, [opened, active, navigate]);
+
   useEffect(() => {
     if (opened) {
       // Keep search closed initially by moving autofocus away from the searchable Select input.

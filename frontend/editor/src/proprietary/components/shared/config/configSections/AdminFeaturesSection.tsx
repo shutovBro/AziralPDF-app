@@ -67,7 +67,7 @@ export default function AdminFeaturesSection() {
       } = {
         serverCertificate: systemData.serverCertificate || {
           enabled: true,
-          organizationName: "Stirling-PDF",
+          organizationName: "AziralPDF",
           validity: 365,
           regenerateOnStartup: false,
         },
@@ -189,7 +189,7 @@ export default function AdminFeaturesSection() {
             <Text size="xs" c="dimmed">
               {t(
                 "admin.settings.features.serverCertificate.description",
-                'Configure server-side certificate generation for "Sign with Stirling-PDF" functionality',
+                'Configure server-side certificate generation for "Sign with AziralPDF" functionality',
               )}
             </Text>
 
@@ -210,7 +210,7 @@ export default function AdminFeaturesSection() {
                 <Text size="xs" c="dimmed" mt={4}>
                   {t(
                     "admin.settings.features.serverCertificate.enabled.description",
-                    'Enable server-side certificate for "Sign with Stirling-PDF" option',
+                    'Enable server-side certificate for "Sign with AziralPDF" option',
                   )}
                 </Text>
               </div>
@@ -258,7 +258,7 @@ export default function AdminFeaturesSection() {
                   "Organization name for generated certificates",
                 )}
                 value={
-                  settings.serverCertificate?.organizationName || "Stirling-PDF"
+                  settings.serverCertificate?.organizationName || "AziralPDF"
                 }
                 onChange={(e) =>
                   setSettings({
@@ -269,7 +269,7 @@ export default function AdminFeaturesSection() {
                     },
                   })
                 }
-                placeholder="Stirling-PDF"
+                placeholder="AziralPDF"
                 disabled={!loginEnabled}
               />
             </div>

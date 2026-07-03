@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "Stirling-PDF",
+  "productName": "AziralPDF",
   "version": "2.12.0",
-  "identifier": "stirling.pdf.dev",
+  "identifier": "com.aziral.pdf",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:5173",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Stirling-PDF",
+        "title": "AziralPDF",
         "width": 1280,
         "height": 800,
         "resizable": true,
@@ -23,9 +23,9 @@
   },
   "bundle": {
     "active": true,
-    "createUpdaterArtifacts": true,
-    "publisher": "Stirling PDF Inc.",
-    "targets": ["deb", "rpm", "appimage", "dmg", "app", "msi"],
+    "createUpdaterArtifacts": false,
+    "publisher": "AziralPDF Inc.",
+    "targets": ["deb", "rpm", "dmg", "app", "msi"],
     "icon": [
       "icons/icon.png",
       "icons/icon.icns",
@@ -47,10 +47,10 @@
     ],
     "linux": {
       "deb": {
-        "desktopTemplate": "stirling-pdf.desktop"
+        "desktopTemplate": "aziralpdf.desktop"
       },
       "rpm": {
-        "desktopTemplate": "stirling-pdf.desktop"
+        "desktopTemplate": "aziralpdf.desktop"
       },
       "appimage": {
         "bundleMediaFramework": false
@@ -82,12 +82,12 @@
     },
     "deep-link": {
       "desktop": {
-        "schemes": ["stirlingpdf"]
+        "schemes": ["aziralpdf"]
       }
     },
     "updater": {
       "endpoints": [
-        "https://github.com/Stirling-Tools/Stirling-PDF/releases/latest/download/latest.json"
+        "https://github.com/shutovBro/AziralPDF-app/releases/latest/download/latest.json"
       ],
       "dialog": false,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDZEREM2QTgwNjdGNzdCOUQKUldTZGUvZG5nR3JjYmZ4TlZ3YVpHTVIzd2hBT2c4c000RDNIN2tLZENEblE4ZXFhU3J5V0lQanEK",

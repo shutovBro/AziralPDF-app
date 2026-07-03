@@ -82,7 +82,7 @@ export const getDisabledLabel = (
   if (disabledReason === "selfHostedOffline") {
     return {
       key: "toolPanel.fullscreen.selfHostedOffline",
-      fallback: "Requires your Stirling-PDF server (currently offline):",
+      fallback: "Requires your AziralPDF server (currently offline):",
     };
   }
   if (disabledReason === "missingDependency") {

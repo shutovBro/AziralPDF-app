@@ -1,5 +1,6 @@
 package stirling.software.proprietary.security.controller.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
@@ -29,6 +31,7 @@ import stirling.software.proprietary.security.model.api.user.UsernameAndPass;
 import stirling.software.proprietary.security.repository.TeamRepository;
 import stirling.software.proprietary.security.service.EmailService;
 import stirling.software.proprietary.security.service.LoginAttemptService;
+import stirling.software.proprietary.security.service.SaveUserRequest;
 import stirling.software.proprietary.security.service.TeamService;
 import stirling.software.proprietary.security.service.UserService;
 import stirling.software.proprietary.security.session.SessionPersistentRegistry;
@@ -90,22 +93,40 @@ class UserControllerTest {
     }
 
     @Test
+    void registerRejectsMissingUsername() throws Exception {
+        UsernameAndPass payload = new UsernameAndPass();
+        payload.setPassword("pw");
+
+        mockMvc.perform(
+                        post("/api/v1/user/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Username is required"));
+
+        verify(userService, never()).saveUserCore(any());
+    }
+
+    @Test
     void registerCreatesUserWhenValid() throws Exception {
         UsernameAndPass payload = new UsernameAndPass();
-        payload.setUsername("new@example.com");
+        payload.setUsername("newuser");
+        payload.setEmail("new@example.com");
         payload.setPassword("pw");
         Team defaultTeam = new Team();
         defaultTeam.setName(TeamService.DEFAULT_TEAM_NAME);
 
-        when(userService.usernameExistsIgnoreCase("new@example.com")).thenReturn(false);
-        when(userService.isUsernameValid("new@example.com")).thenReturn(true);
+        when(userService.usernameExistsIgnoreCase("newuser")).thenReturn(false);
+        when(userService.isUsernameValid("newuser")).thenReturn(true);
+        when(userRepository.findByEmail("new@example.com")).thenReturn(Optional.empty());
         when(licenseSettingsService.wouldExceedLimit(1)).thenReturn(false);
         when(teamRepository.findByName(TeamService.DEFAULT_TEAM_NAME))
                 .thenReturn(Optional.of(defaultTeam));
 
         User savedUser = new User();
-        savedUser.setUsername("new@example.com");
-        savedUser.setEnabled(false);
+        savedUser.setUsername("newuser");
+        savedUser.setEmail("new@example.com");
+        savedUser.setEnabled(true);
         when(userService.saveUserCore(any())).thenReturn(savedUser);
 
         mockMvc.perform(
@@ -113,7 +134,33 @@ class UserControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(payload)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.user.username").value("new@example.com"));
+                .andExpect(jsonPath("$.user.username").value("newuser"));
+
+        ArgumentCaptor<SaveUserRequest> requestCaptor =
+                ArgumentCaptor.forClass(SaveUserRequest.class);
+        verify(userService).saveUserCore(requestCaptor.capture());
+        assertThat(requestCaptor.getValue().isEnabled()).isTrue();
+        assertThat(requestCaptor.getValue().getEmail()).isEqualTo("new@example.com");
+        assertThat(requestCaptor.getValue().getUsername()).isEqualTo("newuser");
+    }
+
+    @Test
+    void registerRejectsMissingEmail() throws Exception {
+        UsernameAndPass payload = new UsernameAndPass();
+        payload.setUsername("newuser");
+        payload.setPassword("pw");
+
+        when(userService.usernameExistsIgnoreCase("newuser")).thenReturn(false);
+        when(userService.isUsernameValid("newuser")).thenReturn(true);
+
+        mockMvc.perform(
+                        post("/api/v1/user/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Email is required"));
+
+        verify(userService, never()).saveUserCore(any());
     }
 
     @Test

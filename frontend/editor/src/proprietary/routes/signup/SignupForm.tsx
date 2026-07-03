@@ -6,11 +6,13 @@ import { SignupFieldErrors } from "@app/routes/signup/SignupFormValidation";
 
 interface SignupFormProps {
   name?: string;
+  username?: string;
   email: string;
   password: string;
   confirmPassword: string;
   agree?: boolean;
   setName?: (name: string) => void;
+  setUsername?: (username: string) => void;
   setEmail: (email: string) => void;
   setPassword: (password: string) => void;
   setConfirmPassword: (password: string) => void;
@@ -19,16 +21,19 @@ interface SignupFormProps {
   isSubmitting: boolean;
   fieldErrors?: SignupFieldErrors;
   showName?: boolean;
+  showUsername?: boolean;
   showTerms?: boolean;
 }
 
 export default function SignupForm({
   name = "",
+  username = "",
   email,
   password,
   confirmPassword,
   agree = true,
   setName,
+  setUsername,
   setEmail,
   setPassword,
   setConfirmPassword,
@@ -37,6 +42,7 @@ export default function SignupForm({
   isSubmitting,
   fieldErrors = {},
   showName = false,
+  showUsername = false,
   showTerms = false,
 }: SignupFormProps) {
   const { t } = useTranslation();
@@ -62,6 +68,25 @@ export default function SignupForm({
               value={name}
               onChange={(e) => setName?.(e.target.value)}
               error={fieldErrors.name}
+              classNames={{ label: "auth-label" }}
+            />
+          </div>
+        )}
+
+        {showUsername && (
+          <div className="auth-field">
+            <TextInput
+              id="username"
+              label={t("signup.username", "Username")}
+              name="username"
+              autoComplete="username"
+              placeholder={t("signup.enterUsername", "Choose a username")}
+              value={username}
+              onChange={(e) => setUsername?.(e.target.value)}
+              onKeyDown={(e) =>
+                e.key === "Enter" && !isSubmitting && onSubmit()
+              }
+              error={fieldErrors.username}
               classNames={{ label: "auth-label" }}
             />
           </div>
@@ -154,6 +179,7 @@ export default function SignupForm({
         onClick={onSubmit}
         disabled={
           isSubmitting ||
+          (showUsername && !username) ||
           !email ||
           !password ||
           !confirmPassword ||

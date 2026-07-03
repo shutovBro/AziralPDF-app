@@ -11,4 +11,7 @@ public class UsernameAndPass extends Username {
 
     @Schema(description = "password of user", format = "password")
     private String password;
+
+    @Schema(description = "email address of user (used for self-registration)")
+    private String email;
 }

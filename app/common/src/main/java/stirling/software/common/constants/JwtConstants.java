@@ -38,7 +38,7 @@ public final class JwtConstants {
     public static final long SECONDS_PER_MINUTE = 60L;
 
     /** JWT issuer identifier. */
-    public static final String ISSUER = "https://stirling.com";
+    public static final String ISSUER = "https://pdf.aziral.com";
 
     /**
      * Maximum refresh attempts allowed within the grace period window.

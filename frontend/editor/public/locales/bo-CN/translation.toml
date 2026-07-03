@@ -878,7 +878,7 @@ description = "གདམ་གའི་ཁྱད་ཆོས་དང་བྱ�
 title = "ཁྱད་ཆོས"
 
 [admin.settings.features.serverCertificate]
-description = "\"Sign with Stirling-PDF\" བྱེད་ནུས་ལ་སར་བར་གྱི་ལག་འཁྱེར་བཟོ་སྟངས་སྒྲིག་བཀོད་བྱེད།"
+description = "\"Sign with AziralPDF\" བྱེད་ནུས་ལ་སར་བར་གྱི་ལག་འཁྱེར་བཟོ་སྟངས་སྒྲིག་བཀོད་བྱེད།"
 label = "སར་བར་ལག་ཁྱེར།"
 
 [admin.settings.features.serverCertificate.enabled]
@@ -1402,7 +1402,7 @@ description = "འགོ་སློངས་ན་ ཐོ་ཡིག་དུ�
 label = "སྤྱོད་མཁན ID དམིགས་བསལ་ཆོག"
 
 [admin.settings.telegram.enabled]
-description = "ཁྱེད་ཀྱིས་སྒྲིག་འགོད་བྱས་ Telegram bot བརྒྱུད་པར་སྤྱོད་མཁན་ཚོས Stirling PDF དང་འབྲེལ་བ་བྱེད་ཆོག"
+description = "ཁྱེད་ཀྱིས་སྒྲིག་འགོད་བྱས་ Telegram bot བརྒྱུད་པར་སྤྱོད་མཁན་ཚོས AziralPDF དང་འབྲེལ་བ་བྱེད་ཆོག"
 label = "Telegram Bot འགོ་སློང"
 
 [admin.settings.telegram.feedback]
@@ -2491,7 +2491,7 @@ bullet1 = "PEMདང་། PKCS12། JKS། སར་བར་གྱི་ལག
 bullet2 = "PDF ཐོག་མིང་རྟགས་སྟོན་པའམ་ཡང་ན་སྦས་སྐུང་བྱེད་པའི་གདམ་ག།"
 bullet3 = "རྒྱུ་མཚན་དང་ས་གནས་དང་མིང་རྟགས་བཀོད་པའི་མིང་ཁ་སྣོན་བྱེད།"
 bullet4 = "མཐོང་ཐུབ་པའི་མཚན་རྟགས་བཀོད་དགོས་མིན་ཤོག་ལྷེ་གང་འདེམས་དགོས།"
-bullet5 = "'Sign with Stirling-PDF' གདམ་ཁ་སྟབས་བདེ་ལ་སར་བར་གྱི་ལག་འཁྱེར་བེད་སྤྱོད་བྱེད་དགོས།"
+bullet5 = "'Sign with AziralPDF' གདམ་ཁ་སྟབས་བདེ་ལ་སར་བར་གྱི་ལག་འཁྱེར་བེད་སྤྱོད་བྱེད་དགོས།"
 text = "PDF ལ་མིང་རྟགས་བཀོད་པར་ཁྱེད་ལ་དྲ་རྒྱའི་ལག་ཁྱེར་དགོས། (དཔེར་ན། PEM, PKCS12, ཡང་ན་ JKS ལྟ་བུ) ཁྱེད་ཀྱིས་མིང་རྟགས་དེ་ཡིག་ཆའི་སྟེང་མཐོང་ཐུབ་པ་བྱ་ཆོག་པའམ་ཡང་ན་བདེ་འཇགས་ཆེད་དུ་མཐོང་མི་ཐུབ་པའི་གནས་སུ་འཇོག་ཐུབ།"
 title = "མཚན་རྟགས་ཁ་སྣོན་བྱེད་པ།"
 
@@ -3066,7 +3066,7 @@ system = "མ་ལག་སྒྲིག་བཀོད།"
 [connectionMode.status]
 localOffline = "དྲྭ་ཐོག་མེད་པའི་ཐབས་ལམ་འཁོར་བཀོལ་བཞིན"
 localOnline = "དྲྭ་ཐོག་མེད་པའི་ཐབས་ལམ་འཁོར་བཀོལ་བཞིན"
-saas = "Stirling Cloud ལ་མཐུད་ཟིན"
+saas = "AziralPDF Cloud ལ་མཐུད་ཟིན"
 selfhostedChecking = "རང་དབང་ཞབས་ཞུ་ལ་མཐུད་ཟིན (ཞིབ་བཤེར...)"
 selfhostedOffline = "རང་དབང་ཞབས་ཞུ་འཐུབ་མི་ཐུབ"
 selfhostedOnline = "རང་དབང་ཞབས་ཞུ་ལ་མཐུད་ཟིན"
@@ -3383,7 +3383,7 @@ unexpectedError = "ཡིག་ཆ་དེ་ལ་ནོར་འཁྲུལ�
 [defaultApp]
 description = "ཁྱེད་ཀྱིས་འདི་རྗེས་སུ་ཁྱེད་རང་གི་མ་ལག་སྒྲིག་སྟངས་ནང་བསྒྱུར་ཐུབ།"
 dismiss = "འབུད་པ"
-message = "ཁྱེད་རང་གིས་Stirling PDF དེ་ཁྱེད་རང་གི་སྔོན་སྒྲིག་PDF རྩོམ་སྒྲིག་ཆས་ལ་སྒྲིག་འདོད་དམ།"
+message = "ཁྱེད་རང་གིས་AziralPDF དེ་ཁྱེད་རང་གི་སྔོན་སྒྲིག་PDF རྩོམ་སྒྲིག་ཆས་ལ་སྒྲིག་འདོད་དམ།"
 notNow = "ད་ལྟ་མིན"
 setDefault = "སྔོན་སྒྲིག་སྒྲིག་འཇུག་བྱེད་པ།"
 title = "སྔོན་སྒྲིག་PDFམཉེན་ཆས་ལྟར་སྒྲིག་དགོས།"
@@ -4021,7 +4021,7 @@ invisible = "མཐོང་མི་རུང (metadata ཙམ)"
 location = "གནས་ཡུལ:"
 logo = "ལས་རྟགས:"
 logoHidden = "ལས་རྟགས་མེད"
-logoShown = "Stirling PDF ལས་རྟགས་མངོན"
+logoShown = "AziralPDF ལས་རྟགས་མངོན"
 participantCount = "{{count}} ཞུགས་མཁན་རིམ་པ་ལྟར་མཛུབ་འགན"
 participants = "ཞུགས་མཁན"
 reason = "རྒྱུ་མཚན:"
@@ -4500,7 +4500,7 @@ welcomeTitle = "ཁྱེད་རང་གདན་འདྲེན་ཞུས�
 [landing]
 addFiles = "ཡིག་ཆ་ཁ་སྣོན་བྱེད།"
 heroSubtitle = "འགོ་སློང་བྱེད་དུ PDF ཞིག་འདྲུད་ནས་བཙུགས་ ཡང་ན་ ཡོད་པའི་ PDF ཞུགས་སྣོན་བྱས།"
-heroTitle = "Stirling PDF"
+heroTitle = "AziralPDF"
 mobileUpload = "ཁ་པར་ནས་ཡར་འཇུག"
 openFromComputer = "གློག་ཀླད་ནས་ཁ་ཕྱེ་བ།"
 uploadFromComputer = "གློག་ཀླད་ནས་ཡར་བླངས།"
@@ -4526,7 +4526,7 @@ title = "གསུམ་པའི་ཕྱོགས་ནས་ཆོག་མ�
 version = "པར་གཞི"
 
 [localMode]
-toolUnavailable = "ལག་ཆ་འདི་ལ་རྩིས་ཁྲོད་དགོས། Stirling Cloud ལ་ནང་འཇུག ཡང་ན་རང་དབང་ཞབས་ཞུ་ལ་མཐུད་ནས་སྤྱོད།"
+toolUnavailable = "ལག་ཆ་འདི་ལ་རྩིས་ཁྲོད་དགོས། AziralPDF Cloud ལ་ནང་འཇུག ཡང་ན་རང་དབང་ཞབས་ཞུ་ལ་མཐུད་ནས་སྤྱོད།"
 
 [localMode.banner]
 message = "ལག་ཆ་ཡོངས་འབྱེད་པར་ནང་འཇུག་བྱོས།"
@@ -4602,7 +4602,7 @@ signinTitle = "ཡིག་རྟགས་བཀོད་རོགས་གན�
 signInWith = "ནང་དུ་ཞུགས་པ།"
 signOut = "མིང་རྟགས་བཀོད་པ།"
 ssoSignIn = "མིང་རྟགས་གཅིག་བརྒྱུད་ནས་ནང་འཛུལ་བྱེད་པ།"
-subtitle = "Stirling PDF ལ་ཡང་བསྐྱར་ནང་འཇུག"
+subtitle = "AziralPDF ལ་ཡང་བསྐྱར་ནང་འཇུག"
 title = "མཚན་རྟགས་བཀོད་པ།"
 toManySessions = "ཁྱེད་ལ་ལས་རིམ་མང་པོ་འདུག"
 unexpectedError = "རྗེས་འགྲོ་མ་ངེས་པའི་ནོར་འཁྲུལ: {{message}}"
@@ -4934,7 +4934,7 @@ titleWithOs = "{{osLabel}} ལ་ཕབ་ལེན།"
 [onboarding.freeTrial]
 afterTrialWithoutPayment = "ཁྱེད་ཀྱི་ཚོད་ལྟ་མཇུག་སྒྲིལ་རྗེས་ རེན་མེད་རིམ་པས་མུ་མཐུད། Pro ལ་མུ་མཐུད་སྤྱོད་དགོས་ན་གླ་ཆ་ཐབས་ལམ་ཁ་སྣོན་བྱོས།"
 afterTrialWithPayment = "ཚོད་ལྟ་མཇུག་སྒྲིལ་སྐབས་ཁྱེད་ཀྱི Pro མངག་འདོན་རང་འགུལ་གྱིས་འགོ་རྩོམ།"
-body = "ཚོད་ལྟ་དུས་སུ Stirling PDF Pro ཁྱད་ཆོས་ཡོངས་སུ་སྤྱད་ཆོག། སྒྲིག་བཅོས་ཚད་མེད་ ཡིག་ཆ་ཆེ་ཤོས་བཙུགས་ཆོག དང་གཙོ་རིམ་བཟོ་སྒྲུབ་ཐོབ།"
+body = "ཚོད་ལྟ་དུས་སུ AziralPDF Pro ཁྱད་ཆོས་ཡོངས་སུ་སྤྱད་ཆོག། སྒྲིག་བཅོས་ཚད་མེད་ ཡིག་ཆ་ཆེ་ཤོས་བཙུགས་ཆོག དང་གཙོ་རིམ་བཟོ་སྒྲུབ་ཐོབ།"
 daysRemaining = "{{days}} ཉིན་ལྷག་ལས་ཡོད"
 daysRemainingSingular = "{{days}} ཉིན་ལྷག་ལས་ཡོད"
 title = "ཁྱེད་ཀྱི 30-ཉིན་ Pro ཚོད་ལྟ"
@@ -4951,9 +4951,9 @@ userTitle = "འཆར་གཞིའི་སྤྱི་བསྡོམས།"
 message = "ཉེ་ཆར་མཉེན་ཆས་དེ་ལ་འགྱུར་བ་ཆེན་པོ་བྱུང་ཡོད། ཁྱེད་ཀྱི་གསབ་ལེན་བདག་པོའི་དོ་སྣང་དགོས་སྲིད། ཁྱེད་རང་གི་ལས་འགན་མུ་མཐུད་དུ་གཏན་འཁེལ་གནང་རོགས།"
 
 [onboarding.serverLicense]
-freeBody = "ང་ཚོའི <strong>Open-Core</strong> ཆོག་མཆན་ནས་སར་བར་རེ་ལ་སྤྱོད་མཁན་<strong>{{freeTierLimit}}</strong> བར་རིན་མེད་དུ་ཆོག་པ་ཡིན། མ་ཆད་པར་འཕེལ་རྒྱས་བྱ་ཆེད་ Stirling Server འཆར་གཞི་ལ་<strong>སྡོད་སྒྲིག་མཐའ་མེད</strong> དང་ <strong>SSO support</strong> སྤྲོད་པ་དེ་ $99/server/mo རིན་གོང་ཡིན།"
+freeBody = "ང་ཚོའི <strong>Open-Core</strong> ཆོག་མཆན་ནས་སར་བར་རེ་ལ་སྤྱོད་མཁན་<strong>{{freeTierLimit}}</strong> བར་རིན་མེད་དུ་ཆོག་པ་ཡིན། མ་ཆད་པར་འཕེལ་རྒྱས་བྱ་ཆེད་ AziralPDF Server འཆར་གཞི་ལ་<strong>སྡོད་སྒྲིག་མཐའ་མེད</strong> དང་ <strong>SSO support</strong> སྤྲོད་པ་དེ་ $99/server/mo རིན་གོང་ཡིན།"
 freeTitle = "སར་བར་ལག་ཁྱེར།"
-overLimitBody = "ང་ཚོའི་ཆོག་མཆན་ནས་སར་བར་རེ་ལ་སྤྱོད་མཁན་<strong>{{freeTierLimit}}</strong> བར་རིན་མེད་དུ་ཆོག་པ་ཡིན། ཁྱེད་ལ་<strong>{{overLimitUserCopy}}</strong> Stirling སྤྱོད་མཁན་ཡོད། མ་ཆད་པར་མུ་མཐུད་བྱ་དགོས་ན་ Stirling Server འཆར་གཞི་ལ་རིམ་སྤོར་བྱོས། <strong>སྡོད་སྒྲིག་མཐའ་མེད</strong> དང་ PDF ཡིག་གཟུགས་རྩོམ་སྒྲིག དེ་བཞིན་འཛིན་སྐྱོང་ཆ་ཚང་ $99/server/mo རིན་གོང་ཡིན།"
+overLimitBody = "ང་ཚོའི་ཆོག་མཆན་ནས་སར་བར་རེ་ལ་སྤྱོད་མཁན་<strong>{{freeTierLimit}}</strong> བར་རིན་མེད་དུ་ཆོག་པ་ཡིན། ཁྱེད་ལ་<strong>{{overLimitUserCopy}}</strong> AziralPDF སྤྱོད་མཁན་ཡོད། མ་ཆད་པར་མུ་མཐུད་བྱ་དགོས་ན་ AziralPDF Server འཆར་གཞི་ལ་རིམ་སྤོར་བྱོས། <strong>སྡོད་སྒྲིག་མཐའ་མེད</strong> དང་ PDF ཡིག་གཟུགས་རྩོམ་སྒྲིག དེ་བཞིན་འཛིན་སྐྱོང་ཆ་ཚང་ $99/server/mo རིན་གོང་ཡིན།"
 overLimitTitle = "སར་བར་ཆོག་མཆན་དགོས་པ།"
 seePlans = "འཆར་གཞི་ལ་གཟིགས།"
 skip = "ད་ལྟ་མཆོང་།"
@@ -5794,7 +5794,7 @@ included = "བཅས་པ་ཚུད་ཡོད།"
 name = "རང་མོས"
 
 [plan.licenseWarning]
-body = "ཁྱེད་ལ་{{total}} སྤྱོད་མཁན་ཡོད་པ་ཡིན་ན་ཡང་། རིན་མེད་གནས་ཚད་ནི་སར་བར་རེ་ལ་{{limit}} ཙམ་རང་ལ་རྒྱབ་སྐྱོར་བྱེད། Stirling PDF ཚགས་པའི་ངང་འགྲོ་བར་རིམ་སྤོར་བྱོས།"
+body = "ཁྱེད་ལ་{{total}} སྤྱོད་མཁན་ཡོད་པ་ཡིན་ན་ཡང་། རིན་མེད་གནས་ཚད་ནི་སར་བར་རེ་ལ་{{limit}} ཙམ་རང་ལ་རྒྱབ་སྐྱོར་བྱེད། AziralPDF ཚགས་པའི་ངང་འགྲོ་བར་རིམ་སྤོར་བྱོས།"
 cta = "འཆར་གཞི་ལ་གཟིགས།"
 overLimit = "{{limit}} ལས་མང་བ"
 title = "རིན་མེད་རང་གཉེར་གྱི་ཚད་བཀག་བསླེབས་པ།"
@@ -6733,8 +6733,8 @@ hideTools = "མི་འཐོབ་ལག་ཆ་སྦེད་ ▴"
 messageNoFallback = "ཁྱེད་ཀྱི་ཞབས་ཞུ་དྲྭ་ཐོག་ལ་ཕྱིར་འབྱོར་མ་བྱས་བར་ལག་ཆ་མི་འཐོབ།"
 messageWithFallback = "ལག་ཆ་ཁ་ཤས་ལ་ཞབས་ཞུ་མཐུད་དགོས།"
 showTools = "མི་འཐོབ་ལག་ཆ་ལྟ་ ▾"
-title = "ཁྱེད་ཀྱི Stirling-PDF ཞབས་ཞུ་ལ་མཐུད་མི་ཐུབ"
-toolNotAvailableLocally = "ཁྱེད་ཀྱི Stirling-PDF ཞབས་ཞུ་ཨོླཕ་ལ་ཡིན་པས \"{{endpoint}}\" རང་གནས་རྒྱབ་སྟེགས་ནང་མི་འཐོབ།"
+title = "ཁྱེད་ཀྱི AziralPDF ཞབས་ཞུ་ལ་མཐུད་མི་ཐུབ"
+toolNotAvailableLocally = "ཁྱེད་ཀྱི AziralPDF ཞབས་ཞུ་ཨོླཕ་ལ་ཡིན་པས \"{{endpoint}}\" རང་གནས་རྒྱབ་སྟེགས་ནང་མི་འཐོབ།"
 
 [session]
 expired = "ཁྱེད་རང་གི་ཚོགས་ཐུན་དུས་ཚོད་རྫོགས་ཡོད། ཤོག་བུ་གསར་བཟོ་བྱས་ནས་བསྐྱར་དུ་ཚོད་ལྟ་གནང་རོགས།"
@@ -6913,7 +6913,7 @@ usageAnalytics = "བེད་སྤྱོད་དབྱེ་ཞིབ།"
 [settings.planBilling]
 currentPlan = "མིག་སྔའི་གྲལ་གཞི"
 loading = "ཐོ་རྩིས་སྤྲོད་ཆ་འཕྲིན་ཕབ་ལེན་བརྒྱབ་བཞིན..."
-notAvailable = "གྲལ་གཞི་དང་ཐོ་རྩིས་སྤྲོད་ནི་ Stirling Cloud (SaaS mode) ལ་མཐུད་ཡོད་དུས་ཙམ་སྤྱོད་ཆོག"
+notAvailable = "གྲལ་གཞི་དང་ཐོ་རྩིས་སྤྲོད་ནི་ AziralPDF Cloud (SaaS mode) ལ་མཐུད་ཡོད་དུས་ཙམ་སྤྱོད་ཆོག"
 title = "གྲལ་གཞི་དང་ཐོ་རྩིས་སྤྲོད"
 
 [settings.planBilling.billing]
@@ -7627,7 +7627,7 @@ download = "ཕབ་ལེན"
 downloaded = "ཕབ་ལེན་བྱས་ཟིན།"
 downloadFailed = "ཡིག་ཆ་འདི་ཕབ་ལེན་མི་ཐུབ།"
 downloadsCount = "ཕབ་ལེན: {{count}}"
-emailWarningBody = "འདི་གློག་འཕྲིན་གྲངས་འཛིན་ལྟར་མཐོང་བ་ཡིན། མི་འདི་ནི Stirling PDF སྤྱོད་མཁན་མ་རེད་ན་ཡིག་ཆ་ལ་འཛུལ་མི་ཐུབ།"
+emailWarningBody = "འདི་གློག་འཕྲིན་གྲངས་འཛིན་ལྟར་མཐོང་བ་ཡིན། མི་འདི་ནི AziralPDF སྤྱོད་མཁན་མ་རེད་ན་ཡིག་ཆ་ལ་འཛུལ་མི་ཐུབ།"
 emailWarningConfirm = "མཉམ་སྤྱོད་གང་རེད་ཀྱང་"
 emailWarningTitle = "གློག་འཕྲིན་གྲངས་འཛིན"
 errorTitle = "མཉམ་སྤྱོད་ཕམ་པ"
@@ -7657,7 +7657,7 @@ manageTitle = "མཉམ་སྤྱོད་དོ་དམ"
 noActivity = "ལཱ་འགུལ་མེད།"
 noLinks = "མཉམ་སྤྱོད་འབྲེལ་ཐག་མ་འདུག"
 noSharedUsers = "འཛུལ་ས་ཡོད་པའི་མི་མེད།"
-openInApp = "Stirling PDF ནང་ཁ་ཕྱེ"
+openInApp = "AziralPDF ནང་ཁ་ཕྱེ"
 ownerLabel = "བདག་པོ"
 ownerOnly = "མཁོ་བདག་ཁོ་རང་ཙམ་གྱིས་མཉམ་སྤྱོད་དོ་དམ་བྱེད་ཆོག"
 ownerUnknown = "མ་ཤེས"
@@ -7883,7 +7883,7 @@ favorites = "དགའ་ཤོས།"
 heading = "ལག་ཆ་ཚང་མ།(གློག་བརྙན་ཆ་ཚང་གི་ལྟ་ཚུལ།)"
 noResults = "ཁྱེད་ལ་དགོས་མཁོ་ཡོད་པའི་དངོས་པོ་འཚོལ་བར་འཚོལ་ཞིབ་ཡང་ན་འགྲེལ་བཤད་བསྒྱུར་ཐབས་བྱོས།"
 recommended = "འོས་སྦྱོར་བྱས་པའི"
-selfHostedOffline = "ཁྱེད་ཀྱི Stirling-PDF ཞབས་ཞུ་དགོས (དེང་སླར་ཨོླཕ་ལ་ཡིན):"
+selfHostedOffline = "ཁྱེད་ཀྱི AziralPDF ཞབས་ཞུ་དགོས (དེང་སླར་ཨོླཕ་ལ་ཡིན):"
 showDetails = "ཞིབ་ཕྲ།"
 unavailable = "སར་བར་གྱི་དོ་དམ་པས་ལྕོགས་མིན་བཟོས།"
 unavailableDependency = "མེད་པ། ཞབས་ཞུའི་སྟེང་དགོས་མཁོའི་ལག་ཆ་མེད་པ་"

@@ -16,6 +16,12 @@ import "@app/i18n"; // Initialize i18next
 import posthog from "posthog-js";
 import { PostHogProvider } from "@posthog/react";
 import { BASE_PATH } from "@app/constants/app";
+// Side-effect import: starts listening for `beforeinstallprompt` at app
+// startup. The settings modal is lazy-loaded, so importing the store only from
+// there would miss the early event and the PWA install button would never
+// appear. Importing here guarantees the listener is attached before the event
+// fires.
+import "@app/utils/pwaInstall";
 
 import { startEagerWasmCompilation } from "@app/services/wasmPrecompiler";
 
@@ -33,6 +39,23 @@ if (typeof window !== "undefined") {
   } else {
     window.addEventListener("load", scheduleCompilation);
   }
+}
+
+// Register a minimal service worker so the browser treats AziralPDF as an
+// installable PWA (enables the "Install App" button in Settings). Skipped in
+// the Tauri desktop shell and on insecure origins, where it is irrelevant.
+if (
+  typeof window !== "undefined" &&
+  "serviceWorker" in navigator &&
+  window.isSecureContext &&
+  !("__TAURI__" in window) &&
+  !("__TAURI_INTERNALS__" in window)
+) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register(`${BASE_PATH}/sw.js`)
+      .catch((err) => console.warn("Service worker registration failed:", err));
+  });
 }
 
 posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_KEY, {

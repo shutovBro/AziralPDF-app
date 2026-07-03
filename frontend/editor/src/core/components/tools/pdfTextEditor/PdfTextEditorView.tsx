@@ -13,10 +13,12 @@ import {
   Box,
   Button,
   Card,
+  ColorInput,
   Divider,
   Group,
   Menu,
   Modal,
+  NumberInput,
   Pagination,
   Progress,
   ScrollArea,
@@ -34,6 +36,16 @@ import MergeTypeIcon from "@mui/icons-material/MergeType";
 import CallSplitIcon from "@mui/icons-material/CallSplit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import UploadFileIcon from "@mui/icons-material/UploadFileOutlined";
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
+import CropSquareIcon from "@mui/icons-material/CropSquare";
+import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
+import OpenWithIcon from "@mui/icons-material/OpenWith";
+import UndoIcon from "@mui/icons-material/Undo";
+import RedoIcon from "@mui/icons-material/Redo";
+import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import { Rnd } from "react-rnd";
 import { useNavigationGuard } from "@app/contexts/NavigationContext";
 
@@ -46,7 +58,14 @@ import {
 } from "@app/tools/pdfTextEditor/pdfTextEditorTypes";
 import {
   getImageBounds,
+  getVectorPathBounds,
   pageDimensions,
+  DEFAULT_ADD_TEXT_FONT_SIZE,
+  DEFAULT_ADD_TEXT_COLOR,
+  ADD_TEXT_MIN_FONT_SIZE,
+  ADD_TEXT_MAX_FONT_SIZE,
+  isAddedTextFontId,
+  addedTextFontStyleFlags,
 } from "@app/tools/pdfTextEditor/pdfTextEditorUtils";
 
 const MAX_RENDER_WIDTH = 820;
@@ -339,12 +358,18 @@ const analyzePageContentType = (
   return isParagraphPage;
 };
 
+// Minimum drag size (in CSS pixels) before a redaction rectangle is committed.
+const MIN_REDACTION_CSS = 4;
+
 const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
   const { t } = useTranslation();
   const { activeFiles } = useFileContext();
   const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
   const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
   const [activeImageId, setActiveImageId] = useState<string | null>(null);
+  const [activeVectorPathId, setActiveVectorPathId] = useState<string | null>(
+    null,
+  );
   const [selectedGroupIds, setSelectedGroupIds] = useState<Set<string>>(
     new Set(),
   );
@@ -354,6 +379,41 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
   const draggingImageRef = useRef<string | null>(null);
   const rndRefs = useRef<Map<string, any>>(new Map());
   const pendingDragUpdateRef = useRef<number | null>(null);
+
+  // Stage 2 editor palette: tool mode + redaction drawing state
+  // "objects" (Stage 3 d) is a read-only-geometry preview mode: select/delete
+  // extracted vector objects, no drag/resize/create like the other modes.
+  const [editorMode, setEditorMode] = useState<
+    "select" | "redact" | "text" | "objects"
+  >("select");
+  const [redactionColor, setRedactionColor] = useState<string>("#ffffff");
+  // Stage 3: default size/colour for newly added text boxes
+  const [addTextFontSize, setAddTextFontSize] = useState<number>(
+    DEFAULT_ADD_TEXT_FONT_SIZE,
+  );
+  const [addTextColor, setAddTextColor] = useState<string>(
+    DEFAULT_ADD_TEXT_COLOR,
+  );
+  const [addTextBold, setAddTextBold] = useState<boolean>(false);
+  const [addTextItalic, setAddTextItalic] = useState<boolean>(false);
+  const [redactionDraft, setRedactionDraft] = useState<{
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  } | null>(null);
+  const redactionStartRef = useRef<{ x: number; y: number } | null>(null);
+  const addImageInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Text-group drag-to-move (live CSS-pixel offset while dragging the handle).
+  const movingRef = useRef<{
+    groupId: string;
+    startX: number;
+    startY: number;
+  } | null>(null);
+  const [moveDraft, setMoveDraft] = useState<
+    Map<string, { dx: number; dy: number }>
+  >(new Map());
   const [fontFamilies, setFontFamilies] = useState<Map<string, string>>(
     new Map(),
   );
@@ -403,6 +463,8 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     document: pdfDocument,
     groupsByPage,
     imagesByPage,
+    vectorPathsByPage,
+    vectorPathsLoadingPage,
     pagePreviews,
     selectedPage,
     dirtyPages,
@@ -424,6 +486,18 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     onGroupDelete,
     onImageTransform,
     onImageReset,
+    onImageDelete,
+    onAddImage,
+    onRequestVectorPaths,
+    onVectorPathDelete,
+    onAddRedaction,
+    onAddText,
+    onAddTextStyle,
+    onGroupMove,
+    onUndo,
+    onRedo,
+    canUndo,
+    canRedo,
     onReset: _onReset,
     onGeneratePdf: _onGeneratePdf,
     onSaveToWorkbench,
@@ -434,11 +508,55 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     onLoadFile,
   } = data;
 
+  // Keyboard shortcuts: Ctrl/Cmd+Z = undo, Ctrl/Cmd+Shift+Z or Ctrl/Cmd+Y =
+  // redo. While typing in a text field, defer to the browser's native
+  // text-undo instead of stepping the whole document back.
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (!event.metaKey && !event.ctrlKey) {
+        return;
+      }
+      const key = event.key.toLowerCase();
+      const isUndo = key === "z" && !event.shiftKey;
+      const isRedo = (key === "z" && event.shiftKey) || key === "y";
+      if (!isUndo && !isRedo) {
+        return;
+      }
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.isContentEditable ||
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA")
+      ) {
+        return;
+      }
+      event.preventDefault();
+      if (isUndo) {
+        onUndo();
+      } else {
+        onRedo();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onUndo, onRedo]);
+
+  // Vector paths are fetched once for the whole document (see loadVectorPaths
+  // in the hook, which is idempotent) — this just guarantees the fetch has
+  // been kicked off whenever Objects mode is active, even after remount.
+  useEffect(() => {
+    if (editorMode === "objects") {
+      onRequestVectorPaths(selectedPage);
+    }
+  }, [editorMode, selectedPage, onRequestVectorPaths]);
+
   // Define derived variables immediately after props destructuring, before any hooks
   const pages = pdfDocument?.pages ?? [];
   const currentPage = pages[selectedPage] ?? null;
   const pageGroups = groupsByPage[selectedPage] ?? [];
   const pageImages = imagesByPage[selectedPage] ?? [];
+  const pageVectorPaths = vectorPathsByPage[selectedPage] ?? [];
   const pagePreview = pagePreviews.get(selectedPage);
   const { width: pageWidth, height: pageHeight } = pageDimensions(currentPage);
 
@@ -1140,14 +1258,20 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     [editingGroupId, pageGroups],
   );
 
-  const orderedImages = useMemo(
-    () =>
-      [...pageImages].sort(
-        (first, second) =>
-          (first?.zOrder ?? -1_000_000) - (second?.zOrder ?? -1_000_000),
-      ),
-    [pageImages],
-  );
+  const orderedImages = useMemo(() => {
+    const areaOf = (image: (typeof pageImages)[number]) => {
+      const b = getImageBounds(image);
+      return Math.max(b.right - b.left, 0) * Math.max(b.top - b.bottom, 0);
+    };
+    return [...pageImages].sort((first, second) => {
+      const z = (first?.zOrder ?? -1_000_000) - (second?.zOrder ?? -1_000_000);
+      if (z !== 0) return z;
+      // Tie-break by area DESCENDING so a larger (often full-bleed background)
+      // image is painted first and sits BELOW smaller foreground images when
+      // the backend gives no/equal z-order.
+      return areaOf(second) - areaOf(first);
+    });
+  }, [pageImages]);
   const scale = useMemo(() => {
     const calculatedScale = Math.min(MAX_RENDER_WIDTH / pageWidth, 2.5);
     console.log(`🔍 [PdfTextEditor] Scale Calculation:`, {
@@ -1497,6 +1621,85 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     [pageWidth, scale],
   );
 
+  // Corner-drag font scaling for added-text boxes: vertical drag grows/shrinks
+  // the font size, routed through onAddTextStyle (same coalescing undo tag as
+  // the size picker, so a whole drag is one undo step). Only added-text groups
+  // round-trip a size change via the regenerate path.
+  const handleFontScaleStart = useCallback(
+    (event: React.MouseEvent, group: TextGroup) => {
+      event.stopPropagation();
+      event.preventDefault();
+      const startY = event.clientY;
+      const startSize =
+        group.fontMatrixSize ?? group.fontSize ?? DEFAULT_ADD_TEXT_FONT_SIZE;
+      const handleMouseMove = (moveEvent: MouseEvent) => {
+        moveEvent.preventDefault();
+        const deltaPt = (moveEvent.clientY - startY) / scale;
+        const nextSize = Math.max(
+          ADD_TEXT_MIN_FONT_SIZE,
+          Math.min(ADD_TEXT_MAX_FONT_SIZE, startSize + deltaPt),
+        );
+        onAddTextStyle(group.pageIndex, group.id, { fontSize: nextSize });
+      };
+      const handleMouseUp = () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+      };
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+    },
+    [onAddTextStyle, scale],
+  );
+
+  const handleMoveStart = useCallback(
+    (event: React.MouseEvent, groupId: string) => {
+      event.stopPropagation();
+      event.preventDefault();
+      const startX = event.clientX;
+      const startY = event.clientY;
+      movingRef.current = { groupId, startX, startY };
+      setActiveGroupId(groupId);
+      const handleMouseMove = (moveEvent: MouseEvent) => {
+        const context = movingRef.current;
+        if (!context) {
+          return;
+        }
+        moveEvent.preventDefault();
+        const dx = moveEvent.clientX - context.startX;
+        const dy = moveEvent.clientY - context.startY;
+        setMoveDraft((prev) => {
+          const next = new Map(prev);
+          next.set(context.groupId, { dx, dy });
+          return next;
+        });
+      };
+      const handleMouseUp = (upEvent: MouseEvent) => {
+        const context = movingRef.current;
+        movingRef.current = null;
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+        if (!context) {
+          return;
+        }
+        setMoveDraft((prev) => {
+          const next = new Map(prev);
+          next.delete(context.groupId);
+          return next;
+        });
+        const dx = upEvent.clientX - context.startX;
+        const dy = upEvent.clientY - context.startY;
+        if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {
+          return;
+        }
+        // Screen y grows downward; PDF y grows upward -> negate dy.
+        onGroupMove(selectedPage, context.groupId, dx / scale, -dy / scale);
+      };
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+    },
+    [onGroupMove, scale, selectedPage],
+  );
+
   const renderGroupContainer = (
     groupId: string,
     pageIndex: number,
@@ -1521,7 +1724,9 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
             ? "1px solid var(--mantine-color-violet-5)"
             : isChanged
               ? "1px solid var(--mantine-color-yellow-5)"
-              : "none",
+              : // Faint dashed border so editable boxes are always discoverable,
+                // even over dark page backgrounds.
+                "1px dashed var(--mantine-color-blue-3)",
         outlineOffset: "-1px",
         borderRadius: 6,
         backgroundColor: isActive
@@ -1566,7 +1771,6 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
             pointerEvents: "auto",
           }}
           onMouseDown={(event) => {
-            console.log(`❌ MOUSEDOWN on X button for group ${groupId}`);
             event.stopPropagation();
             event.preventDefault();
 
@@ -1577,27 +1781,50 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
 
             if (currentText.length === 0) {
               // Already empty - remove the textbox entirely
-              console.log(`   Text already empty, removing textbox`);
               onGroupDelete(pageIndex, groupId);
               setActiveGroupId(null);
               setEditingGroupId(null);
             } else {
               // Has text - clear it but keep the textbox
-              console.log(`   Clearing text (textbox remains)`);
               onGroupEdit(pageIndex, groupId, "");
             }
-            console.log(`   Operation completed`);
           }}
           onClick={(event) => {
-            console.log(
-              `❌ X button ONCLICK fired for group ${groupId} on page ${pageIndex}`,
-            );
             event.stopPropagation();
             event.preventDefault();
           }}
         >
           <CloseIcon style={{ fontSize: 12 }} />
         </ActionIcon>
+      )}
+      {activeGroupId === groupId && (
+        <Tooltip
+          label={t("pdfTextEditor.manual.move", "Drag to move")}
+          withinPortal
+        >
+          <ActionIcon
+            size="xs"
+            variant="filled"
+            color="blue"
+            radius="xl"
+            aria-label={t("pdfTextEditor.manual.move", "Drag to move")}
+            style={{
+              position: "absolute",
+              top: -8,
+              left: -8,
+              zIndex: 9999,
+              cursor: "move",
+              pointerEvents: "auto",
+            }}
+            onMouseDown={(event) => handleMoveStart(event, groupId)}
+            onClick={(event) => {
+              event.stopPropagation();
+              event.preventDefault();
+            }}
+          >
+            <OpenWithIcon style={{ fontSize: 12 }} />
+          </ActionIcon>
+        </Tooltip>
       )}
     </Box>
   );
@@ -1629,6 +1856,196 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
     },
     [onImageTransform, pageHeight, pageWidth, scale, selectedPage],
   );
+
+  const handleRedactionPointerDown = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const rect = event.currentTarget.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      redactionStartRef.current = { x, y };
+      setRedactionDraft({ left: x, top: y, width: 0, height: 0 });
+    },
+    [],
+  );
+
+  const handleRedactionPointerMove = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      const start = redactionStartRef.current;
+      if (!start) {
+        return;
+      }
+      const rect = event.currentTarget.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      setRedactionDraft({
+        left: Math.min(start.x, x),
+        top: Math.min(start.y, y),
+        width: Math.abs(x - start.x),
+        height: Math.abs(y - start.y),
+      });
+    },
+    [],
+  );
+
+  const handleRedactionPointerUp = useCallback(() => {
+    const draft = redactionDraft;
+    redactionStartRef.current = null;
+    setRedactionDraft(null);
+    if (
+      !draft ||
+      draft.width < MIN_REDACTION_CSS ||
+      draft.height < MIN_REDACTION_CSS
+    ) {
+      return;
+    }
+    const left = draft.left / scale;
+    const width = draft.width / scale;
+    const height = draft.height / scale;
+    const bottom = pageHeight - (draft.top + draft.height) / scale;
+    onAddRedaction(selectedPage, {
+      left,
+      bottom,
+      width,
+      height,
+      color: redactionColor,
+    });
+  }, [
+    onAddRedaction,
+    pageHeight,
+    redactionColor,
+    redactionDraft,
+    scale,
+    selectedPage,
+  ]);
+
+  const handleAddImageChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      event.target.value = "";
+      if (file) {
+        void onAddImage(selectedPage, file);
+      }
+    },
+    [onAddImage, selectedPage],
+  );
+
+  const handleTextPlacePointerDown = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const rect = event.currentTarget.getBoundingClientRect();
+      const px = event.clientX - rect.left;
+      const py = event.clientY - rect.top;
+      const pdfX = px / scale;
+      const pdfTopY = pageHeight - py / scale;
+      // Place the click at the top of the glyphs: drop the baseline by ~ascent.
+      const baselineY = pdfTopY - addTextFontSize * 0.72;
+      const newId = onAddText(
+        selectedPage,
+        pdfX,
+        baselineY,
+        addTextFontSize,
+        addTextColor,
+        addTextBold,
+        addTextItalic,
+      );
+      setEditorMode("select");
+      setActiveImageId(null);
+      setSelectedGroupIds(new Set());
+      setActiveGroupId(newId);
+      setEditingGroupId(newId);
+    },
+    [
+      addTextBold,
+      addTextColor,
+      addTextFontSize,
+      addTextItalic,
+      onAddText,
+      pageHeight,
+      scale,
+      selectedPage,
+    ],
+  );
+
+  // The currently selected added-text box (if any) on the current page. Size /
+  // colour controls edit it live; otherwise they set defaults for the next box.
+  const activeAddedGroup = useMemo(
+    () =>
+      activeGroupId
+        ? (pageGroups.find(
+            (group) =>
+              group.id === activeGroupId && isAddedTextFontId(group.fontId),
+          ) ?? null)
+        : null,
+    [activeGroupId, pageGroups],
+  );
+
+  const showTextStyleControls =
+    editorMode === "text" || Boolean(activeAddedGroup);
+
+  const addTextFontSizeValue = activeAddedGroup
+    ? (activeAddedGroup.fontMatrixSize ??
+      activeAddedGroup.fontSize ??
+      addTextFontSize)
+    : addTextFontSize;
+  const addTextColorValue = activeAddedGroup
+    ? (activeAddedGroup.color ?? addTextColor)
+    : addTextColor;
+  const activeStyleFlags = activeAddedGroup
+    ? addedTextFontStyleFlags(activeAddedGroup.fontId)
+    : null;
+  const addTextBoldValue = activeStyleFlags
+    ? activeStyleFlags.bold
+    : addTextBold;
+  const addTextItalicValue = activeStyleFlags
+    ? activeStyleFlags.italic
+    : addTextItalic;
+
+  const handleAddTextFontSizeChange = useCallback(
+    (value: number | string) => {
+      const numeric = typeof value === "number" ? value : parseFloat(value);
+      if (!Number.isFinite(numeric)) {
+        return;
+      }
+      const size = Math.max(
+        ADD_TEXT_MIN_FONT_SIZE,
+        Math.min(ADD_TEXT_MAX_FONT_SIZE, numeric),
+      );
+      setAddTextFontSize(size);
+      if (activeAddedGroup) {
+        onAddTextStyle(selectedPage, activeAddedGroup.id, { fontSize: size });
+      }
+    },
+    [activeAddedGroup, onAddTextStyle, selectedPage],
+  );
+
+  const handleAddTextColorChange = useCallback(
+    (value: string) => {
+      setAddTextColor(value);
+      if (activeAddedGroup) {
+        onAddTextStyle(selectedPage, activeAddedGroup.id, { color: value });
+      }
+    },
+    [activeAddedGroup, onAddTextStyle, selectedPage],
+  );
+
+  const handleAddTextBoldToggle = useCallback(() => {
+    const next = !addTextBoldValue;
+    setAddTextBold(next);
+    if (activeAddedGroup) {
+      onAddTextStyle(selectedPage, activeAddedGroup.id, { bold: next });
+    }
+  }, [activeAddedGroup, addTextBoldValue, onAddTextStyle, selectedPage]);
+
+  const handleAddTextItalicToggle = useCallback(() => {
+    const next = !addTextItalicValue;
+    setAddTextItalic(next);
+    if (activeAddedGroup) {
+      onAddTextStyle(selectedPage, activeAddedGroup.id, { italic: next });
+    }
+  }, [activeAddedGroup, addTextItalicValue, onAddTextStyle, selectedPage]);
 
   return (
     <Stack
@@ -1787,6 +2204,264 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
             )}
           </Group>
 
+          <Alert
+            variant="light"
+            color="blue"
+            radius="md"
+            py={6}
+            icon={<InfoOutlinedIcon fontSize="small" />}
+          >
+            <Text size="xs">
+              {editorMode === "redact"
+                ? t(
+                    "pdfTextEditor.hint.redact",
+                    "Drag across the page to cover an area (logo, watermark, sensitive text). Switch back to Select to edit text and images.",
+                  )
+                : editorMode === "text"
+                  ? t(
+                      "pdfTextEditor.hint.text",
+                      "Click anywhere on the page to drop a new text box, then type. Use the corner handle to widen it.",
+                    )
+                  : t(
+                      "pdfTextEditor.hint.line",
+                      "Click text to edit · drag to move · resize from the corner · ✗ to delete · Ctrl/Cmd-click to select several",
+                    )}
+            </Text>
+          </Alert>
+
+          <Group justify="space-between" align="center" wrap="nowrap">
+            <Group gap="xs" wrap="nowrap">
+              <Button.Group>
+                <Tooltip
+                  label={t("pdfTextEditor.history.undo", "Undo (Ctrl/Cmd+Z)")}
+                >
+                  <Button
+                    size="compact-sm"
+                    variant="default"
+                    disabled={!canUndo}
+                    onClick={onUndo}
+                    aria-label={t("pdfTextEditor.history.undo", "Undo")}
+                    leftSection={<UndoIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t("pdfTextEditor.history.undoShort", "Undo")}
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  label={t(
+                    "pdfTextEditor.history.redo",
+                    "Redo (Ctrl/Cmd+Shift+Z)",
+                  )}
+                >
+                  <Button
+                    size="compact-sm"
+                    variant="default"
+                    disabled={!canRedo}
+                    onClick={onRedo}
+                    aria-label={t("pdfTextEditor.history.redo", "Redo")}
+                    leftSection={<RedoIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t("pdfTextEditor.history.redoShort", "Redo")}
+                  </Button>
+                </Tooltip>
+              </Button.Group>
+              <Text size="xs" c="dimmed">
+                {t("pdfTextEditor.palette.tools", "Tools")}
+              </Text>
+              <Button.Group>
+                <Tooltip
+                  label={t("pdfTextEditor.palette.select", "Select & edit")}
+                >
+                  <Button
+                    size="compact-sm"
+                    variant={editorMode === "select" ? "filled" : "default"}
+                    onClick={() => setEditorMode("select")}
+                    leftSection={<NearMeOutlinedIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t("pdfTextEditor.palette.select", "Select & edit")}
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  label={t(
+                    "pdfTextEditor.palette.redact",
+                    "Cover an area (redact)",
+                  )}
+                >
+                  <Button
+                    size="compact-sm"
+                    variant={editorMode === "redact" ? "filled" : "default"}
+                    onClick={() => setEditorMode("redact")}
+                    leftSection={<CropSquareIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t("pdfTextEditor.palette.redact", "Cover area")}
+                  </Button>
+                </Tooltip>
+                <Tooltip label={t("pdfTextEditor.palette.addText", "Add text")}>
+                  <Button
+                    size="compact-sm"
+                    variant={editorMode === "text" ? "filled" : "default"}
+                    onClick={() => setEditorMode("text")}
+                    leftSection={<TextFieldsIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t("pdfTextEditor.palette.addText", "Add text")}
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  label={t(
+                    "pdfTextEditor.palette.objectsTooltip",
+                    "Vector objects (experimental)",
+                  )}
+                >
+                  <Button
+                    size="compact-sm"
+                    variant={editorMode === "objects" ? "filled" : "default"}
+                    onClick={() => {
+                      setEditorMode("objects");
+                      onRequestVectorPaths(selectedPage);
+                    }}
+                    leftSection={<TimelineOutlinedIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t("pdfTextEditor.palette.objects", "Objects")}
+                  </Button>
+                </Tooltip>
+              </Button.Group>
+              <Tooltip
+                label={t("pdfTextEditor.palette.addImage", "Add an image")}
+              >
+                <Button
+                  size="compact-sm"
+                  variant="default"
+                  leftSection={<ImageOutlinedIcon sx={{ fontSize: 16 }} />}
+                  onClick={() => addImageInputRef.current?.click()}
+                >
+                  {t("pdfTextEditor.palette.addImage", "Add image")}
+                </Button>
+              </Tooltip>
+            </Group>
+            {editorMode === "redact" && (
+              <Group gap={6} wrap="nowrap">
+                <Text size="xs" c="dimmed">
+                  {t("pdfTextEditor.palette.color", "Colour")}
+                </Text>
+                {["#ffffff", "#000000"].map((swatch) => (
+                  <Tooltip
+                    key={swatch}
+                    label={
+                      swatch === "#ffffff"
+                        ? t("pdfTextEditor.palette.white", "White")
+                        : t("pdfTextEditor.palette.black", "Black")
+                    }
+                  >
+                    <Box
+                      role="button"
+                      aria-label={swatch}
+                      onClick={() => setRedactionColor(swatch)}
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: 6,
+                        cursor: "pointer",
+                        backgroundColor: swatch,
+                        border:
+                          redactionColor === swatch
+                            ? "2px solid var(--mantine-color-blue-5)"
+                            : "1px solid var(--mantine-color-gray-4)",
+                      }}
+                    />
+                  </Tooltip>
+                ))}
+              </Group>
+            )}
+            {editorMode === "objects" && (
+              <Text size="xs" c="dimmed">
+                {vectorPathsLoadingPage !== null
+                  ? t(
+                      "pdfTextEditor.palette.objectsLoading",
+                      "Scanning page for vector objects...",
+                    )
+                  : t(
+                      "pdfTextEditor.palette.objectsHint",
+                      "Click an outlined object, then the ✗ to remove it.",
+                    )}
+              </Text>
+            )}
+            {showTextStyleControls && (
+              <Group gap={8} wrap="nowrap">
+                <Text size="xs" c="dimmed">
+                  {activeAddedGroup
+                    ? t(
+                        "pdfTextEditor.palette.textStyleActive",
+                        "Selected text",
+                      )
+                    : t("pdfTextEditor.palette.textStyleNew", "New text")}
+                </Text>
+                <NumberInput
+                  size="xs"
+                  w={92}
+                  min={ADD_TEXT_MIN_FONT_SIZE}
+                  max={ADD_TEXT_MAX_FONT_SIZE}
+                  step={1}
+                  value={Math.round(addTextFontSizeValue)}
+                  onChange={handleAddTextFontSizeChange}
+                  aria-label={t("pdfTextEditor.palette.fontSize", "Font size")}
+                  suffix=" pt"
+                />
+                <ColorInput
+                  size="xs"
+                  w={132}
+                  format="hex"
+                  withEyeDropper={false}
+                  value={addTextColorValue}
+                  onChange={handleAddTextColorChange}
+                  aria-label={t(
+                    "pdfTextEditor.palette.fontColor",
+                    "Text colour",
+                  )}
+                  swatches={[
+                    "#000000",
+                    "#ffffff",
+                    "#e03131",
+                    "#1971c2",
+                    "#2f9e44",
+                    "#f08c00",
+                    "#6741d9",
+                  ]}
+                />
+                <Button.Group>
+                  <Tooltip label={t("pdfTextEditor.palette.bold", "Bold")}>
+                    <Button
+                      size="compact-sm"
+                      variant={addTextBoldValue ? "filled" : "default"}
+                      onClick={handleAddTextBoldToggle}
+                      aria-label={t("pdfTextEditor.palette.bold", "Bold")}
+                      aria-pressed={addTextBoldValue}
+                    >
+                      <FormatBoldIcon sx={{ fontSize: 16 }} />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip label={t("pdfTextEditor.palette.italic", "Italic")}>
+                    <Button
+                      size="compact-sm"
+                      variant={addTextItalicValue ? "filled" : "default"}
+                      onClick={handleAddTextItalicToggle}
+                      aria-label={t("pdfTextEditor.palette.italic", "Italic")}
+                      aria-pressed={addTextItalicValue}
+                    >
+                      <FormatItalicIcon sx={{ fontSize: 16 }} />
+                    </Button>
+                  </Tooltip>
+                </Button.Group>
+              </Group>
+            )}
+          </Group>
+
+          <input
+            ref={addImageInputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleAddImageChange}
+          />
+
           <Modal
             opened={showWelcomeBanner}
             onClose={handleDismissWelcomeBanner}
@@ -1796,7 +2471,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                 <Text fw={600}>
                   {t(
                     "pdfTextEditor.welcomeBanner.title",
-                    "Welcome to PDF Text Editor (Early Access)",
+                    "Welcome to the PDF Editor (Early Access)",
                   )}
                 </Text>
               </Group>
@@ -2096,6 +2771,47 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                         }}
                       />
                     )}
+                    {editorMode === "redact" && (
+                      <Box
+                        onMouseDown={handleRedactionPointerDown}
+                        onMouseMove={handleRedactionPointerMove}
+                        onMouseUp={handleRedactionPointerUp}
+                        onMouseLeave={handleRedactionPointerUp}
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          zIndex: 4_000_000,
+                          cursor: "crosshair",
+                        }}
+                      >
+                        {redactionDraft && (
+                          <Box
+                            style={{
+                              position: "absolute",
+                              left: `${redactionDraft.left}px`,
+                              top: `${redactionDraft.top}px`,
+                              width: `${redactionDraft.width}px`,
+                              height: `${redactionDraft.height}px`,
+                              backgroundColor: redactionColor,
+                              opacity: 0.55,
+                              border: "1px dashed var(--mantine-color-blue-5)",
+                              pointerEvents: "none",
+                            }}
+                          />
+                        )}
+                      </Box>
+                    )}
+                    {editorMode === "text" && (
+                      <Box
+                        onMouseDown={handleTextPlacePointerDown}
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          zIndex: 4_000_000,
+                          cursor: "text",
+                        }}
+                      />
+                    )}
                     {selectionToolbarPosition && (
                       <Group
                         gap={6}
@@ -2217,10 +2933,33 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                       const imageId =
                         image.id ?? `page-${selectedPage}-image-${imageIndex}`;
                       const isActive = activeImageId === imageId;
+                      const isRedaction =
+                        imageId.startsWith("aziral-redaction-");
                       const src = `data:image/${image.imageFormat ?? "png"};base64,${image.imageData}`;
                       const baseZIndex =
                         (image.zOrder ?? -1_000_000) + 1_050_000;
-                      const zIndex = isActive
+                      // A full-bleed ORIGINAL image is the page background. It
+                      // stays BAKED into the page preview (requestPagePreview
+                      // does not erase it), so we must NOT also render it as a
+                      // movable overlay — that overlay is what kept "replacing"
+                      // the background. Skip it entirely: the background then
+                      // looks exactly like the source PDF and is never swapped.
+                      // (Redaction / user-added aziral-* layers are never
+                      // treated as background.) Export is unaffected — it
+                      // rebuilds from the model, which still holds the image.
+                      const pageCoverage =
+                        (width * height) / Math.max(pageWidth * pageHeight, 1);
+                      const isBackgroundImage =
+                        !imageId.startsWith("aziral-") && pageCoverage >= 0.9;
+                      if (isBackgroundImage) {
+                        return null;
+                      }
+                      // Boost above the text layer only while the image is
+                      // actually being dragged/resized — NOT on mere hover.
+                      // Hover-boosting let a hovered image cover others.
+                      const isDraggingImage =
+                        draggingImageRef.current === imageId;
+                      const zIndex = isDraggingImage
                         ? baseZIndex + 1_000_000
                         : baseZIndex;
 
@@ -2338,15 +3077,137 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                               style={{
                                 width: "100%",
                                 height: "100%",
-                                objectFit: "contain",
+                                objectFit: isRedaction ? "fill" : "contain",
                                 pointerEvents: "none",
                                 userSelect: "none",
                               }}
                             />
+                            {isActive && (
+                              <Tooltip
+                                label={t(
+                                  "pdfTextEditor.image.delete",
+                                  "Delete image",
+                                )}
+                                withinPortal
+                              >
+                                <ActionIcon
+                                  size="sm"
+                                  color="red"
+                                  variant="filled"
+                                  radius="xl"
+                                  aria-label={t(
+                                    "pdfTextEditor.image.delete",
+                                    "Delete image",
+                                  )}
+                                  style={{
+                                    position: "absolute",
+                                    top: -10,
+                                    right: -10,
+                                    zIndex: 5,
+                                  }}
+                                  onMouseDown={(event) =>
+                                    event.stopPropagation()
+                                  }
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    setActiveImageId((current) =>
+                                      current === imageId ? null : current,
+                                    );
+                                    onImageDelete(selectedPage, imageId);
+                                  }}
+                                >
+                                  <CloseIcon sx={{ fontSize: 14 }} />
+                                </ActionIcon>
+                              </Tooltip>
+                            )}
                           </Box>
                         </Rnd>
                       );
                     })}
+                    {editorMode === "objects" &&
+                      pageVectorPaths.map((path, pathIndex) => {
+                        if (path.deleted === true) {
+                          return null;
+                        }
+                        const bounds = getVectorPathBounds(path);
+                        const width = Math.max(bounds.right - bounds.left, 1);
+                        const height = Math.max(bounds.top - bounds.bottom, 1);
+                        const cssWidth = Math.max(width * scale, 2);
+                        const cssHeight = Math.max(height * scale, 2);
+                        const cssLeft = bounds.left * scale;
+                        const cssTop = (pageHeight - bounds.top) * scale;
+                        const pathId =
+                          path.id ?? `page-${selectedPage}-vector-${pathIndex}`;
+                        const isActive = activeVectorPathId === pathId;
+
+                        return (
+                          <Box
+                            key={`vector-${pathId}`}
+                            onMouseEnter={() => setActiveVectorPathId(pathId)}
+                            onMouseLeave={() => {
+                              setActiveVectorPathId((current) =>
+                                current === pathId ? null : current,
+                              );
+                            }}
+                            onClick={() => setActiveVectorPathId(pathId)}
+                            style={{
+                              position: "absolute",
+                              left: cssLeft,
+                              top: cssTop,
+                              width: cssWidth,
+                              height: cssHeight,
+                              cursor: "pointer",
+                              outline: isActive
+                                ? "2px solid rgba(59, 130, 246, 0.9)"
+                                : "1px dashed rgba(234, 88, 12, 0.6)",
+                              outlineOffset: "-1px",
+                              borderRadius: 2,
+                              backgroundColor: isActive
+                                ? "rgba(59, 130, 246, 0.08)"
+                                : "transparent",
+                              transition: "outline 120ms ease",
+                              zIndex: 1_090_000 + pathIndex,
+                            }}
+                          >
+                            {isActive && (
+                              <Tooltip
+                                label={t(
+                                  "pdfTextEditor.vectorObject.delete",
+                                  "Delete object",
+                                )}
+                                withinPortal
+                              >
+                                <ActionIcon
+                                  size="sm"
+                                  color="red"
+                                  variant="filled"
+                                  radius="xl"
+                                  aria-label={t(
+                                    "pdfTextEditor.vectorObject.delete",
+                                    "Delete object",
+                                  )}
+                                  style={{
+                                    position: "absolute",
+                                    top: -10,
+                                    right: -10,
+                                    zIndex: 5,
+                                  }}
+                                  onMouseDown={(event) =>
+                                    event.stopPropagation()
+                                  }
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    setActiveVectorPathId(null);
+                                    onVectorPathDelete(selectedPage, pathId);
+                                  }}
+                                >
+                                  <CloseIcon sx={{ fontSize: 14 }} />
+                                </ActionIcon>
+                              </Tooltip>
+                            )}
+                          </Box>
+                        );
+                      })}
                     {visibleGroups.length === 0 &&
                     orderedImages.length === 0 ? (
                       <Group
@@ -2512,9 +3373,33 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
 
                         // Extract styling from group
                         const textColor = group.color || "#111827";
+                        // When the backend could not extract a fill colour we
+                        // fall back to a dark default that is invisible on a
+                        // dark page. Paint a light chip directly behind the
+                        // glyphs (same idea the edit field already uses) so the
+                        // overlay text stays readable on ANY background. This is
+                        // an editor-only viewing aid — export uses the original
+                        // colour, never this.
+                        const unknownColor = !group.color;
+                        const legibilityChip: React.CSSProperties = unknownColor
+                          ? {
+                              backgroundColor: "rgba(255,255,255,0.92)",
+                              borderRadius: 2,
+                              boxDecorationBreak: "clone",
+                              WebkitBoxDecorationBreak: "clone",
+                            }
+                          : {};
                         const fontWeight =
                           group.fontWeight ||
                           getFontWeight(effectiveFontId, group.pageIndex);
+                        // Added-text boxes can carry an italic Noto fallback;
+                        // mirror it in the editor preview (synthesised by the
+                        // browser on the fallback family — export uses the real
+                        // NotoSans italic glyphs).
+                        const fontStyle: React.CSSProperties["fontStyle"] =
+                          addedTextFontStyleFlags(group.fontId).italic
+                            ? "italic"
+                            : "normal";
 
                         // Determine text wrapping behavior based on whether text has been changed
                         const hasChanges = changed;
@@ -2542,6 +3427,13 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                         // We need to add this to the container width to compensate, so the inner content
                         // has the full PDF-defined width available for text
                         const WRAPPER_HORIZONTAL_PADDING = 4;
+
+                        // Live drag-to-move offset (CSS px) while the move handle is held.
+                        const moveOffset = moveDraft.get(group.id);
+                        if (moveOffset) {
+                          containerLeft += moveOffset.dx;
+                          containerTop += moveOffset.dy;
+                        }
 
                         const containerStyle: React.CSSProperties = {
                           position: "absolute",
@@ -2600,6 +3492,41 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                             ||
                           </Box>
                         ) : null;
+
+                        const fontScaleHandle =
+                          showResizeHandle &&
+                          isAddedTextFontId(group.fontId) ? (
+                            <Box
+                              role="button"
+                              aria-label={t(
+                                "pdfTextEditor.manual.fontScaleHandle",
+                                "Drag to resize text",
+                              )}
+                              onMouseDown={(event) =>
+                                handleFontScaleStart(event, group)
+                              }
+                              style={{
+                                position: "absolute",
+                                bottom: -7,
+                                right: -7,
+                                width: 14,
+                                height: 14,
+                                cursor: "nwse-resize",
+                                borderRadius: 7,
+                                backgroundColor: "rgba(76, 110, 245, 0.5)",
+                                border: "1px solid rgba(76, 110, 245, 0.9)",
+                                userSelect: "none",
+                              }}
+                            />
+                          ) : null;
+
+                        const groupHandles =
+                          resizeHandle || fontScaleHandle ? (
+                            <>
+                              {resizeHandle}
+                              {fontScaleHandle}
+                            </>
+                          ) : null;
 
                         if (isEditing) {
                           return (
@@ -2710,6 +3637,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                                     fontSize: `${fontSizePx}px`,
                                     fontFamily,
                                     fontWeight,
+                                    fontStyle,
                                     lineHeight: lineHeightRatio,
                                     outline: "none",
                                     border: "none",
@@ -2726,7 +3654,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                                 undefined,
                                 undefined,
                                 selectedGroupIds.has(group.id),
-                                resizeHandle,
+                                groupHandles,
                               )}
                             </Box>
                           );
@@ -2754,6 +3682,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                                   fontSize: `${fontSizePx}px`,
                                   fontFamily,
                                   fontWeight,
+                                  fontStyle,
                                   lineHeight: lineHeightRatio,
                                   color: textColor,
                                   display: "block",
@@ -2773,6 +3702,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                                       : "none",
                                     transformOrigin: "left center",
                                     whiteSpace,
+                                    ...legibilityChip,
                                   }}
                                 >
                                   {group.text || "\u00A0"}
@@ -2877,7 +3807,7 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                                 });
                               },
                               selectedGroupIds.has(group.id),
-                              resizeHandle,
+                              groupHandles,
                             )}
                           </Box>
                         );

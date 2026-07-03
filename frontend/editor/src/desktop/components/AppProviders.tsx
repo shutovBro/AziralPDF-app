@@ -14,7 +14,6 @@ import {
   connectionModeService,
   JWT_EXPIRED_PROMPTED_KEY,
 } from "@app/services/connectionModeService";
-import { STIRLING_SAAS_URL } from "@app/constants/connection";
 import { tauriBackendService } from "@app/services/tauriBackendService";
 import { selfHostedServerMonitor } from "@app/services/selfHostedServerMonitor";
 import { authService } from "@app/services/authService";
@@ -92,21 +91,11 @@ export function AppProviders({ children }: { children: ReactNode }) {
 
     if (!isFirstLaunch && setupComplete) {
       if (connectionMode === "local") {
-        // Even in local mode, check for a valid JWT — on Windows, the OAuth callback
-        // can complete without switchToSaaS() being called (race condition), leaving
-        // LOCAL_MODE_STORAGE_KEY set while the user has a valid session. Upgrade to
-        // SaaS mode automatically so credits/billing/team features work correctly.
-        authService
-          .isAuthenticated()
-          .then(async (isAuth) => {
-            if (isAuth) {
-              await connectionModeService
-                .switchToSaaS(STIRLING_SAAS_URL)
-                .catch(console.error);
-              setConnectionMode("saas");
-            }
-          })
-          .finally(() => setAuthChecked(true));
+        // Local mode is a deliberate choice (or the post-logout fallback) —
+        // no cloud account exists to auto-upgrade to, so just mark auth as
+        // checked and stay local. Signing in to a server happens through the
+        // SetupWizard / SignInModal.
+        setAuthChecked(true);
       } else {
         authService
           .isAuthenticated()

@@ -525,8 +525,25 @@ public class AdminSettingsController {
                                         "Restart not available in development mode. Please restart the application manually."));
             }
 
-            if (helperJar == null || !Files.isRegularFile(helperJar)) {
-                log.error("Cannot restart: restart-helper.jar not found at expected location");
+            boolean helperAvailable = helperJar != null && Files.isRegularFile(helperJar);
+
+            // Containerized deployments (Docker restart policy, systemd, k8s)
+            // restart the process themselves, and a self-spawned helper would be
+            // killed the moment PID 1 exits. There a clean exit IS the restart,
+            // so skip the helper entirely and let the supervisor bring us back.
+            if (!helperAvailable) {
+                if (externalSupervisorWillRestart()) {
+                    log.warn(
+                            "Restart helper not found; relying on external supervisor — exiting to apply settings");
+                    pendingChanges.clear();
+                    scheduleRestartExit();
+                    return ResponseEntity.ok(
+                            Map.of(
+                                    "message",
+                                    "Application restart initiated. The server will be back online shortly."));
+                }
+                log.error(
+                        "Cannot restart: restart-helper.jar not found and no external supervisor detected");
                 return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                         .body(
                                 Map.of(
@@ -571,19 +588,7 @@ public class AdminSettingsController {
             pendingChanges.clear();
 
             // Give the HTTP response time to complete, then exit
-            Thread.ofVirtual()
-                    .start(
-                            () -> {
-                                try {
-                                    Thread.sleep(1000);
-                                    log.info("Shutting down for restart...");
-                                    SpringApplication.exit(applicationContext, () -> 0);
-                                    System.exit(0);
-                                } catch (InterruptedException e) {
-                                    log.error("Restart interrupted: {}", e.getMessage(), e);
-                                    Thread.currentThread().interrupt();
-                                }
-                            });
+            scheduleRestartExit();
 
             return ResponseEntity.ok(
                     Map.of(
@@ -598,6 +603,38 @@ public class AdminSettingsController {
                                     "error",
                                     "Failed to initiate application restart: " + e.getMessage()));
         }
+    }
+
+    /**
+     * True when an external process supervisor will bring the application back up after it exits —
+     * Docker's restart policy, systemd, Kubernetes, etc. In that case a clean exit is the most
+     * reliable restart, since a self-spawned helper is killed when PID 1 dies. Controlled
+     * explicitly via the AZIRAL_RESTART_VIA_EXIT environment variable; otherwise inferred from the
+     * Docker container marker file.
+     */
+    private boolean externalSupervisorWillRestart() {
+        String flag = System.getenv("AZIRAL_RESTART_VIA_EXIT");
+        if (flag != null && !flag.isBlank()) {
+            return Boolean.parseBoolean(flag.trim());
+        }
+        return Files.exists(Path.of("/.dockerenv"));
+    }
+
+    /** Lets the HTTP response flush, then shuts the Spring context down and exits the JVM. */
+    private void scheduleRestartExit() {
+        Thread.ofVirtual()
+                .start(
+                        () -> {
+                            try {
+                                Thread.sleep(1000);
+                                log.info("Shutting down for restart...");
+                                SpringApplication.exit(applicationContext, () -> 0);
+                                System.exit(0);
+                            } catch (InterruptedException e) {
+                                log.error("Restart interrupted: {}", e.getMessage(), e);
+                                Thread.currentThread().interrupt();
+                            }
+                        });
     }
 
     private Object getSectionData(String sectionName) {

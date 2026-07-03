@@ -21,6 +21,8 @@ interface SelfHostedLoginScreenProps {
   requiresMfa: boolean;
   loading: boolean;
   error: string | null;
+  /** When provided, renders a "Create an account" link below the form. */
+  onCreateAccount?: () => void;
 }
 
 export const SelfHostedLoginScreen: React.FC<SelfHostedLoginScreenProps> = ({
@@ -34,6 +36,7 @@ export const SelfHostedLoginScreen: React.FC<SelfHostedLoginScreenProps> = ({
   requiresMfa,
   loading,
   error,
+  onCreateAccount,
 }) => {
   const { t } = useTranslation();
   const [username, setUsername] = useState("");
@@ -151,6 +154,24 @@ export const SelfHostedLoginScreen: React.FC<SelfHostedLoginScreenProps> = ({
           isSubmitting={loading}
           submitButtonText={t("setup.login.submit", "Login")}
         />
+      )}
+
+      {isUserPassAllowed && onCreateAccount && (
+        <Text size="sm" ta="center" mt="md">
+          {t("setup.login.noAccount", "Don't have an account?")}{" "}
+          <Text
+            span
+            c="blue"
+            style={{ cursor: loading ? "default" : "pointer" }}
+            onClick={() => {
+              if (!loading) {
+                onCreateAccount();
+              }
+            }}
+          >
+            {t("setup.login.createAccount", "Create an account")}
+          </Text>
+        </Text>
       )}
     </>
   );

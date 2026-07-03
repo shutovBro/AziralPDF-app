@@ -4,6 +4,8 @@ import { NavKey } from "@app/components/shared/config/types";
 import HotkeysSection from "@app/components/shared/config/configSections/HotkeysSection";
 import GeneralSection from "@app/components/shared/config/configSections/GeneralSection";
 import HelpSection from "@app/components/shared/config/configSections/HelpSection";
+import InstallAppSection from "@app/components/shared/config/configSections/InstallAppSection";
+import { isDesktopShell } from "@app/utils/pwaInstall";
 
 export interface ConfigNavItem {
   key: NavKey;
@@ -55,6 +57,18 @@ export const useConfigNavSections = (
           icon: "keyboard-rounded",
           component: <HotkeysSection />,
         },
+        // Web only: lets users install the PWA to their desktop. Hidden inside
+        // the Tauri desktop shell, where it would be meaningless.
+        ...(isDesktopShell()
+          ? []
+          : [
+              {
+                key: "install" as NavKey,
+                label: t("settings.installApp.title", "Install App"),
+                icon: "download-rounded",
+                component: <InstallAppSection />,
+              },
+            ]),
       ],
     },
     {

@@ -19,6 +19,7 @@ interface ImportMetaEnv {
 
   // Desktop only (.env.desktop)
   readonly VITE_DESKTOP_BACKEND_URL: string;
+  readonly VITE_DESKTOP_DEFAULT_SERVER_URL: string;
   readonly VITE_SAAS_SERVER_URL: string;
   readonly VITE_SAAS_BACKEND_API_URL: string;
   /** When "true" (dev only), desktop auth treats JWT as expired — see authService.shouldSimulateExpiredJwt */
@@ -28,3 +29,6 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+/** Build-time cache-busting id, injected via Vite `define`. */
+declare const __BUILD_ID__: string;

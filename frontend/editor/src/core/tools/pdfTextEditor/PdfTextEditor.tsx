@@ -28,10 +28,14 @@ import {
   PdfJsonFont,
   PdfJsonImageElement,
   PdfJsonPage,
+  PdfJsonTextElement,
+  PdfJsonVectorPath,
   TextGroup,
   PdfTextEditorViewData,
   BoundingBox,
   ConversionProgress,
+  DEFAULT_PAGE_WIDTH,
+  DEFAULT_PAGE_HEIGHT,
 } from "@app/tools/pdfTextEditor/pdfTextEditorTypes";
 import {
   deepCloneDocument,
@@ -41,6 +45,9 @@ import {
   extractDocumentImages,
   cloneImageElement,
   cloneTextElement,
+  cloneVectorPath,
+  createAddedTextGroup,
+  applyAddedTextStyle,
   valueOr,
 } from "@app/tools/pdfTextEditor/pdfTextEditorUtils";
 import PdfTextEditorView from "@app/components/tools/pdfTextEditor/PdfTextEditorView";
@@ -260,6 +267,12 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
   );
   const [groupsByPage, setGroupsByPage] = useState<TextGroup[][]>([]);
   const [imagesByPage, setImagesByPage] = useState<PdfJsonImageElement[][]>([]);
+  const [vectorPathsByPage, setVectorPathsByPage] = useState<
+    PdfJsonVectorPath[][]
+  >([]);
+  const [vectorPathsLoadingPage, setVectorPathsLoadingPage] = useState<
+    number | null
+  >(null);
   const [selectedPage, setSelectedPage] = useState(0);
   const [fileName, setFileName] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -292,6 +305,9 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
   const originalImagesRef = useRef<PdfJsonImageElement[][]>([]);
   const originalGroupsRef = useRef<TextGroup[][]>([]);
   const imagesByPageRef = useRef<PdfJsonImageElement[][]>([]);
+  const vectorPathsByPageRef = useRef<PdfJsonVectorPath[][]>([]);
+  const vectorPathsFetchedRef = useRef(false);
+  const vectorPathsFetchingRef = useRef(false);
   const lastLoadedFileRef = useRef<File | null>(null);
   const autoLoadKeyRef = useRef<string | null>(null);
   const sourceFileIdRef = useRef<string | null>(null);
@@ -339,6 +355,132 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
     };
   }, []);
 
+  // --- Undo / redo history --------------------------------------------------
+  // The editable document is two arrays: groupsByPage (text) + imagesByPage
+  // (images). Snapshot both before every user edit so edits can be stepped
+  // backwards/forwards. The editor is a per-layer overlay model, so a deep
+  // clone of these two arrays fully captures the editable state.
+  const historyGroupsRef = useRef<TextGroup[][]>([]);
+  const historyImagesRef = useRef<PdfJsonImageElement[][]>([]);
+  const historyVectorPathsRef = useRef<PdfJsonVectorPath[][]>([]);
+  const undoStackRef = useRef<
+    {
+      groups: TextGroup[][];
+      images: PdfJsonImageElement[][];
+      vectorPaths: PdfJsonVectorPath[][];
+    }[]
+  >([]);
+  const redoStackRef = useRef<
+    {
+      groups: TextGroup[][];
+      images: PdfJsonImageElement[][];
+      vectorPaths: PdfJsonVectorPath[][];
+    }[]
+  >([]);
+  const lastUndoTagRef = useRef<string | null>(null);
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
+
+  useEffect(() => {
+    historyGroupsRef.current = groupsByPage;
+  }, [groupsByPage]);
+  useEffect(() => {
+    historyImagesRef.current = imagesByPage;
+  }, [imagesByPage]);
+  useEffect(() => {
+    historyVectorPathsRef.current = vectorPathsByPage;
+  }, [vectorPathsByPage]);
+
+  // Every editor mutation creates new group/image objects (never mutates in
+  // place), so a shallow per-page array copy is enough to freeze a snapshot —
+  // no need to deep-clone large base64 image payloads on every step.
+  const snapshotEditorState = useCallback(
+    () => ({
+      groups: historyGroupsRef.current.map((page) => [...page]),
+      images: historyImagesRef.current.map((page) => [...page]),
+      vectorPaths: historyVectorPathsRef.current.map((page) => [...page]),
+    }),
+    [],
+  );
+
+  // Record the CURRENT state on the undo stack. Call BEFORE applying an edit.
+  // `tag` coalesces a burst of same-target edits (typing in one box, dragging
+  // one element) into a single undo step. Cap the stack at 60 steps.
+  const captureUndo = useCallback(
+    (tag?: string) => {
+      if (tag && tag === lastUndoTagRef.current) {
+        return;
+      }
+      lastUndoTagRef.current = tag ?? null;
+      undoStackRef.current.push(snapshotEditorState());
+      if (undoStackRef.current.length > 60) {
+        undoStackRef.current.shift();
+      }
+      redoStackRef.current = [];
+      setCanUndo(true);
+      setCanRedo(false);
+    },
+    [snapshotEditorState],
+  );
+
+  const resetHistory = useCallback(() => {
+    undoStackRef.current = [];
+    redoStackRef.current = [];
+    lastUndoTagRef.current = null;
+    setCanUndo(false);
+    setCanRedo(false);
+  }, []);
+
+  const applyEditorSnapshot = useCallback(
+    (snapshot: {
+      groups: TextGroup[][];
+      images: PdfJsonImageElement[][];
+      vectorPaths: PdfJsonVectorPath[][];
+    }) => {
+      const groups = snapshot.groups.map((page) => [...page]);
+      const images = snapshot.images.map((page) => [...page]);
+      const vectorPaths = snapshot.vectorPaths.map((page) => [...page]);
+      historyGroupsRef.current = groups;
+      historyImagesRef.current = images;
+      historyVectorPathsRef.current = vectorPaths;
+      // imagesByPageRef/vectorPathsByPageRef feed payload building, so keep deep clones.
+      imagesByPageRef.current = images.map((page) =>
+        page.map(cloneImageElement),
+      );
+      vectorPathsByPageRef.current = vectorPaths.map((page) =>
+        page.map(cloneVectorPath),
+      );
+      setGroupsByPage(groups);
+      setImagesByPage(images);
+      setVectorPathsByPage(vectorPaths);
+    },
+    [],
+  );
+
+  const handleUndo = useCallback(() => {
+    if (undoStackRef.current.length === 0) {
+      return;
+    }
+    const previousState = undoStackRef.current.pop()!;
+    redoStackRef.current.push(snapshotEditorState());
+    lastUndoTagRef.current = null;
+    applyEditorSnapshot(previousState);
+    setCanUndo(undoStackRef.current.length > 0);
+    setCanRedo(true);
+  }, [applyEditorSnapshot, snapshotEditorState]);
+
+  const handleRedo = useCallback(() => {
+    if (redoStackRef.current.length === 0) {
+      return;
+    }
+    const nextState = redoStackRef.current.pop()!;
+    undoStackRef.current.push(snapshotEditorState());
+    lastUndoTagRef.current = null;
+    applyEditorSnapshot(nextState);
+    setCanRedo(redoStackRef.current.length > 0);
+    setCanUndo(true);
+  }, [applyEditorSnapshot, snapshotEditorState]);
+
   const isCacheUnavailableError = useCallback((error: any): boolean => {
     const status = error?.response?.status;
     // Treat any 410 as cache unavailable, since responseType: 'blob' makes
@@ -353,8 +495,9 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         imagesByPage,
         originalGroupsRef.current,
         originalImagesRef.current,
+        vectorPathsByPage,
       ),
-    [groupsByPage, imagesByPage],
+    [groupsByPage, imagesByPage, vectorPathsByPage],
   );
   const hasChanges = useMemo(() => dirtyPages.some(Boolean), [dirtyPages]);
   const hasDocument = loadedDocument !== null;
@@ -409,11 +552,18 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       document: PdfJsonDocument | null,
       mode: "auto" | "paragraph" | "singleLine",
     ) => {
+      // A fresh document (or a full reset) invalidates the edit history.
+      resetHistory();
       if (!document) {
         setGroupsByPage([]);
         setImagesByPage([]);
+        setVectorPathsByPage([]);
         originalImagesRef.current = [];
         imagesByPageRef.current = [];
+        vectorPathsByPageRef.current = [];
+        vectorPathsFetchedRef.current = false;
+        vectorPathsFetchingRef.current = false;
+        setVectorPathsLoadingPage(null);
         setLoadedImagePages(new Set());
         setLoadingImagePages(new Set());
         loadedImagePagesRef.current = new Set();
@@ -435,6 +585,9 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       imagesByPageRef.current = images.map((page) =>
         page.map(cloneImageElement),
       );
+      vectorPathsByPageRef.current = [];
+      vectorPathsFetchedRef.current = false;
+      vectorPathsFetchingRef.current = false;
       const initialLoaded = new Set<number>();
       originalImages.forEach((pageImages, index) => {
         if (pageImages.length > 0) {
@@ -443,13 +596,15 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       });
       setGroupsByPage(groups);
       setImagesByPage(images);
+      setVectorPathsByPage([]);
+      setVectorPathsLoadingPage(null);
       setLoadedImagePages(initialLoaded);
       setLoadingImagePages(new Set());
       loadedImagePagesRef.current = new Set(initialLoaded);
       loadingImagePagesRef.current = new Set();
       setSelectedPage(0);
     },
-    [],
+    [resetHistory],
   );
 
   const clearPdfPreview = useCallback(() => {
@@ -971,6 +1126,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
 
   const handleGroupTextChange = useCallback(
     (pageIndex: number, groupId: string, value: string) => {
+      captureUndo(`text:${pageIndex}:${groupId}`);
       setGroupsByPage((previous) =>
         previous.map((groups, idx) =>
           idx !== pageIndex
@@ -981,12 +1137,13 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         ),
       );
     },
-    [],
+    [captureUndo],
   );
 
   const handleGroupDelete = useCallback(
     (pageIndex: number, groupId: string) => {
       console.log(`🗑️ Deleting group ${groupId} from page ${pageIndex}`);
+      captureUndo();
       setGroupsByPage((previous) => {
         const updated = previous.map((groups, idx) => {
           if (idx !== pageIndex) return groups;
@@ -999,7 +1156,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         return updated;
       });
     },
-    [],
+    [captureUndo],
   );
 
   const handleMergeGroups = useCallback(
@@ -1007,6 +1164,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       if (groupIds.length < 2) {
         return false;
       }
+      captureUndo();
       let updated = false;
       setGroupsByPage((previous) =>
         previous.map((groups, idx) => {
@@ -1041,11 +1199,12 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       );
       return updated;
     },
-    [],
+    [captureUndo],
   );
 
   const handleUngroupGroup = useCallback(
     (pageIndex: number, groupId: string): boolean => {
+      captureUndo();
       let updated = false;
       setGroupsByPage((previous) =>
         previous.map((groups, idx) => {
@@ -1072,7 +1231,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       );
       return updated;
     },
-    [],
+    [captureUndo],
   );
 
   const handleImageTransform = useCallback(
@@ -1087,6 +1246,20 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         transform: number[];
       },
     ) => {
+      // Skip history capture for a no-op transform (e.g. a click that fires
+      // dragStop without actually moving), so undo steps stay meaningful.
+      const currentImage = (historyImagesRef.current[pageIndex] ?? []).find(
+        (image) => (image.id ?? "") === imageId,
+      );
+      const willChange =
+        !currentImage ||
+        Math.abs(valueOr(currentImage.left, 0) - next.left) >= 1e-4 ||
+        Math.abs(valueOr(currentImage.bottom, 0) - next.bottom) >= 1e-4 ||
+        Math.abs(valueOr(currentImage.width, 0) - next.width) >= 1e-4 ||
+        Math.abs(valueOr(currentImage.height, 0) - next.height) >= 1e-4;
+      if (willChange) {
+        captureUndo(`image:${pageIndex}:${imageId}`);
+      }
       setImagesByPage((previous) => {
         const current = previous[pageIndex] ?? [];
         let changed = false;
@@ -1158,41 +1331,429 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         return nextImages;
       });
     },
-    [],
+    [captureUndo],
   );
 
-  const handleImageReset = useCallback((pageIndex: number, imageId: string) => {
-    const baseline = originalImagesRef.current[pageIndex]?.find(
-      (image) => (image.id ?? "") === imageId,
-    );
-    if (!baseline) {
+  const handleImageReset = useCallback(
+    (pageIndex: number, imageId: string) => {
+      const baseline = originalImagesRef.current[pageIndex]?.find(
+        (image) => (image.id ?? "") === imageId,
+      );
+      if (!baseline) {
+        return;
+      }
+      captureUndo();
+      setImagesByPage((previous) => {
+        const current = previous[pageIndex] ?? [];
+        let changed = false;
+        const updatedPage = current.map((image) => {
+          if ((image.id ?? "") !== imageId) {
+            return image;
+          }
+          changed = true;
+          return cloneImageElement(baseline);
+        });
+
+        if (!changed) {
+          return previous;
+        }
+
+        const nextImages = previous.map((images, idx) =>
+          idx === pageIndex ? updatedPage : images,
+        );
+        if (imagesByPageRef.current.length <= pageIndex) {
+          imagesByPageRef.current.length = pageIndex + 1;
+        }
+        imagesByPageRef.current[pageIndex] = updatedPage.map(cloneImageElement);
+        return nextImages;
+      });
+    },
+    [captureUndo],
+  );
+
+  const handleImageDelete = useCallback(
+    (pageIndex: number, imageId: string) => {
+      captureUndo();
+      setImagesByPage((previous) => {
+        const current = previous[pageIndex] ?? [];
+        const updatedPage = current.filter(
+          (image) => (image.id ?? "") !== imageId,
+        );
+        if (updatedPage.length === current.length) {
+          return previous;
+        }
+        const nextImages = previous.map((images, idx) =>
+          idx === pageIndex ? updatedPage : images,
+        );
+        if (imagesByPageRef.current.length <= pageIndex) {
+          imagesByPageRef.current.length = pageIndex + 1;
+        }
+        imagesByPageRef.current[pageIndex] = updatedPage.map(cloneImageElement);
+        return nextImages;
+      });
+    },
+    [captureUndo],
+  );
+
+  // Stage 3 (d): vector-object select/delete. Marks an object deleted=true rather
+  // than removing it from the array — the backend identifies what to skip on
+  // regenerate by walking `deleted` entries with their token range, so the array
+  // must keep every extracted object (deleted or not).
+  const handleVectorPathDelete = useCallback(
+    (pageIndex: number, vectorPathId: string) => {
+      captureUndo();
+      setVectorPathsByPage((previous) => {
+        const current = previous[pageIndex] ?? [];
+        let changed = false;
+        const updatedPage = current.map((path) => {
+          if ((path.id ?? "") !== vectorPathId || path.deleted === true) {
+            return path;
+          }
+          changed = true;
+          return { ...path, deleted: true };
+        });
+        if (!changed) {
+          return previous;
+        }
+        const nextVectorPaths = previous.map((paths, idx) =>
+          idx === pageIndex ? updatedPage : paths,
+        );
+        if (vectorPathsByPageRef.current.length <= pageIndex) {
+          vectorPathsByPageRef.current.length = pageIndex + 1;
+        }
+        vectorPathsByPageRef.current[pageIndex] =
+          updatedPage.map(cloneVectorPath);
+        return nextVectorPaths;
+      });
+    },
+    [captureUndo],
+  );
+
+  // Vector paths are extracted for the WHOLE document in one call (the backend
+  // endpoint has no per-page mode), so fetch lazily on first entry into the
+  // editor's "Objects" mode rather than eagerly with the main document load.
+  const loadVectorPaths = useCallback(async (pageIndex: number) => {
+    if (
+      vectorPathsFetchedRef.current ||
+      vectorPathsFetchingRef.current ||
+      !lastLoadedFileRef.current
+    ) {
       return;
     }
-    setImagesByPage((previous) => {
-      const current = previous[pageIndex] ?? [];
-      let changed = false;
-      const updatedPage = current.map((image) => {
-        if ((image.id ?? "") !== imageId) {
-          return image;
-        }
-        changed = true;
-        return cloneImageElement(baseline);
-      });
-
-      if (!changed) {
-        return previous;
-      }
-
-      const nextImages = previous.map((images, idx) =>
-        idx === pageIndex ? updatedPage : images,
+    vectorPathsFetchingRef.current = true;
+    setVectorPathsLoadingPage(pageIndex);
+    try {
+      const formData = new FormData();
+      formData.append("fileInput", lastLoadedFileRef.current);
+      const response = await apiClient.post<PdfJsonVectorPath[]>(
+        CONVERSION_ENDPOINTS["pdf-vector-paths"],
+        formData,
+        { responseType: "json" },
       );
-      if (imagesByPageRef.current.length <= pageIndex) {
-        imagesByPageRef.current.length = pageIndex + 1;
-      }
-      imagesByPageRef.current[pageIndex] = updatedPage.map(cloneImageElement);
-      return nextImages;
-    });
+      const totalPages = loadedDocumentRef.current?.pages?.length ?? 0;
+      const grouped: PdfJsonVectorPath[][] = Array.from(
+        { length: totalPages },
+        () => [],
+      );
+      (response.data ?? []).forEach((path) => {
+        const idx = (path.pageNumber ?? 1) - 1;
+        if (idx >= 0 && idx < totalPages) {
+          grouped[idx].push(path);
+        }
+      });
+      vectorPathsByPageRef.current = grouped.map((page) =>
+        page.map(cloneVectorPath),
+      );
+      historyVectorPathsRef.current = grouped;
+      setVectorPathsByPage(grouped);
+      vectorPathsFetchedRef.current = true;
+    } catch (error) {
+      console.warn("[PdfTextEditor] Failed to load vector paths", error);
+    } finally {
+      vectorPathsFetchingRef.current = false;
+      setVectorPathsLoadingPage(null);
+    }
   }, []);
+
+  const handleRequestVectorPaths = useCallback(
+    (pageIndex: number) => {
+      void loadVectorPaths(pageIndex);
+    },
+    [loadVectorPaths],
+  );
+
+  const appendImageElement = useCallback(
+    (pageIndex: number, element: PdfJsonImageElement) => {
+      captureUndo();
+      setImagesByPage((previous) => {
+        const current = previous[pageIndex] ?? [];
+        const updatedPage = [...current, element];
+        const nextImages = previous.map((images, idx) =>
+          idx === pageIndex ? updatedPage : images,
+        );
+        if (imagesByPageRef.current.length <= pageIndex) {
+          imagesByPageRef.current.length = pageIndex + 1;
+        }
+        imagesByPageRef.current[pageIndex] = updatedPage.map(cloneImageElement);
+        return nextImages;
+      });
+    },
+    [captureUndo],
+  );
+
+  const handleAddRedaction = useCallback(
+    (
+      pageIndex: number,
+      rect: {
+        left: number;
+        bottom: number;
+        width: number;
+        height: number;
+        color: string;
+      },
+    ) => {
+      const width = Math.max(rect.width, 0.01);
+      const height = Math.max(rect.height, 0.01);
+      const canvas = window.document.createElement("canvas");
+      canvas.width = 1;
+      canvas.height = 1;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        return;
+      }
+      ctx.fillStyle = rect.color;
+      ctx.fillRect(0, 0, 1, 1);
+      const dataUrl = canvas.toDataURL("image/png");
+      const base64 = dataUrl.split(",")[1] ?? "";
+      const element: PdfJsonImageElement = {
+        id: `aziral-redaction-${Date.now()}-${Math.round(Math.random() * 1e6)}`,
+        objectName: null,
+        inlineImage: false,
+        nativeWidth: 1,
+        nativeHeight: 1,
+        x: rect.left,
+        y: rect.bottom,
+        left: rect.left,
+        bottom: rect.bottom,
+        right: rect.left + width,
+        top: rect.bottom + height,
+        width,
+        height,
+        transform: null,
+        zOrder: 1_000_000,
+        imageData: base64,
+        imageFormat: "png",
+      };
+      appendImageElement(pageIndex, element);
+    },
+    [appendImageElement],
+  );
+
+  const handleAddImage = useCallback(
+    async (pageIndex: number, file: File) => {
+      const page = loadedDocument?.pages?.[pageIndex];
+      const pageWidth = valueOr(page?.width, DEFAULT_PAGE_WIDTH);
+      const pageHeight = valueOr(page?.height, DEFAULT_PAGE_HEIGHT);
+
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result ?? ""));
+        reader.onerror = () => reject(reader.error ?? new Error("read failed"));
+        reader.readAsDataURL(file);
+      });
+      const commaIndex = dataUrl.indexOf(",");
+      const base64 = commaIndex >= 0 ? dataUrl.slice(commaIndex + 1) : "";
+      if (!base64) {
+        return;
+      }
+      const mimeMatch = /^data:image\/([a-zA-Z0-9.+-]+);/.exec(dataUrl);
+      const imageFormat = (mimeMatch?.[1] ?? "png").toLowerCase();
+
+      const natural = await new Promise<{ width: number; height: number }>(
+        (resolve) => {
+          const img = new Image();
+          img.onload = () =>
+            resolve({ width: img.naturalWidth, height: img.naturalHeight });
+          img.onerror = () => resolve({ width: 0, height: 0 });
+          img.src = dataUrl;
+        },
+      );
+      const nativeWidth = natural.width > 0 ? natural.width : 200;
+      const nativeHeight = natural.height > 0 ? natural.height : 200;
+
+      // Fit within half the page while preserving aspect ratio.
+      const maxWidth = pageWidth * 0.5;
+      const maxHeight = pageHeight * 0.5;
+      const fitScale = Math.min(
+        maxWidth / nativeWidth,
+        maxHeight / nativeHeight,
+        1,
+      );
+      const width = Math.max(nativeWidth * fitScale, 1);
+      const height = Math.max(nativeHeight * fitScale, 1);
+      const left = Math.max((pageWidth - width) / 2, 0);
+      const bottom = Math.max((pageHeight - height) / 2, 0);
+
+      const element: PdfJsonImageElement = {
+        id: `aziral-image-${Date.now()}-${Math.round(Math.random() * 1e6)}`,
+        objectName: null,
+        inlineImage: false,
+        nativeWidth,
+        nativeHeight,
+        x: left,
+        y: bottom,
+        left,
+        bottom,
+        right: left + width,
+        top: bottom + height,
+        width,
+        height,
+        transform: null,
+        zOrder: 1_000_000,
+        imageData: base64,
+        imageFormat,
+      };
+      appendImageElement(pageIndex, element);
+    },
+    [appendImageElement, loadedDocument],
+  );
+
+  const handleAddText = useCallback(
+    (
+      pageIndex: number,
+      pdfX: number,
+      baselineY: number,
+      fontSize?: number,
+      color?: string,
+      bold?: boolean,
+      italic?: boolean,
+    ): string => {
+      captureUndo();
+      const group = createAddedTextGroup(
+        pageIndex,
+        `${Date.now()}-${Math.round(Math.random() * 1e6)}`,
+        pdfX,
+        baselineY,
+        fontSize,
+        color,
+        bold,
+        italic,
+      );
+      setGroupsByPage((previous) => {
+        const next = [...previous];
+        while (next.length <= pageIndex) {
+          next.push([]);
+        }
+        next[pageIndex] = [...(next[pageIndex] ?? []), group];
+        return next;
+      });
+      return group.id;
+    },
+    [captureUndo],
+  );
+
+  const handleAddTextStyle = useCallback(
+    (
+      pageIndex: number,
+      groupId: string,
+      style: {
+        fontSize?: number;
+        color?: string;
+        bold?: boolean;
+        italic?: boolean;
+      },
+    ) => {
+      if (
+        style.fontSize === undefined &&
+        style.color === undefined &&
+        style.bold === undefined &&
+        style.italic === undefined
+      ) {
+        return;
+      }
+      captureUndo(`textStyle:${pageIndex}:${groupId}`);
+      setGroupsByPage((previous) => {
+        const page = previous[pageIndex];
+        if (!page) {
+          return previous;
+        }
+        let mutated = false;
+        const nextPage = page.map((group) => {
+          if (group.id !== groupId) {
+            return group;
+          }
+          mutated = true;
+          return applyAddedTextStyle(group, style);
+        });
+        if (!mutated) {
+          return previous;
+        }
+        const next = [...previous];
+        next[pageIndex] = nextPage;
+        return next;
+      });
+    },
+    [captureUndo],
+  );
+
+  const handleGroupMove = useCallback(
+    (pageIndex: number, groupId: string, dxPdf: number, dyPdf: number) => {
+      if (
+        (Math.abs(dxPdf) < 1e-6 && Math.abs(dyPdf) < 1e-6) ||
+        !Number.isFinite(dxPdf) ||
+        !Number.isFinite(dyPdf)
+      ) {
+        return;
+      }
+      captureUndo(`move:${pageIndex}:${groupId}`);
+      const translateElement = (
+        element: PdfJsonTextElement,
+      ): PdfJsonTextElement => {
+        const next = cloneTextElement(element);
+        next.x = valueOr(element.x, 0) + dxPdf;
+        next.y = valueOr(element.y, 0) + dyPdf;
+        if (element.textMatrix && element.textMatrix.length === 6) {
+          const matrix = [...element.textMatrix];
+          matrix[4] = matrix[4] + dxPdf;
+          matrix[5] = matrix[5] + dyPdf;
+          next.textMatrix = matrix;
+        }
+        return next;
+      };
+      setGroupsByPage((previous) =>
+        previous.map((groups, idx) => {
+          if (idx !== pageIndex) {
+            return groups;
+          }
+          return groups.map((group) => {
+            if (group.id !== groupId) {
+              return group;
+            }
+            return {
+              ...group,
+              moved: true,
+              baseline:
+                group.baseline !== null && group.baseline !== undefined
+                  ? group.baseline + dyPdf
+                  : group.baseline,
+              anchor: group.anchor
+                ? { x: group.anchor.x + dxPdf, y: group.anchor.y + dyPdf }
+                : group.anchor,
+              bounds: {
+                left: group.bounds.left + dxPdf,
+                right: group.bounds.right + dxPdf,
+                top: group.bounds.top + dyPdf,
+                bottom: group.bounds.bottom + dyPdf,
+              },
+              elements: group.elements.map(translateElement),
+              originalElements: group.originalElements.map(translateElement),
+            };
+          });
+        }),
+      );
+    },
+    [captureUndo],
+  );
 
   const handleResetEdits = useCallback(() => {
     if (!loadedDocument) {
@@ -1213,6 +1774,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       imagesByPageRef.current,
       originalImagesRef.current,
       forceSingleTextElement,
+      vectorPathsByPageRef.current,
     );
     const baseName = sanitizeBaseName(
       fileName || loadedDocument.metadata?.title || undefined,
@@ -1511,6 +2073,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         imagesByPage,
         originalGroupsRef.current,
         originalImagesRef.current,
+        vectorPathsByPage,
       );
       const dirtyPageIndices = currentDirtyPages
         .map((isDirty, index) => (isDirty ? index : -1))
@@ -1706,6 +2269,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
     onError,
     selectors,
     t,
+    vectorPathsByPage,
   ]);
 
   const requestPagePreview = useCallback(
@@ -1737,6 +2301,12 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
           page.cleanup();
           return;
         }
+        // Paint the implicit white "paper" first. PDF.js renders onto a
+        // transparent canvas, so content using transparency or blend modes
+        // composites against nothing and looks dark/dull. A white base makes
+        // the preview match how the page is actually displayed on paper.
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
         await page.render({ canvas, canvasContext: context, viewport }).promise;
 
         try {
@@ -1812,6 +2382,18 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
               const canvasY = canvas.height - top * scale;
               const canvasWidth = width * scale;
               const canvasHeight = height * scale;
+              // Keep a full-bleed ORIGINAL background image BAKED into the
+              // preview (don't erase it) so the page looks exactly like the
+              // source PDF and is never swapped for a re-rendered overlay. The
+              // View skips rendering an overlay for the same image.
+              const coverage =
+                (canvasWidth * canvasHeight) /
+                Math.max(canvas.width * canvas.height, 1);
+              const isBackground =
+                !(image.id ?? "").startsWith("aziral-") && coverage >= 0.9;
+              if (isBackground) {
+                continue;
+              }
               context.fillRect(canvasX, canvasY, canvasWidth, canvasHeight);
             }
             context.restore();
@@ -1855,6 +2437,8 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       document: loadedDocument,
       groupsByPage,
       imagesByPage,
+      vectorPathsByPage,
+      vectorPathsLoadingPage,
       pagePreviews,
       selectedPage,
       dirtyPages,
@@ -1877,7 +2461,19 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       onGroupDelete: handleGroupDelete,
       onImageTransform: handleImageTransform,
       onImageReset: handleImageReset,
+      onImageDelete: handleImageDelete,
+      onAddImage: handleAddImage,
+      onRequestVectorPaths: handleRequestVectorPaths,
+      onVectorPathDelete: handleVectorPathDelete,
+      onAddRedaction: handleAddRedaction,
+      onAddText: handleAddText,
+      onAddTextStyle: handleAddTextStyle,
+      onGroupMove: handleGroupMove,
       onReset: handleResetEdits,
+      onUndo: handleUndo,
+      onRedo: handleRedo,
+      canUndo,
+      canRedo,
       onDownloadJson: handleDownloadJson,
       onGeneratePdf: handleGeneratePdf,
       onGeneratePdfForNavigation: async () => {
@@ -1897,6 +2493,10 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       handleImageTransform,
       handleSaveToWorkbench,
       imagesByPage,
+      vectorPathsByPage,
+      vectorPathsLoadingPage,
+      handleRequestVectorPaths,
+      handleVectorPathDelete,
       isSavingToWorkbench,
       pagePreviews,
       dirtyPages,
@@ -1908,7 +2508,17 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       handleGroupTextChange,
       handleGroupDelete,
       handleImageReset,
+      handleImageDelete,
+      handleAddImage,
+      handleAddRedaction,
+      handleAddText,
+      handleAddTextStyle,
+      handleGroupMove,
       handleResetEdits,
+      handleUndo,
+      handleRedo,
+      canUndo,
+      canRedo,
       handleSelectPage,
       hasChanges,
       hasDocument,

@@ -50,6 +50,12 @@ public class AdminUserSummary {
     @Schema(description = "Team membership (if any)")
     private TeamSummary team;
 
+    @Schema(description = "AziralPDF subscription tier in effect (FREE/PRO/ENTERPRISE)")
+    private String licenseTier;
+
+    @Schema(description = "Subscription expiry timestamp, or null for no expiry")
+    private LocalDateTime licenseExpiresAt;
+
     @Schema(description = "User account creation timestamp")
     private LocalDateTime createdAt;
 

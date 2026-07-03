@@ -472,6 +472,11 @@ public class UserService implements UserServiceInterface {
         User user = new User();
         user.setUsername(request.getUsername());
 
+        // Set email if provided (separate from the login username)
+        if (request.getEmail() != null && !request.getEmail().isBlank()) {
+            user.setEmail(request.getEmail());
+        }
+
         // Set password if provided
         if (request.getPassword() != null && !request.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));

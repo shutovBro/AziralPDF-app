@@ -318,6 +318,65 @@ export class AuthService {
     }
   }
 
+  /**
+   * Register a new account on a self-hosted server, then sign in.
+   *
+   * The self-hosted backend creates the user already enabled (open
+   * registration), so authentication can happen immediately after a
+   * successful registration. Requests go through the Tauri HTTP client to
+   * bypass CORS and send the desktop User-Agent, mirroring {@link login}.
+   */
+  async register(
+    serverUrl: string,
+    username: string,
+    email: string,
+    password: string,
+  ): Promise<UserInfo> {
+    const trimmedServer = serverUrl.replace(/\/+$/, "");
+
+    try {
+      await tauriHttpClient.post(
+        `${trimmedServer}/api/v1/user/register`,
+        { username, email, password },
+        { headers: { "Content-Type": "application/json" } },
+      );
+    } catch (error) {
+      console.error("[Desktop AuthService] Registration failed:", error);
+      throw new Error(this.extractRegistrationError(error), { cause: error });
+    }
+
+    // Account is created enabled, so authenticate straight away.
+    return this.login(serverUrl, username, password);
+  }
+
+  private extractRegistrationError(error: unknown): string {
+    const fallback = "Registration failed. Please try again.";
+    if (typeof error !== "object" || error === null) {
+      return typeof error === "string" && error ? error : fallback;
+    }
+
+    const data = (error as { response?: { data?: unknown } }).response?.data;
+
+    // The backend returns { "error": "..." } as the response body.
+    if (typeof data === "string" && data) {
+      try {
+        const parsed = JSON.parse(data) as { error?: string };
+        if (parsed?.error) {
+          return parsed.error;
+        }
+      } catch {
+        return data;
+      }
+    } else if (data && typeof data === "object") {
+      const parsed = data as { error?: string };
+      if (parsed.error) {
+        return parsed.error;
+      }
+    }
+
+    return (error as { message?: string }).message || fallback;
+  }
+
   async login(
     serverUrl: string,
     username: string,
@@ -466,7 +525,7 @@ export class AuthService {
         else if (errMsg.includes("404") || errMsg.includes("not found")) {
           this.setAuthStatus("unauthenticated", null);
           throw new Error(
-            "Login endpoint not found. Please ensure you are connecting to a valid Stirling PDF server.",
+            "Login endpoint not found. Please ensure you are connecting to a valid AziralPDF server.",
             {
               cause: error,
             },

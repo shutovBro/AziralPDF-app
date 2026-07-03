@@ -82,8 +82,8 @@ export class UpdateService {
       return (
         DOWNLOAD_BASE_URL +
         (machineInfo.activeSecurity
-          ? "Stirling-PDF-with-login.jar"
-          : "Stirling-PDF.jar")
+          ? "AziralPDF-with-login.jar"
+          : "AziralPDF.jar")
       );
     }
 
@@ -185,7 +185,7 @@ export class UpdateService {
    */
   async getCurrentVersionFromGitHub(): Promise<string> {
     const url =
-      "https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/V2-master/build.gradle";
+      "https://raw.githubusercontent.com/shutovBro/AziralPDF-app/V2-master/build.gradle";
 
     try {
       const response = await fetch(url);

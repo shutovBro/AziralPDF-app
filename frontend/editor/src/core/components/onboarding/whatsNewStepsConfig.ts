@@ -136,7 +136,7 @@ export function createWhatsNewStepsConfig({
       selector: '[data-tour="help-button"]',
       content: t(
         "onboarding.whatsNew.wrapUp",
-        "That is what is new in V2. Open the <strong>Tours</strong> menu anytime to replay this, the Tools tour, or the Admin tour.",
+        "That is what is new. Open the <strong>Tours</strong> menu anytime to replay this, the Tools tour, or the Admin tour.",
       ),
       position: "right",
       padding: 10,

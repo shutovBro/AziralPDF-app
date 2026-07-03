@@ -34,6 +34,7 @@ import stirling.software.proprietary.security.model.AuthenticationType;
 @Builder(builderClassName = "Builder")
 public class SaveUserRequest {
     private final String username;
+    @Builder.Default private final String email = null;
     @Builder.Default private final String password = null;
     @Builder.Default private final String ssoProviderId = null;
     @Builder.Default private final String ssoProvider = null;

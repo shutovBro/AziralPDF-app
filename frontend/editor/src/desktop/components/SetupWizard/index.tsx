@@ -2,10 +2,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Stack, Text, Button, Alert, Loader, Center } from "@mantine/core";
 import { DesktopAuthLayout } from "@app/components/SetupWizard/DesktopAuthLayout";
-import { SaaSLoginScreen } from "@app/components/SetupWizard/SaaSLoginScreen";
-import { SaaSSignupScreen } from "@app/components/SetupWizard/SaaSSignupScreen";
 import { ServerSelectionScreen } from "@app/components/SetupWizard/ServerSelectionScreen";
 import { SelfHostedLoginScreen } from "@app/components/SetupWizard/SelfHostedLoginScreen";
+import { SelfHostedSignupScreen } from "@app/components/SetupWizard/SelfHostedSignupScreen";
 import {
   ServerConfig,
   SSOProviderConfig,
@@ -17,16 +16,15 @@ import {
   UserInfo,
 } from "@app/services/authService";
 import { tauriBackendService } from "@app/services/tauriBackendService";
-import { STIRLING_SAAS_URL } from "@app/constants/connection";
+import { DESKTOP_DEFAULT_SERVER_URL } from "@app/constants/connection";
 import { listen } from "@tauri-apps/api/event";
 import "@app/routes/authShared/auth.css";
 import { DisabledButtonWithTooltip } from "@app/components/shared/DisabledButtonWithTooltip";
 
 enum SetupStep {
-  SaaSLogin,
-  SaaSSignup,
   ServerSelection,
   SelfHostedLogin,
+  SelfHostedSignup,
 }
 
 interface SetupWizardProps {
@@ -34,76 +32,26 @@ interface SetupWizardProps {
   /** Omit the DesktopAuthLayout wrapper — use when rendering inside a modal */
   noLayout?: boolean;
   /** Called when the user dismisses the wizard (modal close button) */
-  onClose?: () => void;
+  onClose?: (() => void) | undefined;
 }
 
 export const SetupWizard: React.FC<SetupWizardProps> = ({
   onComplete,
   noLayout = false,
-  onClose,
+  onClose: _onClose,
 }) => {
   const { t } = useTranslation();
-  const [activeStep, setActiveStep] = useState<SetupStep>(SetupStep.SaaSLogin);
-  const [serverConfig, setServerConfig] = useState<ServerConfig | null>({
-    url: STIRLING_SAAS_URL,
-  });
+  const [activeStep, setActiveStep] = useState<SetupStep>(
+    SetupStep.SelfHostedLogin,
+  );
+  const [serverConfig, setServerConfig] = useState<ServerConfig | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selfHostedMfaCode, setSelfHostedMfaCode] = useState("");
   const [selfHostedMfaRequired, setSelfHostedMfaRequired] = useState(false);
   const [lockConnectionMode, setLockConnectionMode] = useState(false);
-  const [lockedServerUnreachable, setLockedServerUnreachable] = useState(false);
-  const [lockedServerChecking, setLockedServerChecking] = useState(false);
-
-  const handleSaaSLogin = async (username: string, password: string) => {
-    if (!serverConfig) {
-      setError("No SaaS server configured");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Only attempt password login if a password is provided
-      // If password is empty, assume OAuth login already completed
-      const isAlreadyAuthenticated = await authService.isAuthenticated();
-      if (!isAlreadyAuthenticated && password) {
-        await authService.login(serverConfig.url, username, password);
-      }
-
-      await connectionModeService.switchToSaaS(serverConfig.url);
-      tauriBackendService.startBackend().catch(console.error);
-      onComplete();
-    } catch (err) {
-      console.error("SaaS login failed:", err);
-      setError(err instanceof Error ? err.message : "SaaS login failed");
-      setLoading(false);
-    }
-  };
-
-  const handleSaaSLoginOAuth = async (_userInfo: UserInfo) => {
-    if (!serverConfig) {
-      setError("No SaaS server configured");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-
-      // OAuth already completed by authService.loginWithOAuth
-      await connectionModeService.switchToSaaS(serverConfig.url);
-      tauriBackendService.startBackend().catch(console.error);
-      onComplete();
-    } catch (err) {
-      console.error("SaaS OAuth login completion failed:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to complete SaaS login",
-      );
-      setLoading(false);
-    }
-  };
+  const [serverUnreachable, setServerUnreachable] = useState(false);
+  const [serverChecking, setServerChecking] = useState(true);
 
   const handleLocalMode = async () => {
     try {
@@ -123,24 +71,6 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
     }
   };
 
-  const handleSelfHostedClick = () => {
-    if (lockConnectionMode) {
-      return;
-    }
-    setError(null);
-    setActiveStep(SetupStep.ServerSelection);
-  };
-
-  const handleSwitchToSignup = () => {
-    setError(null);
-    setActiveStep(SetupStep.SaaSSignup);
-  };
-
-  const handleSwitchToLogin = () => {
-    setError(null);
-    setActiveStep(SetupStep.SaaSLogin);
-  };
-
   const handleServerSelection = (config: ServerConfig) => {
     console.log("[SetupWizard] Server selected:", config);
     console.log("[SetupWizard] OAuth providers:", config.enabledOAuthProviders);
@@ -149,6 +79,7 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
     setError(null);
     setSelfHostedMfaCode("");
     setSelfHostedMfaRequired(false);
+    setServerUnreachable(false);
     setActiveStep(SetupStep.SelfHostedLogin);
   };
 
@@ -211,6 +142,39 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
     }
   };
 
+  const handleSelfHostedSignup = async (
+    username: string,
+    email: string,
+    password: string,
+  ) => {
+    if (!serverConfig) {
+      setError("No server configured");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Register creates the account (already enabled) and signs in.
+      await authService.register(serverConfig.url, username, email, password);
+      await connectionModeService.switchToSelfHosted(serverConfig);
+      await tauriBackendService.initializeExternalBackend();
+
+      onComplete();
+    } catch (err) {
+      console.error("[SetupWizard] ❌ Self-hosted signup failed:", err);
+      let errorMessage = "Sign up failed";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      } else if (typeof err === "string") {
+        errorMessage = err;
+      }
+      setError(errorMessage);
+      setLoading(false);
+    }
+  };
+
   const handleSelfHostedOAuthSuccess = async (_userInfo: UserInfo) => {
     console.log("[SetupWizard] 🔐 OAuth login successful, completing setup");
     console.log(`[SetupWizard] Server: ${serverConfig?.url}`);
@@ -257,69 +221,44 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
       try {
         const parsed = new URL(url);
 
-        // Supabase sends tokens in the URL hash
+        // Tokens arrive in the URL hash
         const hash = parsed.hash.replace(/^#/, "");
         const params = new URLSearchParams(hash);
-        const accessToken = params.get("access_token");
         const type = params.get("type") || parsed.searchParams.get("type");
         // Self-hosted SSO deep links are normally handled by authService.loginWithSelfHostedOAuth.
         // Fallback here only if no in-flight auth listener exists (e.g. renderer reload mid-flow).
-        if (type === "sso" || type === "sso-selfhosted") {
-          if (authService.isSelfHostedDeepLinkFlowActive()) {
-            return;
-          }
-
-          const accessTokenFromHash = params.get("access_token");
-          const accessTokenFromQuery = parsed.searchParams.get("access_token");
-          const serverFromQuery = parsed.searchParams.get("server");
-          const token = accessTokenFromHash || accessTokenFromQuery;
-          const serverUrl =
-            serverFromQuery || serverConfig?.url || STIRLING_SAAS_URL;
-          if (!token || !serverUrl) {
-            console.error(
-              "[SetupWizard] Deep link missing token or server for SSO completion",
-            );
-            return;
-          }
-
-          setLoading(true);
-          setError(null);
-
-          await authService.completeSelfHostedSession(serverUrl, token);
-          await connectionModeService.switchToSelfHosted({ url: serverUrl });
-          await tauriBackendService.initializeExternalBackend();
-          onComplete();
+        if (type !== "sso" && type !== "sso-selfhosted") {
           return;
         }
 
-        if (
-          !type ||
-          (type !== "signup" && type !== "recovery" && type !== "magiclink")
-        ) {
+        if (authService.isSelfHostedDeepLinkFlowActive()) {
           return;
         }
 
-        if (!accessToken) {
-          console.error("[SetupWizard] Deep link missing access_token");
+        const accessTokenFromHash = params.get("access_token");
+        const accessTokenFromQuery = parsed.searchParams.get("access_token");
+        const serverFromQuery = parsed.searchParams.get("server");
+        const token = accessTokenFromHash || accessTokenFromQuery;
+        const serverUrl =
+          serverFromQuery || serverConfig?.url || DESKTOP_DEFAULT_SERVER_URL;
+        if (!token || !serverUrl) {
+          console.error(
+            "[SetupWizard] Deep link missing token or server for SSO completion",
+          );
           return;
         }
 
         setLoading(true);
         setError(null);
 
-        await authService.completeSupabaseSession(
-          accessToken,
-          serverConfig?.url || STIRLING_SAAS_URL,
-        );
-        await connectionModeService.switchToSaaS(
-          serverConfig?.url || STIRLING_SAAS_URL,
-        );
-        tauriBackendService.startBackend().catch(console.error);
+        await authService.completeSelfHostedSession(serverUrl, token);
+        await connectionModeService.switchToSelfHosted({ url: serverUrl });
+        await tauriBackendService.initializeExternalBackend();
         onComplete();
       } catch (err) {
         console.error("[SetupWizard] Failed to handle deep link", err);
         setError(
-          err instanceof Error ? err.message : "Failed to complete signup",
+          err instanceof Error ? err.message : "Failed to complete sign-in",
         );
         setLoading(false);
       }
@@ -330,37 +269,17 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
     };
   }, [onComplete, serverConfig?.url]);
 
-  const handleBack = () => {
-    if (lockConnectionMode) {
-      return;
-    }
-    setError(null);
-    if (activeStep === SetupStep.SelfHostedLogin) {
-      setSelfHostedMfaCode("");
-      setSelfHostedMfaRequired(false);
-      setActiveStep(SetupStep.ServerSelection);
-    } else if (activeStep === SetupStep.ServerSelection) {
-      setActiveStep(SetupStep.SaaSLogin);
-      setServerConfig({ url: STIRLING_SAAS_URL });
-    } else if (activeStep === SetupStep.SaaSSignup) {
-      setActiveStep(SetupStep.SaaSLogin);
-    }
-  };
-
-  const loadLockedConfig = useCallback(async () => {
-    const currentConfig = await connectionModeService.getCurrentConfig();
-    if (!currentConfig.lock_connection_mode) return;
-    const serverUrl = currentConfig.server_config?.url;
-    if (!serverUrl) return;
-
-    setLockConnectionMode(true);
-    setLockedServerUnreachable(false);
-    setLockedServerChecking(true);
+  /**
+   * Probe a server's login endpoint to discover SSO providers and the login
+   * method, then land on the login screen for it. Network failure shows the
+   * unreachable screen with retry / change-server / local fallbacks.
+   */
+  const loadServerConfig = useCallback(async (serverUrl: string) => {
+    setServerChecking(true);
+    setServerUnreachable(false);
 
     const savedUrl = serverUrl.replace(/\/+$/, "");
-    let updatedConfig: ServerConfig = {
-      ...(currentConfig.server_config ?? { url: savedUrl }),
-    };
+    let updatedConfig: ServerConfig = { url: savedUrl };
 
     try {
       const response = await fetch(
@@ -391,55 +310,66 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
         };
 
         setServerConfig(updatedConfig);
-        setLockedServerChecking(false);
+        setServerChecking(false);
         setActiveStep(SetupStep.SelfHostedLogin);
       } else {
         // Server responded but with an error — still show login form
         updatedConfig = { ...updatedConfig, loginMethod: "all" };
         setServerConfig(updatedConfig);
-        setLockedServerChecking(false);
+        setServerChecking(false);
         setActiveStep(SetupStep.SelfHostedLogin);
       }
     } catch (err) {
       // Network error — server is unreachable
       console.error("[SetupWizard] Server unreachable:", err);
       setServerConfig(updatedConfig);
-      setLockedServerChecking(false);
-      setLockedServerUnreachable(true);
+      setServerChecking(false);
+      setServerUnreachable(true);
       setActiveStep(SetupStep.SelfHostedLogin);
     }
   }, []);
 
+  /**
+   * Initial flow: a provisioned (MDM-locked) server wins; otherwise start at
+   * the login screen of the default server.
+   */
+  const loadInitialConfig = useCallback(async () => {
+    const currentConfig = await connectionModeService.getCurrentConfig();
+    const lockedUrl = currentConfig.lock_connection_mode
+      ? currentConfig.server_config?.url
+      : undefined;
+
+    if (lockedUrl) {
+      setLockConnectionMode(true);
+      await loadServerConfig(lockedUrl);
+      return;
+    }
+
+    await loadServerConfig(DESKTOP_DEFAULT_SERVER_URL);
+  }, [loadServerConfig]);
+
   useEffect(() => {
-    void loadLockedConfig();
-  }, [loadLockedConfig]);
+    void loadInitialConfig();
+  }, [loadInitialConfig]);
+
+  const handleBack = () => {
+    if (lockConnectionMode) {
+      return;
+    }
+    setError(null);
+    if (activeStep === SetupStep.SelfHostedLogin) {
+      setSelfHostedMfaCode("");
+      setSelfHostedMfaRequired(false);
+      setActiveStep(SetupStep.ServerSelection);
+    } else if (activeStep === SetupStep.ServerSelection) {
+      // Back from manual server entry returns to the default server's login
+      void loadServerConfig(DESKTOP_DEFAULT_SERVER_URL);
+    }
+  };
 
   const wizardContent = (
     <>
       {/* Step Content */}
-      {!lockConnectionMode && activeStep === SetupStep.SaaSLogin && (
-        <SaaSLoginScreen
-          serverUrl={serverConfig?.url || STIRLING_SAAS_URL}
-          onLogin={handleSaaSLogin}
-          onOAuthSuccess={handleSaaSLoginOAuth}
-          onSelfHostedClick={handleSelfHostedClick}
-          onSwitchToSignup={handleSwitchToSignup}
-          onSkipSignIn={handleLocalMode}
-          onClose={onClose}
-          loading={loading}
-          error={error}
-        />
-      )}
-
-      {!lockConnectionMode && activeStep === SetupStep.SaaSSignup && (
-        <SaaSSignupScreen
-          loading={loading}
-          error={error}
-          onLogin={handleSaaSLogin}
-          onSwitchToLogin={handleSwitchToLogin}
-        />
-      )}
-
       {!lockConnectionMode && activeStep === SetupStep.ServerSelection && (
         <ServerSelectionScreen
           onSelect={handleServerSelection}
@@ -448,15 +378,15 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
         />
       )}
 
-      {lockConnectionMode && lockedServerChecking && (
+      {serverChecking && activeStep === SetupStep.SelfHostedLogin && (
         <Center py="xl">
           <Loader size="md" />
         </Center>
       )}
 
       {activeStep === SetupStep.SelfHostedLogin &&
-        lockedServerUnreachable &&
-        !lockedServerChecking && (
+        serverUnreachable &&
+        !serverChecking && (
           <Stack gap="md" style={{ padding: "0.5rem 0" }}>
             <Alert
               color="orange"
@@ -480,7 +410,11 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
               color="blue"
               fullWidth
               loading={loading}
-              onClick={() => void loadLockedConfig()}
+              onClick={() => {
+                if (serverConfig?.url) {
+                  void loadServerConfig(serverConfig.url);
+                }
+              }}
             >
               {t("setup.selfhosted.unreachable.retry", "Retry")}
             </Button>
@@ -503,7 +437,7 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
                 fullWidth
                 loading={loading}
                 onClick={() => {
-                  setLockedServerUnreachable(false);
+                  setServerUnreachable(false);
                   setActiveStep(SetupStep.ServerSelection);
                 }}
               >
@@ -528,8 +462,8 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
         )}
 
       {activeStep === SetupStep.SelfHostedLogin &&
-        !lockedServerUnreachable &&
-        !lockedServerChecking && (
+        !serverUnreachable &&
+        !serverChecking && (
           <>
             <SelfHostedLoginScreen
               serverUrl={serverConfig?.url || ""}
@@ -542,11 +476,28 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
               requiresMfa={selfHostedMfaRequired}
               loading={loading}
               error={error}
+              onCreateAccount={() => {
+                setError(null);
+                setActiveStep(SetupStep.SelfHostedSignup);
+              }}
             />
             <div
               className="navigation-link-container"
               style={{ marginTop: "1.5rem" }}
             >
+              {!lockConnectionMode && (
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  className="navigation-link-button"
+                  disabled={loading}
+                >
+                  {t(
+                    "setup.selfhosted.unreachable.changeServer",
+                    "Connect to a different server",
+                  )}
+                </button>
+              )}
               <button
                 type="button"
                 onClick={handleLocalMode}
@@ -559,21 +510,53 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({
           </>
         )}
 
-      {/* Back Button */}
-      {!lockConnectionMode && activeStep > SetupStep.SaaSLogin && !loading && (
-        <div
-          className="navigation-link-container"
-          style={{ marginTop: "1.5rem" }}
-        >
-          <button
-            type="button"
-            onClick={handleBack}
-            className="navigation-link-button"
+      {activeStep === SetupStep.SelfHostedSignup && (
+        <>
+          <SelfHostedSignupScreen
+            serverUrl={serverConfig?.url || ""}
+            onSignup={handleSelfHostedSignup}
+            loading={loading}
+            error={error}
+          />
+          <div
+            className="navigation-link-container"
+            style={{ marginTop: "1.5rem" }}
           >
-            {t("common.back", "Back")}
-          </button>
-        </div>
+            <button
+              type="button"
+              onClick={() => {
+                setError(null);
+                setActiveStep(SetupStep.SelfHostedLogin);
+              }}
+              className="navigation-link-button"
+              disabled={loading}
+            >
+              {t(
+                "setup.signup.backToLogin",
+                "Already have an account? Sign in",
+              )}
+            </button>
+          </div>
+        </>
       )}
+
+      {/* Back Button */}
+      {!lockConnectionMode &&
+        activeStep === SetupStep.ServerSelection &&
+        !loading && (
+          <div
+            className="navigation-link-container"
+            style={{ marginTop: "1.5rem" }}
+          >
+            <button
+              type="button"
+              onClick={handleBack}
+              className="navigation-link-button"
+            >
+              {t("common.back", "Back")}
+            </button>
+          </div>
+        )}
     </>
   );
 

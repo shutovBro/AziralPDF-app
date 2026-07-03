@@ -13,9 +13,13 @@ vi.mock("../shared/useToolOperation", async () => {
 
 // Mock the translation hook
 const mockT = vi.fn((key: string) => `translated-${key}`);
-vi.mock("react-i18next", () => ({
-  useTranslation: () => ({ t: mockT }),
-}));
+vi.mock("react-i18next", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-i18next")>();
+  return {
+    ...actual,
+    useTranslation: () => ({ t: mockT }),
+  };
+});
 
 // Mock the error handler
 vi.mock("../../../utils/toolErrorHandler", () => ({

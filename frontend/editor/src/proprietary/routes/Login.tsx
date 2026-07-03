@@ -5,7 +5,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { Text, Stack, Alert } from "@mantine/core";
+import { Text, Stack, Alert, Anchor } from "@mantine/core";
 import {
   setPostLoginRedirectPath,
   springAuth,
@@ -437,12 +437,12 @@ export default function Login() {
 
   // Set document meta
   useDocumentMeta({
-    title: `${t("login.title", "Sign in")} - Stirling PDF`,
+    title: `${t("login.title", "Sign in")} - AziralPDF`,
     description: t(
       "app.description",
       "The Free Adobe Acrobat alternative (10M+ Downloads)",
     ),
-    ogTitle: `${t("login.title", "Sign in")} - Stirling PDF`,
+    ogTitle: `${t("login.title", "Sign in")} - AziralPDF`,
     ogDescription: t(
       "app.description",
       "The Free Adobe Acrobat alternative (10M+ Downloads)",
@@ -645,6 +645,19 @@ export default function Login() {
         </div>
       )}
 
+      {/* Sign up link - only when username/password auth is allowed */}
+      {isUserPassAllowed && (
+        <Text size="sm" ta="center" mt="lg">
+          <Anchor
+            component="button"
+            type="button"
+            onClick={() => navigate("/signup")}
+          >
+            {t("login.dontHaveAccount", "Don't have an account? Sign up")}
+          </Anchor>
+        </Text>
+      )}
+
       {/* Help section - only show on first-time setup with default credentials and username/password auth allowed */}
       {isFirstTimeSetup && showDefaultCredentials && isUserPassAllowed && (
         <Alert color="blue" variant="light" radius="md" mt="xl">
@@ -683,7 +696,10 @@ export default function Login() {
               >
                 {t("login.password", "Password")}:
               </Text>{" "}
-              stirling
+              {t(
+                "login.passwordEnvHint",
+                "set via SECURITY_INITIALLOGIN_PASSWORD",
+              )}
             </Text>
             <Text
               size="xs"

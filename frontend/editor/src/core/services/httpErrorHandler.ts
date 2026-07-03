@@ -1,4 +1,5 @@
 // frontend/src/services/httpErrorHandler.ts
+import i18n from "@app/i18n";
 import { alert } from "@app/components/toast";
 import {
   broadcastErroredFiles,
@@ -51,13 +52,33 @@ function stashPostLoginRedirect(path: string): void {
  */
 export async function handleHttpError(error: any): Promise<boolean> {
   const skipAuthRedirect = error?.config?.skipAuthRedirect === true;
+  const status: number | undefined = error?.response?.status;
+
+  // Free-tier daily operation limit (429). Always show a clear, localized toast —
+  // even for calls that otherwise suppress the global toast — so the user understands
+  // why the operation was blocked and how to lift the limit.
+  if (status === 429 && error?.response?.data?.limitReached === true) {
+    const limit = error?.response?.data?.limit;
+    alert({
+      alertType: "warning",
+      title: i18n.t("account.subscription.limitReached.title", {
+        defaultValue: "Free plan limit reached",
+      }),
+      body: i18n.t("account.subscription.limitReached.body", {
+        limit: typeof limit === "number" ? limit : "",
+        defaultValue:
+          "You've used all your free operations for today. Upgrade to Pro for unlimited access.",
+      }),
+    });
+    return true; // handled
+  }
+
   // Check if this error should skip the global toast (component will handle it)
   if (error?.config?.suppressErrorToast === true) {
     return false; // Don't show global toast, but continue rejection
   }
 
   // Handle 401 authentication errors
-  const status: number | undefined = error?.response?.status;
   if (status === 401) {
     const pathname = window.location.pathname;
 
